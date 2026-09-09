@@ -1,0 +1,422 @@
+<title>Clear Field, Bright Signal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root{
+    --paper:#FBFCFE;
+    --surface:#F3F6FE;
+    --ink:#0E1626;
+    --muted:#5A6379;
+    --hair:#D7DEEF;
+    --accent:#2450E6;
+    --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --serif:"Source Serif 4", Georgia, serif;
+    --mono:"IBM Plex Mono", ui-monospace, monospace;
+    --han:"Noto Sans TC", var(--sans);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0B0F1A;
+      --surface:#131A29;
+      --ink:#E9ECF5;
+      --muted:#949CB0;
+      --hair:#232B3D;
+      --accent:#5B82F2;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0B0F1A;
+    --surface:#131A29;
+    --ink:#E9ECF5;
+    --muted:#949CB0;
+    --hair:#232B3D;
+    --accent:#5B82F2;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:1rem;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:clamp(26px,5vw,64px) clamp(18px,4vw,40px) 76px}
+
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:.75rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:var(--accent);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:clamp(1.9rem,5vw,3rem);
+    line-height:1.05;
+    letter-spacing:-.02em;
+    text-wrap:balance;
+    margin:0 0 16px;
+  }
+  .lede{
+    max-width:60ch;
+    color:var(--muted);
+    margin:0 0 38px;
+    font-size:1.05rem;
+  }
+  .lede b{color:var(--ink);font-weight:600}
+
+  /* -------- the artboard (fixed dark visual world, echoing the reference layout) -------- */
+  .stage{
+    position:relative;
+    width:100%;
+    max-width:920px;
+    aspect-ratio:3 / 4;
+    margin:0 auto;
+    background:#080B14;
+    border:1px solid var(--hair);
+    container-type:inline-size;
+    overflow:hidden;
+  }
+  .block{
+    position:absolute;
+    display:flex;
+    flex-direction:column;
+    padding:clamp(8px,2.5cqw,24px);
+    overflow:hidden;
+  }
+  .block .nm{
+    font-family:var(--sans);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    font-size:clamp(10px,2.5cqw,21px);
+    line-height:1.04;
+  }
+  .block .tc{
+    font-family:var(--han);
+    font-weight:500;
+    font-size:clamp(9px,1.7cqw,14px);
+    opacity:.72;
+    margin-top:.25em;
+  }
+  .block .role{
+    font-family:var(--sans);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    font-size:clamp(7.5px,1.35cqw,11px);
+    opacity:.64;
+    margin-top:.7em;
+  }
+  .block .data{
+    margin-top:auto;
+    font-family:var(--mono);
+    font-weight:500;
+    font-size:clamp(8px,1.5cqw,13px);
+    line-height:1.45;
+    letter-spacing:.01em;
+  }
+  .block .data .sub{display:block;opacity:.64;font-size:.86em;margin-top:.15em}
+  .block .idx{
+    position:absolute;
+    top:clamp(8px,2.5cqw,24px);
+    right:clamp(8px,2.5cqw,24px);
+    font-family:var(--mono);
+    font-size:clamp(8px,1.5cqw,13px);
+    opacity:.72;
+  }
+  .block.dark{color:#FBFCFE}
+  .block.light{color:#0E1626}
+
+  .vert{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .vert span{
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    font-family:var(--sans);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:clamp(18px,4.6cqw,44px);
+  }
+
+  /* -------- proportion bar -------- */
+  .prop{margin:30px auto 0;max-width:920px}
+  .prop-bar{display:flex;height:26px;border:1px solid var(--hair);overflow:hidden}
+  .prop-bar span{display:block}
+  .prop-key{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 22px;
+    margin-top:12px;
+    font-family:var(--mono);
+    font-size:.78rem;
+    color:var(--muted);
+  }
+  .prop-key b{color:var(--ink);font-weight:500}
+
+  /* -------- notes -------- */
+  .notes{
+    margin:44px auto 0;
+    max-width:62ch;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .notes h2{
+    font-family:var(--sans);
+    font-size:.75rem;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:var(--muted);
+    margin:0;
+  }
+  .notes p{margin:0}
+  .notes p b{font-weight:600}
+  .notes .swatch{
+    display:inline-block;
+    width:.72em;height:.72em;
+    border-radius:2px;
+    outline:1px solid rgba(0,0,0,.12);
+    vertical-align:baseline;
+    margin-right:.15em;
+  }
+
+  /* -------- signal & light -------- */
+  .spark{margin:66px auto 0;max-width:920px}
+  .sec-title{
+    font-family:var(--sans);font-weight:700;
+    font-size:clamp(1.4rem,3.4vw,2rem);letter-spacing:-.015em;
+    margin:0 0 12px;
+  }
+  .sec-lede{max-width:60ch;color:var(--muted);margin:0 0 30px;font-size:1rem}
+  .sec-lede b{color:var(--ink);font-weight:600}
+
+  .grad-grid{display:flex;flex-direction:column;gap:22px}
+  .grad{margin:0;border:1px solid var(--hair);background:var(--surface)}
+  .grad-pair{display:grid;grid-template-columns:1fr 1fr}
+  .grad-swatch{height:150px;position:relative}
+  .grad-swatch.tall{height:196px}
+  .grad-swatch .tag{
+    position:absolute;left:0;top:0;
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.03em;
+    color:#FBFCFE;padding:8px 11px;
+  }
+  .grad figcaption{display:flex;flex-direction:column;gap:3px;padding:14px 16px}
+  .grad .gname{font-family:var(--sans);font-weight:600;font-size:.95rem;color:var(--ink)}
+  .grad .gdesc{color:var(--muted);font-size:.9rem;line-height:1.5}
+  .grad .gcss{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-top:5px}
+
+  .bridge{margin:34px 0 0;padding:20px;border:1px solid var(--hair);background:var(--surface)}
+  .bridge h3,.rules h3{
+    font-family:var(--sans);font-size:.72rem;letter-spacing:.13em;
+    text-transform:uppercase;font-weight:600;color:var(--muted);margin:0 0 12px;
+  }
+  .bridge-row{display:flex;flex-wrap:wrap;gap:20px;font-family:var(--mono);font-size:.82rem;color:var(--ink)}
+  .bridge-row .bs{display:inline-block;width:1.1em;height:1.1em;border:1px solid var(--hair);vertical-align:-.2em;margin-right:.4em}
+  .bridge p{margin:14px 0 0;font-size:.9rem;color:var(--muted);max-width:56ch}
+
+  .rules{margin:24px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .rules>div{padding:20px;border:1px solid var(--hair);background:var(--surface)}
+  .rules .no{border-color:color-mix(in srgb, var(--accent) 38%, var(--hair))}
+  .rules ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:7px}
+  .rules li{font-size:.9rem;line-height:1.45}
+
+  @media (max-width:640px){.rules,.grad-pair{grid-template-columns:1fr}}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">EdCity · Palette study · Option B</p>
+  <h1>Clear Field, Bright Signal</h1>
+  <p class="lede">A cooler, brighter take on the unified direction, after Sana Labs&rsquo; move: a confident <b>blue backbone on near-white</b>, kept clean by whitespace and restraint rather than by muting the colour. Warmth leaves the palette and moves into type, photography, and voice. Block size stands in for share of surface.</p>
+
+  <div class="stage" role="img" aria-label="EdCity cool palette option: a bright blue backbone, a near-white field with cool neutrals, and a small coral signal, arranged as overlapping blocks sized by their share of surface.">
+
+    <!-- 03 Paper White -->
+    <div class="block light" style="left:6%;top:5%;width:44%;height:29%;background:#FBFCFE;z-index:1">
+      <span class="idx">03</span>
+      <span class="nm">Paper White</span>
+      <span class="tc">紙白</span>
+      <span class="role">Surface</span>
+      <span class="data">#FBFCFE<span class="sub">R 251 · G 252 · B 254</span></span>
+    </div>
+
+    <!-- 02 Deep Blue -->
+    <div class="block dark" style="left:13%;top:33%;width:41%;height:27%;background:#12307A;z-index:2">
+      <span class="idx">02</span>
+      <span class="nm">Deep Blue</span>
+      <span class="tc">深藍</span>
+      <span class="role">Structure · depth &amp; frame</span>
+      <span class="data">#12307A<span class="sub">R 18 · G 48 · B 122</span></span>
+    </div>
+
+    <!-- 04 Mist -->
+    <div class="block light" style="left:6%;top:60%;width:29%;height:25%;background:#EDF1FB;z-index:2">
+      <span class="idx">04</span>
+      <span class="nm">Mist</span>
+      <span class="tc">霧藍</span>
+      <span class="role">Surface · quiet &amp; hover</span>
+      <span class="data">#EDF1FB<span class="sub">R 237 · G 241 · B 251</span></span>
+    </div>
+
+    <!-- 08 Line -->
+    <div class="block light" style="left:5%;top:86%;width:26%;height:11%;background:#D7DEEF;z-index:3">
+      <span class="idx">08</span>
+      <span class="nm">Line</span>
+      <span class="tc">線灰藍</span>
+      <span class="data">#D7DEEF<span class="sub">R 215 · G 222 · B 239 · hairlines &amp; edges</span></span>
+    </div>
+
+    <!-- 06 Ink -->
+    <div class="block dark" style="left:20%;top:54%;width:33%;height:27%;background:#0E1626;z-index:4">
+      <span class="idx">06</span>
+      <span class="nm">Ink</span>
+      <span class="tc">墨藍黑</span>
+      <span class="role">Text · primary</span>
+      <span class="data">#0E1626<span class="sub">R 14 · G 22 · B 38</span></span>
+    </div>
+
+    <!-- 05 Mute -->
+    <div class="block light" style="left:31%;top:73%;width:36%;height:19%;background:#7B879F;z-index:5">
+      <span class="idx">05</span>
+      <span class="nm">Mute</span>
+      <span class="tc">中灰藍</span>
+      <span class="role">Neutral · secondary text</span>
+      <span class="data">#7B879F<span class="sub">R 123 · G 135 · B 159</span></span>
+    </div>
+
+    <!-- 01 Bright Blue -->
+    <div class="block dark" style="left:52%;top:6%;width:40%;height:66%;background:#2450E6;z-index:6">
+      <span class="idx">01</span>
+      <div class="vert"><span>Bright Blue</span></div>
+      <span class="data">亮藍 · #2450E6<span class="sub">R 36 · G 80 · B 230 · backbone &mdash; structure &amp; action</span></span>
+    </div>
+
+    <!-- 07 Spark Coral -->
+    <div class="block light" style="left:62%;top:57%;width:19%;height:15%;background:#FF6A3D;z-index:7">
+      <span class="idx">07</span>
+      <span class="nm">Spark Coral</span>
+      <span class="tc">珊瑚橙</span>
+      <span class="data">#FF6A3D<span class="sub">R 255 · G 106 · B 61 · signal, rare</span></span>
+    </div>
+
+  </div>
+
+  <div class="prop">
+    <div class="prop-bar" aria-hidden="true">
+      <span style="flex:52;background:#2450E6"></span>
+      <span style="flex:10;background:#12307A"></span>
+      <span style="flex:16;background:#FBFCFE"></span>
+      <span style="flex:9;background:#EDF1FB"></span>
+      <span style="flex:8;background:#7B879F"></span>
+      <span style="flex:5;background:#FF6A3D"></span>
+    </div>
+    <div class="prop-key">
+      <span><b>~55</b> structure (bright + deep blue)</span>
+      <span><b>~35</b> field &amp; neutral (white · mist · line · ink · mute)</span>
+      <span><b>~5&ndash;10</b> signal (coral)</span>
+    </div>
+  </div>
+
+  <div class="notes">
+    <h2>How to read it</h2>
+    <p>A bright blue backbone on a near-white field. The organisation comes from space and restraint, not from dimming the colour. One warm signal breaks through where an opportunity opens.</p>
+
+    <h2>The three roles</h2>
+    <p><span class="swatch" style="background:#2450E6"></span><b>Bright blue</b> is the backbone &mdash; structure, navigation, actions, links. Saturated on purpose; at roughly 5.9:1 on white it also works as text. <span class="swatch" style="background:#12307A"></span>Deep blue adds depth and framing.</p>
+    <p><span class="swatch" style="background:#FBFCFE"></span><span class="swatch" style="background:#EDF1FB"></span><span class="swatch" style="background:#D7DEEF"></span><span class="swatch" style="background:#0E1626"></span><b>The field</b> is near-white ground, a faint lavender-blue tint for quiet surfaces, cool hairlines, and near-black-blue ink &mdash; most of every screen. Kept genuinely white, never warmed, so bright colour reads as energy rather than heritage.</p>
+    <p><span class="swatch" style="background:#FF6A3D"></span><b>Spark coral</b> is the signal &mdash; a bright warm point where an opportunity surfaces. Small share, and never body text: about 2.7:1 on white fails AA, so it stays in marks, fills, and large display.</p>
+
+    <h2>Where the warmth went</h2>
+    <p>The &ldquo;Human Craft&rdquo; layer does not disappear &mdash; it moves from paint to texture: photography, rounded forms, humanist type, and a warm voice carry it. The palette itself stays cool.</p>
+
+    <h2>Caveat</h2>
+    <p>Bright-blue-on-white is the default education-SaaS look. The escape is the specific blues, a genuinely luminous coral, gradients built from the scale, and the fabric carried in type and image &mdash; not the colour chips alone.</p>
+  </div>
+
+  <section class="spark">
+    <h2 class="sec-title">Signal &amp; Light</h2>
+    <p class="sec-lede">The field stays flat and white. Energy comes from the <b>signal</b> &mdash; coral &mdash; and from light gradients mixed from the palette scale, the way Sana builds its studio backgrounds. One gradient surface per view, tied to a real moment.</p>
+
+    <div class="grad-grid">
+
+      <figure class="grad">
+        <div class="grad-pair">
+          <div class="grad-swatch" style="background:radial-gradient(circle at 50% 58%, #FF6A3D 0%, #FF9E7A 42%, rgba(255,158,122,0) 74%), #FBFCFE"><span class="tag" style="color:#7A2A11">on white</span></div>
+          <div class="grad-swatch" style="background:radial-gradient(circle at 50% 58%, #FF6A3D 0%, #FF9E7A 42%, rgba(255,158,122,0) 74%), #0E1626"><span class="tag">on ink</span></div>
+        </div>
+        <figcaption>
+          <span class="gname">Coral glow</span>
+          <span class="gdesc">Behind an opportunity marker the moment it surfaces. Small, rare, warm-to-warm so it never muddies.</span>
+          <span class="gcss">radial · #FF6A3D → #FF9E7A → transparent</span>
+        </figcaption>
+      </figure>
+
+      <figure class="grad">
+        <div class="grad-swatch tall" style="background:linear-gradient(105deg, #1F49DC 0%, #5E7CF0 40%, #A9B8F2 62%, #FF7A4E 100%)"></div>
+        <figcaption>
+          <span class="gname">Bright dawn</span>
+          <span class="gdesc">Mixed from the scale &mdash; deep blue through periwinkle to coral. Light enough to sit on white. For heroes, onboarding, and the opportunity moment.</span>
+          <span class="gcss">linear 105° · #1F49DC → #5E7CF0 → #A9B8F2 → #FF7A4E</span>
+        </figcaption>
+      </figure>
+
+      <figure class="grad">
+        <div class="grad-swatch tall" style="background:linear-gradient(160deg, #EDF1FB 0%, #DCE6FF 55%, #EFEAFE 100%)"><span class="tag" style="color:#3A4668">ambient · very low contrast</span></div>
+        <figcaption>
+          <span class="gname">Cool wash</span>
+          <span class="gdesc">A barely-there lavender-blue drift for ambient backgrounds and empty states &mdash; the &ldquo;alive but quiet&rdquo; layer behind a mostly-empty screen.</span>
+          <span class="gcss">linear 160° · #EDF1FB → #DCE6FF → #EFEAFE</span>
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <div class="bridge">
+      <h3>Bridge tones &mdash; gradients only</h3>
+      <div class="bridge-row">
+        <span><span class="bs" style="background:#6E8BF5"></span>Periwinkle #6E8BF5</span>
+        <span><span class="bs" style="background:#FF9E7A"></span>Peach #FF9E7A</span>
+      </div>
+      <p>These live only inside gradients &mdash; periwinkle bridges blue to coral, peach is coral&rsquo;s luminous tail. Flat, they dilute the system. Never a flat fill or a text colour.</p>
+    </div>
+
+    <div class="rules">
+      <div class="ok">
+        <h3>Use a gradient for</h3>
+        <ul>
+          <li>The moment an opportunity is surfaced</li>
+          <li>Onboarding and first run</li>
+          <li>Milestone and progress moments</li>
+          <li>Marketing and campaign heroes</li>
+          <li>Loading and transition states</li>
+          <li>Ambient background behind an empty screen</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3>Never</h3>
+        <ul>
+          <li>Navigation, headers, sidebars, cards</li>
+          <li>Buttons or interactive controls</li>
+          <li>Behind body text</li>
+          <li>More than one gradient surface in a view</li>
+          <li>The daily screens &mdash; dashboards, lists, forms</li>
+          <li>Bright dawn at full strength behind content &mdash; dial the opacity right down</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="sec-lede" style="margin-top:28px"><b>Motion:</b> the dawn mesh drifts slowly or reveals on load &mdash; never pulses. Energy is in the behaviour as much as the colour, and it respects reduced-motion.</p>
+  </section>
+</div>

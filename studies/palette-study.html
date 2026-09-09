@@ -1,0 +1,418 @@
+<title>Slate, Earth &amp; First Light</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root{
+    --paper:#F3EEE4;
+    --surface:#FBF8F1;
+    --ink:#221F1A;
+    --muted:#6E6558;
+    --hair:#DED4C4;
+    --accent:#BA3D04;
+    --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --serif:"Source Serif 4", Georgia, serif;
+    --mono:"IBM Plex Mono", ui-monospace, monospace;
+    --han:"Noto Sans TC", var(--sans);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#15130F;
+      --surface:#1D1A15;
+      --ink:#EAE4D7;
+      --muted:#9A9284;
+      --hair:#2E2B23;
+      --accent:#E4622C;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#15130F;
+    --surface:#1D1A15;
+    --ink:#EAE4D7;
+    --muted:#9A9284;
+    --hair:#2E2B23;
+    --accent:#E4622C;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:1rem;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:clamp(26px,5vw,64px) clamp(18px,4vw,40px) 76px}
+
+  .eyebrow{
+    font-family:var(--sans);
+    font-size:.75rem;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:var(--accent);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:clamp(1.9rem,5vw,3rem);
+    line-height:1.05;
+    letter-spacing:-.015em;
+    text-wrap:balance;
+    margin:0 0 16px;
+  }
+  .lede{
+    max-width:60ch;
+    color:var(--muted);
+    margin:0 0 38px;
+    font-size:1.05rem;
+  }
+  .lede b{color:var(--ink);font-weight:600}
+
+  /* -------- the artboard (fixed dark visual world, echoing the reference layout) -------- */
+  .stage{
+    position:relative;
+    width:100%;
+    max-width:920px;
+    aspect-ratio:3 / 4;
+    margin:0 auto;
+    background:#100F0B;
+    border:1px solid var(--hair);
+    container-type:inline-size;
+    overflow:hidden;
+  }
+  .block{
+    position:absolute;
+    display:flex;
+    flex-direction:column;
+    padding:clamp(8px,2.5cqw,24px);
+    overflow:hidden;
+  }
+  .block .nm{
+    font-family:var(--sans);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    font-size:clamp(10px,2.5cqw,21px);
+    line-height:1.04;
+  }
+  .block .tc{
+    font-family:var(--han);
+    font-weight:500;
+    font-size:clamp(9px,1.7cqw,14px);
+    opacity:.7;
+    margin-top:.25em;
+  }
+  .block .role{
+    font-family:var(--sans);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    font-size:clamp(7.5px,1.35cqw,11px);
+    opacity:.62;
+    margin-top:.7em;
+  }
+  .block .data{
+    margin-top:auto;
+    font-family:var(--mono);
+    font-weight:500;
+    font-size:clamp(8px,1.5cqw,13px);
+    line-height:1.45;
+    letter-spacing:.01em;
+  }
+  .block .data .sub{display:block;opacity:.62;font-size:.86em;margin-top:.15em}
+  .block .idx{
+    position:absolute;
+    top:clamp(8px,2.5cqw,24px);
+    right:clamp(8px,2.5cqw,24px);
+    font-family:var(--mono);
+    font-size:clamp(8px,1.5cqw,13px);
+    opacity:.7;
+  }
+  .block.dark{color:#F2ECE0}
+  .block.light{color:#14110A}
+
+  .vert{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .vert span{
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    font-family:var(--sans);
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:clamp(18px,4.6cqw,44px);
+  }
+
+  /* -------- proportion bar -------- */
+  .prop{margin:30px auto 0;max-width:920px}
+  .prop-bar{display:flex;height:26px;border:1px solid var(--hair);overflow:hidden}
+  .prop-bar span{display:block}
+  .prop-key{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 22px;
+    margin-top:12px;
+    font-family:var(--mono);
+    font-size:.78rem;
+    color:var(--muted);
+  }
+  .prop-key b{color:var(--ink);font-weight:500}
+
+  /* -------- notes -------- */
+  .notes{
+    margin:44px auto 0;
+    max-width:62ch;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .notes h2{
+    font-family:var(--sans);
+    font-size:.75rem;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    font-weight:600;
+    color:var(--muted);
+    margin:0;
+  }
+  .notes p{margin:0}
+  .notes p b{font-weight:600}
+  .notes .swatch{
+    display:inline-block;
+    width:.72em;height:.72em;
+    border-radius:2px;
+    vertical-align:baseline;
+    margin-right:.15em;
+  }
+
+  /* -------- spark & light -------- */
+  .spark{margin:66px auto 0;max-width:920px}
+  .sec-title{
+    font-family:var(--sans);font-weight:700;
+    font-size:clamp(1.4rem,3.4vw,2rem);letter-spacing:-.012em;
+    margin:0 0 12px;
+  }
+  .sec-lede{max-width:60ch;color:var(--muted);margin:0 0 30px;font-size:1rem}
+  .sec-lede b{color:var(--ink);font-weight:600}
+
+  .grad-grid{display:flex;flex-direction:column;gap:22px}
+  .grad{margin:0;border:1px solid var(--hair);background:var(--surface)}
+  .grad-pair{display:grid;grid-template-columns:1fr 1fr}
+  .grad-swatch{height:150px;position:relative}
+  .grad-swatch.tall{height:196px}
+  .grad-swatch .tag{
+    position:absolute;left:0;top:0;
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.03em;
+    color:#F1EDE6;padding:8px 11px;
+  }
+  .grad figcaption{display:flex;flex-direction:column;gap:3px;padding:14px 16px}
+  .grad .gname{font-family:var(--sans);font-weight:600;font-size:.95rem;color:var(--ink)}
+  .grad .gdesc{color:var(--muted);font-size:.9rem;line-height:1.5}
+  .grad .gcss{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-top:5px}
+
+  .bridge{margin:34px 0 0;padding:20px;border:1px solid var(--hair);background:var(--surface)}
+  .bridge h3,.rules h3{
+    font-family:var(--sans);font-size:.72rem;letter-spacing:.13em;
+    text-transform:uppercase;font-weight:600;color:var(--muted);margin:0 0 12px;
+  }
+  .bridge-row{display:flex;flex-wrap:wrap;gap:20px;font-family:var(--mono);font-size:.82rem;color:var(--ink)}
+  .bridge-row .bs{display:inline-block;width:1.1em;height:1.1em;border:1px solid var(--hair);vertical-align:-.2em;margin-right:.4em}
+  .bridge p{margin:14px 0 0;font-size:.9rem;color:var(--muted);max-width:56ch}
+
+  .rules{margin:24px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .rules>div{padding:20px;border:1px solid var(--hair);background:var(--surface)}
+  .rules .no{border-color:color-mix(in srgb, var(--accent) 38%, var(--hair))}
+  .rules ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:7px}
+  .rules li{font-size:.9rem;line-height:1.45}
+
+  @media (max-width:640px){.rules,.grad-pair{grid-template-columns:1fr}}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">EdCity · Palette study · Option A</p>
+  <h1>Slate, Earth &amp; First Light</h1>
+  <p class="lede">One working palette for the unified direction &mdash; <b>calm structure</b> as the base, <b>warm materials</b> as the fabric, and a single <b>bright point</b> where an opportunity opens. Block size stands in for share of surface.</p>
+
+  <div class="stage" role="img" aria-label="EdCity working palette: slate blue structure, warm earth fabric tones, and a small burnt-orange spark, arranged as overlapping blocks sized by their share of surface.">
+
+    <!-- 03 Paper -->
+    <div class="block light" style="left:6%;top:5%;width:44%;height:29%;background:#F1EDE6;z-index:1">
+      <span class="idx">03</span>
+      <span class="nm">Paper</span>
+      <span class="tc">紙白</span>
+      <span class="role">Surface</span>
+      <span class="data">#F1EDE6<span class="sub">R 241 · G 237 · B 230</span></span>
+    </div>
+
+    <!-- 02 Deep Slate -->
+    <div class="block dark" style="left:13%;top:33%;width:41%;height:27%;background:#34415C;z-index:2">
+      <span class="idx">02</span>
+      <span class="nm">Deep Slate</span>
+      <span class="tc">深岩藍</span>
+      <span class="role">Structure · text &amp; frame</span>
+      <span class="data">#34415C<span class="sub">R 52 · G 65 · B 92</span></span>
+    </div>
+
+    <!-- 04 Greige -->
+    <div class="block light" style="left:6%;top:60%;width:29%;height:25%;background:#CBC2B2;z-index:2">
+      <span class="idx">04</span>
+      <span class="nm">Greige</span>
+      <span class="tc">灰米</span>
+      <span class="role">Fabric · warm neutral</span>
+      <span class="data">#CBC2B2<span class="sub">R 203 · G 194 · B 178</span></span>
+    </div>
+
+    <!-- 08 Charcoal -->
+    <div class="block dark" style="left:5%;top:86%;width:26%;height:11%;background:#17140E;z-index:3">
+      <span class="idx">08</span>
+      <span class="nm">Charcoal</span>
+      <span class="tc">炭黑</span>
+      <span class="data">#17140E<span class="sub">R 23 · G 20 · B 14</span></span>
+    </div>
+
+    <!-- 06 Sage -->
+    <div class="block dark" style="left:20%;top:54%;width:33%;height:27%;background:#5E6A50;z-index:4">
+      <span class="idx">06</span>
+      <span class="nm">Sage</span>
+      <span class="tc">灰綠</span>
+      <span class="role">Fabric · ground &amp; progress</span>
+      <span class="data">#5E6A50<span class="sub">R 94 · G 106 · B 80</span></span>
+    </div>
+
+    <!-- 05 Clay -->
+    <div class="block dark" style="left:31%;top:73%;width:36%;height:19%;background:#B26A44;z-index:5">
+      <span class="idx">05</span>
+      <span class="nm">Clay</span>
+      <span class="tc">陶土</span>
+      <span class="role">Fabric · warmth &amp; accent</span>
+      <span class="data">#B26A44<span class="sub">R 178 · G 106 · B 68</span></span>
+    </div>
+
+    <!-- 01 Slate Blue -->
+    <div class="block light" style="left:52%;top:6%;width:40%;height:66%;background:#6E7C99;z-index:6">
+      <span class="idx">01</span>
+      <div class="vert"><span>Slate Blue</span></div>
+      <span class="data">石板藍 · #6E7C99<span class="sub">R 110 · G 124 · B 153 · Structure &mdash; the field</span></span>
+    </div>
+
+    <!-- 07 Burnt Orange -->
+    <div class="block dark" style="left:62%;top:57%;width:19%;height:15%;background:#BA3D04;z-index:7">
+      <span class="idx">07</span>
+      <span class="nm">Burnt Orange</span>
+      <span class="tc">燒橙</span>
+      <span class="data">#BA3D04<span class="sub">R 186 · G 61 · B 4 · spark, rare</span></span>
+    </div>
+
+  </div>
+
+  <div class="prop">
+    <div class="prop-bar" aria-hidden="true">
+      <span style="flex:60;background:#6E7C99"></span>
+      <span style="flex:12;background:#F1EDE6"></span>
+      <span style="flex:8;background:#CBC2B2"></span>
+      <span style="flex:7;background:#B26A44"></span>
+      <span style="flex:6;background:#5E6A50"></span>
+      <span style="flex:5;background:#BA3D04"></span>
+    </div>
+    <div class="prop-key">
+      <span><b>~60</b> structure (slate + deep slate)</span>
+      <span><b>~30</b> fabric (paper · greige · clay · sage)</span>
+      <span><b>~5&ndash;10</b> spark (burnt orange)</span>
+    </div>
+  </div>
+
+  <div class="notes">
+    <h2>How to read it</h2>
+    <p>Think of a landscape at first light: a steady blue ground that holds most of any screen, warm materials close to hand, and one bright point where something is opening up.</p>
+
+    <h2>The three roles</h2>
+    <p><span class="swatch" style="background:#6E7C99"></span><b>Slate blue</b> is the field &mdash; calm structure, navigation, framing. <span class="swatch" style="background:#34415C"></span>Deep slate carries text and edges.</p>
+    <p><span class="swatch" style="background:#CBC2B2"></span><span class="swatch" style="background:#B26A44"></span><span class="swatch" style="background:#5E6A50"></span><b>The earth tones</b> are the fabric: warmth, photography edges, subject colour, and &mdash; for sage &mdash; the progress and growth signal. Greyed and contemporary &mdash; stone, clay, and grey-green rather than harvest gold and army olive &mdash; so about a third of the surface reads current, not heritage.</p>
+    <p><span class="swatch" style="background:#BA3D04"></span><b>Burnt orange</b> is the spark: first light on a surfaced opportunity. Never more than a small share, and never body text &mdash; at roughly 3.6:1 on paper it fails AA, so it lives in numerals, dots, underlines, and icons only.</p>
+
+    <h2>Caveat</h2>
+    <p>Proportions are a target ratio across a whole screen or page, not a rule for every component. The reference layout is a way to see the balance &mdash; it is not the identity.</p>
+  </div>
+
+  <section class="spark">
+    <h2 class="sec-title">Spark &amp; Light</h2>
+    <p class="sec-lede">The base stays matte. Energy comes from one place &mdash; the <b>spark</b>, treated as a moment of light rather than a flat colour. Gradients live here and nowhere else: one gradient surface per view, tied to a real moment.</p>
+
+    <div class="grad-grid">
+
+      <figure class="grad">
+        <div class="grad-pair">
+          <div class="grad-swatch" style="background:radial-gradient(circle at 50% 58%, #BA3D04 0%, #E89B4A 40%, rgba(232,155,74,0) 74%), #F1EDE6"><span class="tag" style="color:#5A2A12">on paper</span></div>
+          <div class="grad-swatch" style="background:radial-gradient(circle at 50% 58%, #BA3D04 0%, #E89B4A 40%, rgba(232,155,74,0) 74%), #17140E"><span class="tag">on charcoal</span></div>
+        </div>
+        <figcaption>
+          <span class="gname">Spark glow</span>
+          <span class="gdesc">Behind an opportunity marker the moment it surfaces. Small, rare, warm-to-warm so it never muddies.</span>
+          <span class="gcss">radial · #BA3D04 → #E89B4A → transparent</span>
+        </figcaption>
+      </figure>
+
+      <figure class="grad">
+        <div class="grad-swatch tall" style="background:linear-gradient(100deg, #232B44 0%, #7A4E44 42%, #C1712E 74%, #E8A65A 100%)"></div>
+        <figcaption>
+          <span class="gname">First light</span>
+          <span class="gdesc">The film-festival move &mdash; a cool-dark to warm-light sunrise for narrative beats: onboarding, a milestone, a campaign hero. Sits on charcoal, not paper.</span>
+          <span class="gcss">linear 100° · #232B44 → #7A4E44 → #C1712E → #E8A65A</span>
+        </figcaption>
+      </figure>
+
+      <figure class="grad">
+        <div class="grad-swatch tall" style="background:linear-gradient(180deg, rgba(186,61,4,.55) 0%, rgba(186,61,4,.05) 46%, rgba(35,43,68,.4) 100%), #5B6473"><span class="tag">gradient over image</span></div>
+        <figcaption>
+          <span class="gname">Dawn on photography</span>
+          <span class="gdesc">A warm light overlay on real photos &mdash; edges catching orange, shadows going slate. Energy that stays photographic, not decorative.</span>
+          <span class="gcss">linear 180° · burnt-orange .55 → slate .40, over image</span>
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <div class="bridge">
+      <h3>Bridge tones &mdash; gradients only</h3>
+      <div class="bridge-row">
+        <span><span class="bs" style="background:#E89B4A"></span>Amber #E89B4A</span>
+        <span><span class="bs" style="background:#F2C46B"></span>Ember Gold #F2C46B</span>
+      </div>
+      <p>Flat, they read vintage &mdash; harvest gold. Inside a gradient they read as light. Never a flat fill, a button, or a text colour.</p>
+    </div>
+
+    <div class="rules">
+      <div class="ok">
+        <h3>Use a gradient for</h3>
+        <ul>
+          <li>The moment an opportunity is surfaced</li>
+          <li>Onboarding and first run</li>
+          <li>Milestone and progress moments</li>
+          <li>Marketing and campaign heroes</li>
+          <li>Loading and transition states</li>
+          <li>Light overlays on photography</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3>Never</h3>
+        <ul>
+          <li>Navigation, headers, sidebars, cards</li>
+          <li>Buttons or interactive controls</li>
+          <li>Behind body text</li>
+          <li>More than one gradient surface in a view</li>
+          <li>The daily screens &mdash; dashboards, lists, forms</li>
+          <li>The cool-to-warm band on paper &mdash; it muddies; use charcoal</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="sec-lede" style="margin-top:28px"><b>Motion:</b> first light animates in as a slow reveal, never a pulse. The energy is in the behaviour as much as the colour &mdash; and it respects reduced-motion.</p>
+  </section>
+</div>
