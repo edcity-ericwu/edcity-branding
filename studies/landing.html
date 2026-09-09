@@ -67,39 +67,73 @@
 
   /* ---------- hero ---------- */
   .hero{
-    position:relative;overflow:hidden;
-    padding:clamp(64px,11vw,132px) 0 clamp(48px,8vw,92px);
+    position:relative;overflow:hidden;background:var(--paper);
+    min-height:90vh;min-height:90dvh;display:flex;
+  }
+  .hero-mesh{
+    position:absolute;inset:0;transform:scale(1.08);filter:blur(14px);
     background:
-      radial-gradient(60% 55% at 84% 92%, rgba(255,106,61,.16), transparent 62%),
-      radial-gradient(52% 52% at 12% 6%, rgba(36,80,230,.12), transparent 60%),
+      radial-gradient(46% 56% at 12% 26%, rgba(110,139,245,.62), transparent 60%),
+      radial-gradient(38% 46% at 32% 8%,  rgba(169,155,224,.55), transparent 62%),
+      radial-gradient(52% 60% at 84% 74%, rgba(255,106,61,.66), transparent 56%),
+      radial-gradient(40% 48% at 66% 44%, rgba(255,158,122,.5), transparent 60%),
+      radial-gradient(70% 60% at 50% 104%, rgba(246,247,252,.95), transparent 55%),
       var(--paper);
   }
-  .hero .grain{
-    position:absolute;inset:0;pointer-events:none;opacity:.06;mix-blend-mode:multiply;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size:150px 150px;
+  .hero-grain{
+    position:absolute;inset:0;pointer-events:none;opacity:.42;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:160px 160px;
   }
-  .hero .wrap{position:relative}
+  .corner{
+    position:absolute;width:13px;height:13px;border:1.5px solid var(--ink-3);opacity:.55;z-index:2;
+  }
+  .corner.tl{top:clamp(78px,11vh,116px);left:clamp(20px,4.5vw,44px);border-right:0;border-bottom:0}
+  .corner.tr{top:clamp(78px,11vh,116px);right:clamp(20px,4.5vw,44px);border-left:0;border-bottom:0}
+  .corner.bl{bottom:clamp(24px,5vh,54px);left:clamp(20px,4.5vw,44px);border-right:0;border-top:0}
+  .corner.br{bottom:clamp(24px,5vh,54px);right:clamp(20px,4.5vw,44px);border-left:0;border-top:0}
+
+  .hero-inner{
+    position:relative;z-index:2;align-self:stretch;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:30px;
+    width:100%;padding-top:clamp(96px,15vh,170px);padding-bottom:clamp(40px,8vh,92px);
+  }
+  .hero-lead{max-width:17ch}
   .hero h1{
-    font-size:clamp(2.5rem,7vw,5.2rem);
-    line-height:1.02;
-    max-width:15ch;
+    font-size:clamp(2.4rem,6.6vw,5rem);line-height:1.04;
   }
-  .hero .sub{
-    font-family:var(--sans);
-    font-size:clamp(1rem,2.2vw,1.35rem);
-    font-weight:500;
-    color:var(--ink);
-    margin:26px 0 0;
-    max-width:46ch;
+  .squiggle{
+    display:block;width:clamp(150px,20vw,240px);height:auto;color:var(--ink);
+    margin:16px 0 20px;overflow:visible;
   }
-  .hero .body{
-    color:var(--ink-2);
-    margin:16px 0 0;
-    max-width:44ch;
-    font-size:1.02rem;
+  .squiggle path{
+    fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;
+    stroke-dasharray:1;stroke-dashoffset:1;
+    animation:draw 1.3s ease-out .5s forwards;
   }
-  .hero .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+  @keyframes draw{ to{ stroke-dashoffset:0 } }
+  .hero-lead .en{
+    font-family:var(--sans);font-size:.9rem;color:var(--ink-2);margin:0 0 20px;max-width:34ch;
+  }
+  .hero .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+
+  .hero-stat{
+    flex-shrink:0;display:flex;align-items:flex-end;gap:14px;
+  }
+  .hero-stat .num{
+    font-family:var(--sans);font-weight:700;letter-spacing:-.03em;color:var(--ink);
+    font-size:clamp(3rem,8vw,6.5rem);line-height:.78;
+  }
+  .hero-stat .vert{
+    writing-mode:vertical-rl;transform:rotate(180deg);
+    font-family:var(--sans);font-size:.6rem;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-2);max-height:210px;
+  }
+  @media (max-width:760px){
+    .hero-inner{flex-direction:column;align-items:flex-start;gap:34px}
+    .hero-stat .vert{max-height:150px}
+  }
+  @media (prefers-reduced-motion:reduce){ .squiggle path{animation:none;stroke-dashoffset:0} }
 
   /* ---------- partner strip ---------- */
   .partners{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
@@ -349,15 +383,28 @@
 <main id="top">
 
   <section class="hero">
-    <div class="grain"></div>
-    <div class="wrap">
-      <h1>知道你在哪裡，<br>為你打開下一步</h1>
-      <p class="sub">Intelligence that helps the right support appear at the right moment — for teachers, students, and families.</p>
-      <p class="body">一個以人為本的教育生態系統，把複雜的服務整理成清晰、可行的下一步。</p>
-      <div class="cta-row">
-        <a class="pill pill-blue" href="#edcity-ai">認識 EdCity.ai</a>
-        <a class="pill pill-ghost" href="#ecosystem">了解生態系統</a>
+    <div class="hero-mesh"></div>
+    <div class="hero-grain"></div>
+    <span class="corner tl"></span><span class="corner tr"></span>
+    <span class="corner bl"></span><span class="corner br"></span>
+
+    <div class="wrap hero-inner">
+      <div class="hero-lead">
+        <h1>知道你在哪裡，<br>為你打開下一步</h1>
+        <svg class="squiggle" viewBox="0 0 240 56" aria-hidden="true">
+          <path pathLength="1" d="M3 30 C 26 2, 46 50, 78 26 S 128 2, 152 34 S 196 54, 214 20 S 232 6, 238 26"/>
+        </svg>
+        <p class="en">Intelligence that helps the right support appear at the right moment — for teachers, students, and families.</p>
+        <div class="cta-row">
+          <a class="pill pill-blue" href="#edcity-ai">認識 EdCity.ai</a>
+          <a class="pill pill-ghost" href="#ecosystem">了解生態系統</a>
+        </div>
       </div>
+
+      <aside class="hero-stat" aria-hidden="true">
+        <div class="num">01</div>
+        <div class="vert">每一次登入 · 一個清晰的下一步 &nbsp;·&nbsp; The right support, the right moment</div>
+      </aside>
     </div>
   </section>
 
