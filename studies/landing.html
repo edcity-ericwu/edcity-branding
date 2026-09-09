@@ -524,7 +524,6 @@
     window.addEventListener('keydown', onKey);
     window.addEventListener('wheel', dismiss, { passive:true });
     window.addEventListener('touchmove', dismiss, { passive:true });
-    setTimeout(dismiss, reduce ? 1200 : 4400);
 
     document.getElementById('replayIntro').addEventListener('click', function(){
       dismissed = false;
@@ -537,7 +536,6 @@
       window.addEventListener('keydown', onKey);
       window.addEventListener('wheel', dismiss, { passive:true });
       window.addEventListener('touchmove', dismiss, { passive:true });
-      setTimeout(dismiss, reduce ? 1200 : 4400);
     });
   })();
 </script>

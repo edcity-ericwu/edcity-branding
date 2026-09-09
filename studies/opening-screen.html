@@ -20,7 +20,9 @@
     overflow:hidden;
     background:linear-gradient(158deg, #2B49AE 0%, #1D2E66 52%, #182449 100%);
     isolation:isolate;
+    transition:opacity .8s ease, transform .8s ease;
   }
+  .stage.gone{opacity:0;transform:translateY(-4%);pointer-events:none}
 
   /* ---- gradient mesh: large soft colour fields that drift ---- */
   .mesh{position:absolute;inset:-15%;z-index:0}
@@ -129,6 +131,7 @@
     font-size:clamp(.85rem,2.4vw,1.15rem);
     font-weight:400;
     letter-spacing:.16em;
+    text-indent:.16em;
     color:rgba(251,252,254,.9);
     margin:clamp(20px,4vw,34px) 0 0;
     animation:up 1s ease-out .78s both;
@@ -250,11 +253,35 @@
 <script>
   (function(){
     var stage = document.getElementById('stage');
+    var dismissed = false;
+
+    function dismiss(){
+      if(dismissed) return;
+      dismissed = true;
+      stage.classList.add('gone');
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('wheel', dismiss);
+      window.removeEventListener('touchmove', dismiss);
+    }
+    function onKey(e){
+      if(['Enter',' ','Spacebar','Escape'].indexOf(e.key) !== -1) dismiss();
+    }
+
+    stage.addEventListener('click', function(e){ if(e.target.id !== 'replay') dismiss(); });
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('wheel', dismiss, { passive:true });
+    window.addEventListener('touchmove', dismiss, { passive:true });
+
     document.getElementById('replay').addEventListener('click', function(){
+      dismissed = false;
+      stage.classList.remove('gone');
       stage.classList.remove('go');
       /* force reflow so the animations restart */
       void stage.offsetWidth;
       stage.classList.add('go');
+      window.addEventListener('keydown', onKey);
+      window.addEventListener('wheel', dismiss, { passive:true });
+      window.addEventListener('touchmove', dismiss, { passive:true });
     });
   })();
 </script>
