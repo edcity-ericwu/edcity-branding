@@ -167,52 +167,52 @@ float snoise(vec2 v){
   return 130.0 * dot(m, g);
 }
 
+// low-octave, gentle: big soft regions rather than fine detail
 float fbm(vec2 p){
-  float s = 0.0, a = 0.5;
-  for(int i = 0; i < 5; i++){ s += a * snoise(p); p *= 2.03; a *= 0.5; }
+  float s = 0.0, a = 0.55;
+  for(int i = 0; i < 4; i++){ s += a * snoise(p); p = p * 1.9 + vec2(1.7, -2.3); a *= 0.55; }
   return s;
 }
 
 void main(){
   vec2 p = (v_uv - 0.5);
   p.x *= u_res.x / u_res.y;
-  p += u_pointer * 0.05;
+  p += u_pointer * 0.04;
 
-  float t = u_time * 0.045;
+  float t = u_time * 0.03;
 
-  vec2 q = vec2( fbm(p + vec2(0.0, 0.0) + t),
-                 fbm(p + vec2(5.2, 1.3) - t * 0.8) );
-  vec2 r = vec2( fbm(p + 1.7 * q + vec2(1.7, 9.2) + t * 0.6),
-                 fbm(p + 1.7 * q + vec2(8.3, 2.8) - t * 0.5) );
-  float f = fbm(p + 2.6 * r);
+  // a diagonal blue->warm field whose boundary is warped by low-frequency noise,
+  // so colour moves in large soft masses (not ripples)
+  float w = 0.42 * fbm(p * 0.70 + vec2(0.0, t))
+          + 0.18 * fbm(p * 1.55 + vec2(t * 0.6, -t * 0.4));
+  float grad = dot(p, vec2(0.55, -0.95)) + 0.5 + w;
 
   vec3 cPaper = vec3(0.984, 0.988, 0.996);
-  vec3 cPeri  = vec3(0.431, 0.545, 0.961);
+  vec3 cPeri  = vec3(0.451, 0.565, 0.965);
   vec3 cBlue  = vec3(0.141, 0.314, 0.902);
-  vec3 cDeep  = vec3(0.071, 0.184, 0.478);
+  vec3 cDeep  = vec3(0.063, 0.165, 0.451);
   vec3 cCoral = vec3(1.000, 0.416, 0.239);
-  vec3 cPeach = vec3(1.000, 0.620, 0.478);
+  vec3 cPeach = vec3(1.000, 0.639, 0.494);
 
-  vec3 col = mix(cDeep, cBlue, smoothstep(-0.7, 0.7, f));
-  col = mix(col, cPeri, smoothstep(0.15, 1.0, length(r)) * 0.65);
+  vec3 col = cDeep;
+  col = mix(col, cBlue, smoothstep(-0.15, 0.45, grad));
+  col = mix(col, cPeri, smoothstep(0.25, 0.85, grad) * 0.85);
 
-  float warm = smoothstep(0.35, -0.95, p.y - 0.12);
-  warm *= smoothstep(-0.9, 0.7, p.x + 0.25);
-  warm *= (0.30 + 0.70 * u_progress);
-  warm *= smoothstep(0.05, 0.95, (f * 0.5 + 0.5) + r.x * 0.35);
-  warm = clamp(warm, 0.0, 1.0);
-  col = mix(col, cCoral, warm * 0.88);
-  col = mix(col, cPeach, clamp(warm - 0.4, 0.0, 1.0) * 0.55);
+  float warm = smoothstep(0.60, 1.15, grad) * (0.35 + 0.65 * u_progress);
+  col = mix(col, cCoral, clamp(warm, 0.0, 1.0));
+  col = mix(col, cPeach, smoothstep(0.95, 1.5, grad) * 0.55 * u_progress);
 
-  col = mix(col, cPaper, smoothstep(0.8, 1.25, f + 0.35 * q.x) * 0.55);
+  // very-low-frequency luminous pockets
+  float glow = fbm(p * 0.9 + vec2(-2.0, 1.0 + t * 0.5));
+  col = mix(col, cPaper, smoothstep(0.55, 1.05, glow) * 0.22);
 
-  float vig = smoothstep(1.35, 0.35, length((v_uv - 0.5) * vec2(1.12, 1.0)));
-  col *= mix(0.7, 1.0, vig);
+  float vig = smoothstep(1.40, 0.40, length((v_uv - 0.5) * vec2(1.1, 1.0)));
+  col *= mix(0.74, 1.0, vig);
 
-  float g = fract(sin(dot(gl_FragCoord.xy + t * 43.0, vec2(12.9898, 78.233))) * 43758.5453);
-  col += (g - 0.5) * 0.055;
+  float g = fract(sin(dot(gl_FragCoord.xy + t * 37.0, vec2(12.9898, 78.233))) * 43758.5453);
+  col += (g - 0.5) * 0.045;
 
-  col = mix(vec3(0.05, 0.065, 0.13), col, clamp(u_progress * 1.12, 0.0, 1.0));
+  col = mix(vec3(0.045, 0.06, 0.12), col, clamp(u_progress * 1.12, 0.0, 1.0));
 
   gl_FragColor = vec4(col, 1.0);
 }
