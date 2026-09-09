@@ -15,6 +15,7 @@ The direction combines three propositions into one system with a layered job spl
 | `palette-study.html` | **Option A — "Slate, Earth & First Light."** Warm take: slate-blue structure, greyed earth fabric, burnt-orange spark. Includes the Spark & Light gradient rules. |
 | `palette-study-cool.html` | **Option B — "Clear Field, Bright Signal."** Cooler take after Sana Labs: bright-blue backbone on near-white, cool neutrals, a coral signal, light gradients mixed from the scale. |
 | `parent-update-three-ways.html` | Structural comparison of one product moment (a parent progress update) built three ways, to test whether the directions are distinguishable beyond a palette swap. |
+| `opening-screen.html` | Animated opening screen — a grainy blue-to-coral gradient mesh that rises like a sunrise on load, carrying the wordmark and tagline. Built on the Option B scale. |
 
 Each file is a self-contained HTML page. Open directly in a browser.
 
