@@ -14,6 +14,9 @@ The direction combines three propositions into one system with a layered job spl
 | --- | --- |
 | `palette-study.html` | **Option A — "Slate, Earth & First Light."** Warm take: slate-blue structure, greyed earth fabric, burnt-orange spark. Includes the Spark & Light gradient rules. |
 | `palette-study-cool.html` | **Option B — "Clear Field, Bright Signal."** Cooler take after Sana Labs: bright-blue backbone on near-white, cool neutrals, a coral signal, light gradients mixed from the scale. |
+| `palette-study-vivid.html` | **Option C — "Bright Field, Two Points."** A vivid electric palette adapted down: sky-blue backbone, pale cyan/peach/pink field, two small signal points (pink = opportunity, green = done). Higher energy, less grounded, front-of-house. |
+| `spark-vasarely.html` | Cheap Canvas-2D spark exploration — a Vasarely dot grid; a warm core radiates outward through a cool blue field on load. |
+| `spark-orbs.html` | Cheap Canvas-2D spark exploration — translucent blue orbs lit from behind by a warm core that grows in. |
 | `parent-update-three-ways.html` | Structural comparison of one product moment (a parent progress update) built three ways, to test whether the directions are distinguishable beyond a palette swap. |
 | `opening-screen.html` | Animated opening screen — a grainy blue-to-coral gradient mesh (CSS radial blobs) that rises like a sunrise on load, carrying the wordmark and tagline. Built on the Option B scale. |
 | `opening-screen-v2.html` | The same idea with a WebGL fragment shader — domain-warped fractal noise across the palette, in-shader film grain, pointer parallax, a `progress` uniform driving the sunrise reveal. CSS-gradient + reduced-motion fallbacks. |

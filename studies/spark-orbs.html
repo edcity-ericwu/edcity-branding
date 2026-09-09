@@ -1,0 +1,189 @@
+<title>Spark Study — Orb Cluster</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&display=swap">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:#080C1C;overflow:hidden;font-family:"Archivo",system-ui,sans-serif;color:#EEF2FF}
+  .stage{position:relative;width:100%;height:100vh;height:100dvh;overflow:hidden;
+    transition:opacity .8s ease, transform .8s ease}
+  .stage.gone{opacity:0;transform:translateY(-3%);pointer-events:none}
+  #c{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .cap{position:absolute;left:clamp(16px,4vw,34px);bottom:clamp(16px,4vw,30px);z-index:2;
+    font-size:.6rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:rgba(238,242,255,.45)}
+  .hint{position:absolute;left:0;right:0;bottom:clamp(28px,7vh,58px);z-index:2;text-align:center;
+    font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(238,242,255,.4)}
+  .replay{position:absolute;right:clamp(16px,4vw,30px);bottom:clamp(16px,4vw,30px);z-index:3;
+    background:rgba(238,242,255,.08);border:1px solid rgba(238,242,255,.18);color:rgba(238,242,255,.8);
+    font:600 .66rem/1 "Archivo",sans-serif;letter-spacing:.06em;padding:8px 13px;border-radius:999px;cursor:pointer}
+  .replay:hover{border-color:rgba(238,242,255,.4)}
+</style>
+
+<div class="stage" id="stage">
+  <canvas id="c"></canvas>
+  <div class="cap">Spark study · Orb cluster</div>
+  <p class="hint">點擊進入 · Click anywhere</p>
+  <button class="replay" id="replay" type="button">▸ Replay</button>
+</div>
+
+<script>
+(function(){
+  var stage = document.getElementById('stage');
+  var cv = document.getElementById('c');
+  var x = cv.getContext('2d');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DPR = Math.min(devicePixelRatio || 1, 1.5);
+  var W = 0, H = 0, U = 0, raf = 0, start = 0, running = false;
+  var ptr = {x:0,y:0}, ptrT = {x:0,y:0};
+  var orbs = [];
+
+  function mix(a, b, t){ t = Math.max(0, Math.min(1, t));
+    return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
+  function rgba(c, a){ return 'rgba(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ',' + a + ')'; }
+
+  function build(){
+    orbs = [];
+    var cols = 6, rows = 5;
+    for(var iy=-1; iy<rows+1; iy++){
+      for(var ix=-1; ix<cols+1; ix++){
+        var jx = (Math.random()-0.5) * 0.7;
+        var jy = (Math.random()-0.5) * 0.7;
+        orbs.push({
+          bx: (ix + 0.5)/cols + jx/cols,
+          by: (iy + 0.5)/rows + jy/rows,
+          r:  0.15 + Math.random()*0.10,          // fraction of min(W,H)
+          depth: 0.3 + Math.random()*0.9,
+          s1: 0.12 + Math.random()*0.28, p1: Math.random()*6.28,
+          s2: 0.12 + Math.random()*0.28, p2: Math.random()*6.28,
+          a:  0.82 + Math.random()*0.14
+        });
+      }
+    }
+    orbs.sort(function(a,b){ return a.depth - b.depth; });   // far first
+  }
+
+  var grain = document.createElement('canvas');
+  grain.width = grain.height = 128;
+  (function(){
+    var g = grain.getContext('2d'), d = g.createImageData(128,128);
+    for(var i=0;i<d.data.length;i+=4){ var v=(Math.random()*255)|0; d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=255; }
+    g.putImageData(d,0,0);
+  })();
+  var grainPat = null;
+
+  function resize(){
+    W = cv.width  = Math.round(stage.clientWidth  * DPR);
+    H = cv.height = Math.round(stage.clientHeight * DPR);
+    U = Math.min(W, H);
+    grainPat = x.createPattern(grain, 'repeat');
+  }
+
+  function draw(now){
+    var elapsed = (now - start) / 1000;
+    var prog = reduce ? 1 : Math.min(elapsed / 2.2, 1);
+    prog = prog*prog*(3-2*prog);
+    ptr.x += (ptrT.x - ptr.x) * 0.045;
+    ptr.y += (ptrT.y - ptr.y) * 0.045;
+    var breath = reduce ? 1 : (1 + 0.06 * Math.sin(elapsed * 0.7));
+
+    // deep navy ground
+    x.fillStyle = '#080C1C';
+    x.fillRect(0, 0, W, H);
+
+    // warm core glow behind everything — grows in, then breathes
+    var gx = W*0.5, gy = H*0.56;
+    var gr = U * (0.10 + 0.42 * prog) * breath;
+    var glow = x.createRadialGradient(gx, gy, 0, gx, gy, gr);
+    glow.addColorStop(0,   'rgba(255, 176, 108, ' + (0.95*prog) + ')');
+    glow.addColorStop(0.4, 'rgba(255, 138, 92, '  + (0.55*prog) + ')');
+    glow.addColorStop(1,   'rgba(255, 120, 80, 0)');
+    x.fillStyle = glow;
+    x.fillRect(0, 0, W, H);
+
+    // spheres — near-opaque shaded balls; navy ground shows in the gaps
+    for(var i=0;i<orbs.length;i++){
+      var o = orbs[i];
+      var driftX = reduce ? 0 : Math.sin(elapsed*o.s1 + o.p1) * 0.016;
+      var driftY = reduce ? 0 : Math.cos(elapsed*o.s2 + o.p2) * 0.016;
+      var px = (o.bx + driftX) * W + ptr.x * o.depth * U * 0.03;
+      var py = (o.by + driftY) * H + ptr.y * o.depth * U * 0.03;
+      var r  = o.r * U;
+
+      var dc  = Math.hypot(px - gx, py - gy) / U;
+      var lit = Math.max(0, 1 - dc / 0.40) * prog;      // 0..1 warmth from the core
+
+      // hi / mid / rim, lerped blue -> warm by lit
+      var hi  = mix([150,180,255], [255,214,168], lit);
+      var mid = mix([ 74,108,232], [255,168,120], lit);
+      var rim = mix([ 34, 52,140], [196, 96, 70], lit);
+
+      var body = x.createRadialGradient(px - r*0.32, py - r*0.36, r*0.08, px, py, r);
+      body.addColorStop(0,    rgba(hi,  o.a));
+      body.addColorStop(0.55, rgba(mid, o.a));
+      body.addColorStop(0.9,  rgba(rim, o.a));
+      body.addColorStop(1,    rgba(rim, o.a * 0.35));
+      x.fillStyle = body;
+      x.beginPath(); x.arc(px, py, r, 0, Math.PI*2); x.fill();
+
+      // inner glow for the core-lit ones
+      if(lit > 0.04){
+        x.globalCompositeOperation = 'lighter';
+        var w = x.createRadialGradient(px, py, 0, px, py, r*0.9);
+        w.addColorStop(0,   'rgba(255, 210, 158, ' + (0.5*lit) + ')');
+        w.addColorStop(0.7, 'rgba(255, 176, 120, ' + (0.14*lit) + ')');
+        w.addColorStop(1,   'rgba(255, 176, 120, 0)');
+        x.fillStyle = w;
+        x.beginPath(); x.arc(px, py, r*0.9, 0, Math.PI*2); x.fill();
+        x.globalCompositeOperation = 'source-over';
+      }
+    }
+
+    // grain
+    x.globalAlpha = 0.08;
+    x.globalCompositeOperation = 'overlay';
+    x.fillStyle = grainPat;
+    x.fillRect(0, 0, W, H);
+    x.globalAlpha = 1;
+    x.globalCompositeOperation = 'source-over';
+
+    // vignette
+    var vg = x.createRadialGradient(W/2, H/2, U*0.25, W/2, H/2, U*0.85);
+    vg.addColorStop(0, 'rgba(8,12,28,0)');
+    vg.addColorStop(1, 'rgba(8,12,28,0.6)');
+    x.fillStyle = vg;
+    x.fillRect(0, 0, W, H);
+
+    if(running) raf = requestAnimationFrame(draw);
+  }
+
+  function run(){
+    start = performance.now();
+    if(reduce){ draw(start); return; }
+    running = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(draw);
+  }
+
+  build(); resize(); run();
+  window.addEventListener('resize', function(){ resize(); if(reduce) draw(performance.now()); });
+  window.addEventListener('mousemove', function(e){
+    ptrT.x = (e.clientX / stage.clientWidth  - 0.5) * 2;
+    ptrT.y = (e.clientY / stage.clientHeight - 0.5) * 2;
+  });
+
+  var dismissed = false;
+  function dismiss(){
+    if(dismissed) return; dismissed = true;
+    stage.classList.add('gone'); running = false; cancelAnimationFrame(raf);
+    window.removeEventListener('keydown', onKey);
+    window.removeEventListener('wheel', dismiss);
+  }
+  function onKey(e){ if(['Enter',' ','Escape'].indexOf(e.key) !== -1) dismiss(); }
+  stage.addEventListener('click', function(e){ if(e.target.id !== 'replay') dismiss(); });
+  window.addEventListener('keydown', onKey);
+  window.addEventListener('wheel', dismiss, { passive:true });
+
+  document.getElementById('replay').addEventListener('click', function(){
+    dismissed = false; stage.classList.remove('gone'); build(); run();
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('wheel', dismiss, { passive:true });
+  });
+})();
+</script>

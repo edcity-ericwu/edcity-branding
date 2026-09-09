@@ -1,0 +1,191 @@
+<title>Spark Study — Vasarely Grid</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&display=swap">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:#05070F;overflow:hidden;font-family:"Archivo",system-ui,sans-serif;color:#EEF2FF}
+  .stage{position:relative;width:100%;height:100vh;height:100dvh;overflow:hidden;
+    transition:opacity .8s ease, transform .8s ease}
+  .stage.gone{opacity:0;transform:translateY(-3%);pointer-events:none}
+  #c{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .cap{position:absolute;left:clamp(16px,4vw,34px);bottom:clamp(16px,4vw,30px);z-index:2;
+    font-size:.6rem;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:rgba(238,242,255,.45)}
+  .hint{position:absolute;left:0;right:0;bottom:clamp(28px,7vh,58px);z-index:2;text-align:center;
+    font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:rgba(238,242,255,.4)}
+  .replay{position:absolute;right:clamp(16px,4vw,30px);bottom:clamp(16px,4vw,30px);z-index:3;
+    background:rgba(238,242,255,.08);border:1px solid rgba(238,242,255,.18);color:rgba(238,242,255,.8);
+    font:600 .66rem/1 "Archivo",sans-serif;letter-spacing:.06em;padding:8px 13px;border-radius:999px;cursor:pointer}
+  .replay:hover{border-color:rgba(238,242,255,.4)}
+</style>
+
+<div class="stage" id="stage">
+  <canvas id="c"></canvas>
+  <div class="cap">Spark study · Vasarely grid</div>
+  <p class="hint">點擊進入 · Click anywhere</p>
+  <button class="replay" id="replay" type="button">▸ Replay</button>
+</div>
+
+<script>
+(function(){
+  var stage = document.getElementById('stage');
+  var cv = document.getElementById('c');
+  var x = cv.getContext('2d');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DPR = Math.min(devicePixelRatio || 1, 1.5);
+  var W = 0, H = 0, S = 0, raf = 0, start = 0, running = false;
+  var ptr = {x:0,y:0}, ptrT = {x:0,y:0};
+  var GRID = 21;                      // cells per axis
+  var REST_CORE = 0.34;               // resting warm-core radius (0..~0.7)
+
+  // cool -> warm palette stops (t: 0 outer .. 1 core)
+  var STOPS = [
+    [0.00, [22, 42, 120]],
+    [0.42, [86, 146, 255]],
+    [0.66, [150, 205, 245]],
+    [0.82, [255, 190, 130]],
+    [1.00, [255, 110, 60]]
+  ];
+  function ramp(t){
+    t = Math.max(0, Math.min(1, t));
+    for(var i=1;i<STOPS.length;i++){
+      if(t <= STOPS[i][0]){
+        var a = STOPS[i-1], b = STOPS[i];
+        var k = (t - a[0]) / (b[0] - a[0]);
+        return [
+          a[1][0] + (b[1][0]-a[1][0])*k,
+          a[1][1] + (b[1][1]-a[1][1])*k,
+          a[1][2] + (b[1][2]-a[1][2])*k
+        ];
+      }
+    }
+    return STOPS[STOPS.length-1][1];
+  }
+
+  // one grain tile, reused
+  var grain = document.createElement('canvas');
+  grain.width = grain.height = 128;
+  (function(){
+    var g = grain.getContext('2d'), d = g.createImageData(128,128);
+    for(var i=0;i<d.data.length;i+=4){
+      var v = (Math.random()*255)|0;
+      d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=255;
+    }
+    g.putImageData(d,0,0);
+  })();
+  var grainPat = null;
+
+  function resize(){
+    W = cv.width  = Math.round(stage.clientWidth  * DPR);
+    H = cv.height = Math.round(stage.clientHeight * DPR);
+    S = Math.min(W, H) * 0.92;         // sphere region size
+    grainPat = x.createPattern(grain, 'repeat');
+  }
+
+  function draw(now){
+    var elapsed = (now - start) / 1000;
+    var prog = reduce ? 1 : Math.min(elapsed / 2.6, 1);
+    prog = prog*prog*(3-2*prog);
+    var core = REST_CORE * prog;
+    var ang  = reduce ? 0 : elapsed * 0.06;
+    ptr.x += (ptrT.x - ptr.x) * 0.05;
+    ptr.y += (ptrT.y - ptr.y) * 0.05;
+
+    x.fillStyle = '#05070F';
+    x.fillRect(0, 0, W, H);
+
+    var cx = W/2 + ptr.x * S * 0.05;
+    var cy = H/2 + ptr.y * S * 0.05;
+    var step = S / GRID;
+    var ca = Math.cos(ang), sa = Math.sin(ang);
+    var breath = reduce ? 1 : (1 + 0.03 * Math.sin(elapsed * 0.9));
+
+    var cells = [];
+    for(var iy=0; iy<GRID; iy++){
+      for(var ix=0; ix<GRID; ix++){
+        var gx = (ix - (GRID-1)/2) / ((GRID-1)/2);   // -1..1
+        var gy = (iy - (GRID-1)/2) / ((GRID-1)/2);
+        var rx = gx*ca - gy*sa;
+        var ry = gx*sa + gy*ca;
+        var d  = Math.sqrt(rx*rx + ry*ry);
+        if(d > 1.18) continue;
+        // bulge: spread cells outward near centre so it reads as a sphere
+        var lens = 1 + 0.30 * (1 - Math.min(d,1)) * (1 - Math.min(d,1));
+        var px = cx + rx * step * (GRID/2) * lens * breath;
+        var py = cy + ry * step * (GRID/2) * lens * breath;
+        var t  = 1 - Math.min(d / 1.05, 1);                 // 0 outer .. 1 core
+        var rad = step * (0.30 + 0.62 * t) * breath;        // bigger toward centre
+        var warm = smooth(core + 0.12, core - 0.12, d);     // wavefront
+        cells.push({px:px, py:py, r:rad, t:t, warm:warm, d:d});
+      }
+    }
+    cells.sort(function(a,b){ return b.d - a.d; });          // centre drawn last
+
+    for(var k=0;k<cells.length;k++){
+      var c = cells[k];
+      var base = ramp(Math.max(c.t, c.warm * 0.9 + c.t * 0.1));
+      var lr = base[0]*1.35 + 30, lg = base[1]*1.35 + 30, lb = base[2]*1.35 + 30;
+      var dr = base[0]*0.55,      dg = base[1]*0.55,      db = base[2]*0.55;
+      var grd = x.createRadialGradient(
+        c.px - c.r*0.32, c.py - c.r*0.32, c.r*0.1,
+        c.px, c.py, c.r*1.05);
+      grd.addColorStop(0, 'rgb('+cl(lr)+','+cl(lg)+','+cl(lb)+')');
+      grd.addColorStop(0.55, 'rgb('+cl(base[0])+','+cl(base[1])+','+cl(base[2])+')');
+      grd.addColorStop(1, 'rgb('+cl(dr)+','+cl(dg)+','+cl(db)+')');
+      x.fillStyle = grd;
+      x.beginPath();
+      x.arc(c.px, c.py, c.r, 0, Math.PI*2);
+      x.fill();
+    }
+
+    // grain
+    x.globalAlpha = 0.07;
+    x.globalCompositeOperation = 'overlay';
+    x.fillStyle = grainPat;
+    x.fillRect(0, 0, W, H);
+    x.globalAlpha = 1;
+    x.globalCompositeOperation = 'source-over';
+
+    // vignette
+    var vg = x.createRadialGradient(W/2, H/2, S*0.2, W/2, H/2, S*0.95);
+    vg.addColorStop(0, 'rgba(5,7,15,0)');
+    vg.addColorStop(1, 'rgba(5,7,15,0.55)');
+    x.fillStyle = vg;
+    x.fillRect(0, 0, W, H);
+
+    if(running) raf = requestAnimationFrame(draw);
+  }
+  function smooth(a, b, e){ var t = Math.max(0, Math.min(1, (e-a)/(b-a))); return t*t*(3-2*t); }
+  function cl(v){ return Math.max(0, Math.min(255, v|0)); }
+
+  function run(){
+    start = performance.now();
+    if(reduce){ draw(start); return; }
+    running = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(draw);
+  }
+
+  resize(); run();
+  window.addEventListener('resize', function(){ resize(); if(reduce) draw(performance.now()); });
+  window.addEventListener('mousemove', function(e){
+    ptrT.x = (e.clientX / stage.clientWidth  - 0.5) * 2;
+    ptrT.y = (e.clientY / stage.clientHeight - 0.5) * 2;
+  });
+
+  var dismissed = false;
+  function dismiss(){
+    if(dismissed) return; dismissed = true;
+    stage.classList.add('gone'); running = false; cancelAnimationFrame(raf);
+    window.removeEventListener('keydown', onKey);
+    window.removeEventListener('wheel', dismiss);
+  }
+  function onKey(e){ if(['Enter',' ','Escape'].indexOf(e.key) !== -1) dismiss(); }
+  stage.addEventListener('click', function(e){ if(e.target.id !== 'replay') dismiss(); });
+  window.addEventListener('keydown', onKey);
+  window.addEventListener('wheel', dismiss, { passive:true });
+
+  document.getElementById('replay').addEventListener('click', function(){
+    dismissed = false; stage.classList.remove('gone'); run();
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('wheel', dismiss, { passive:true });
+  });
+})();
+</script>
