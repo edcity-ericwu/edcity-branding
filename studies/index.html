@@ -11,44 +11,50 @@
   :root{
     color-scheme:light dark;
     --paper:#F5F7FF; --card:#FFFFFF; --ink:#0A0E1A; --ink-2:#454E6B; --ink-3:#7C879F;
-    --line:#E1E7F7; --blue:#5692FF; --blue-ink:#2C63D6; --pink:#F35BEC; --green:#12E27E;
+    --line:#E1E7F7; --blue-ink:#2C63D6;
+    --a:#B5623C; --b:#2C63D6; --c:#B32BA8;
     --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
     --han:"Noto Sans TC", var(--sans); --mono:"IBM Plex Mono", ui-monospace, monospace;
   }
   @media (prefers-color-scheme:dark){
-    :root{--paper:#0A0E1A;--card:#141A2C;--ink:#E9ECF7;--ink-2:#A9B0C9;--ink-3:#79839F;--line:#252D42;--blue:#6E9BF7;--blue-ink:#8FB0FA}
+    :root{--paper:#0A0E1A;--card:#141A2C;--ink:#E9ECF7;--ink-2:#A9B0C9;--ink-3:#79839F;--line:#252D42;--blue-ink:#8FB0FA;
+      --a:#D98E63;--b:#8FB0FA;--c:#E486DC}
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--han);line-height:1.6;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:860px;margin:0 auto;padding:clamp(32px,7vw,72px) clamp(20px,5vw,36px) 80px}
+  .wrap{max-width:880px;margin:0 auto;padding:clamp(32px,7vw,72px) clamp(20px,5vw,36px) 90px}
 
   .eyebrow{font-family:var(--sans);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--blue-ink);margin:0 0 12px}
-  h1{font-family:var(--sans);font-weight:700;font-size:clamp(1.9rem,5vw,2.9rem);letter-spacing:-.02em;margin:0 0 12px}
-  .lede{color:var(--ink-2);margin:0 0 8px;max-width:60ch}
-  .repo{font-family:var(--mono);font-size:.82rem;color:var(--ink-3);margin:0 0 44px}
+  h1{font-family:var(--sans);font-weight:700;font-size:clamp(1.9rem,5vw,2.9rem);letter-spacing:-.02em;margin:0 0 14px}
+  .lede{color:var(--ink-2);margin:0 0 6px;max-width:62ch}
+  .repo{font-family:var(--mono);font-size:.82rem;color:var(--ink-3);margin:0 0 8px}
   .repo a{color:var(--blue-ink)}
 
-  h2{font-family:var(--sans);font-size:.78rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;
-     color:var(--ink-3);margin:40px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .opt{margin-top:52px}
+  .opt-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-bottom:12px;border-bottom:2px solid var(--oc,var(--line))}
+  .opt-head .k{font-family:var(--mono);font-size:.78rem;font-weight:500;color:var(--oc);letter-spacing:.06em}
+  .opt-head .nm{font-family:var(--sans);font-weight:700;font-size:1.15rem;letter-spacing:-.01em}
+  .opt-head .mood{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-left:auto}
+  .opt.a{--oc:var(--a)} .opt.b{--oc:var(--b)} .opt.c{--oc:var(--c)}
 
-  .list{display:flex;flex-direction:column;gap:10px}
+  .list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
   a.item{
     display:flex;align-items:baseline;gap:14px;text-decoration:none;color:inherit;
     background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 18px;
     transition:border-color .14s, transform .14s;
   }
-  a.item:hover{border-color:var(--blue);transform:translateX(2px)}
+  a.item:hover{border-color:var(--oc,var(--blue-ink));transform:translateX(2px)}
   a.item .nm{font-family:var(--sans);font-weight:600;font-size:.98rem;flex-shrink:0}
   a.item .ds{color:var(--ink-2);font-size:.9rem;flex:1;min-width:0}
   a.item .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--ink-3);
     border:1px solid var(--line);border-radius:999px;padding:2px 8px;flex-shrink:0;align-self:center}
-  a.item.o-a .tag{color:#B5623C;border-color:#E4CBBB}
-  a.item.o-b .tag{color:#2C63D6;border-color:#C7D6FA}
-  a.item.o-c .tag{color:#B32BA8;border-color:#F1C3EE}
 
-  .note{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin-top:10px}
+  h2{font-family:var(--sans);font-size:.78rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;
+     color:var(--ink-3);margin:56px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+
+  .note{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin-top:14px}
   .note a{color:var(--blue-ink)}
-  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.76rem;color:var(--ink-3)}
+  footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.76rem;color:var(--ink-3)}
 </style>
 </head>
 <body>
@@ -56,33 +62,74 @@
 
   <p class="eyebrow">EdCity · Branding</p>
   <h1>Design Studies</h1>
-  <p class="lede">Working explorations for the EdCity visual direction. Each page is self-contained &mdash; open it directly.</p>
+  <p class="lede">One unified direction with a layered job split &mdash; calm structure, human craft, curious intelligence. Three palette takes on it, each paired with a layout study that expresses it and a content load-in modelled on a reference site.</p>
   <p class="repo"><a href="https://github.com/edcity-ericwu/edcity-branding">github.com/edcity-ericwu/edcity-branding</a></p>
 
-  <h2>Palette options</h2>
-  <div class="list">
-    <a class="item o-a" href="palette-study.html">
+  <section class="opt a">
+    <div class="opt-head">
+      <span class="k">Option A</span>
       <span class="nm">Slate, Earth &amp; First Light</span>
-      <span class="ds">Warm take &mdash; slate-blue structure, greyed earth fabric, burnt-orange spark.</span>
-      <span class="tag">Option A</span>
-    </a>
-    <a class="item o-b" href="palette-study-cool.html">
-      <span class="nm">Clear Field, Bright Signal</span>
-      <span class="ds">Cool take after Sana &mdash; bright-blue backbone on near-white, one coral signal.</span>
-      <span class="tag">Option B</span>
-    </a>
-    <a class="item o-c" href="palette-study-vivid.html">
-      <span class="nm">Bright Field, Two Points</span>
-      <span class="ds">Vivid electric palette adapted down &mdash; sky-blue backbone, pink &amp; green points.</span>
-      <span class="tag">Option C</span>
-    </a>
-  </div>
+      <span class="mood">warm · grounded · editorial</span>
+    </div>
+    <div class="list">
+      <a class="item" href="palette-study.html">
+        <span class="nm">Palette</span>
+        <span class="ds">Slate-blue structure, greyed earth fabric, a burnt-orange spark. Includes the Spark &amp; Light gradient rules.</span>
+        <span class="tag">colour</span>
+      </a>
+      <a class="item" href="studio-study.html">
+        <span class="nm">Layout</span>
+        <span class="ds">Quarterre editorial language &mdash; warm cream, huge grotesque headline, serif body, sage rail, rotating badge. Colour-cycling menu; firm rising load-in.</span>
+        <span class="tag">quarterre.com</span>
+      </a>
+    </div>
+  </section>
 
-  <h2>Opening screens</h2>
+  <section class="opt b">
+    <div class="opt-head">
+      <span class="k">Option B</span>
+      <span class="nm">Clear Field, Bright Signal</span>
+      <span class="mood">cool · bright · precise</span>
+    </div>
+    <div class="list">
+      <a class="item" href="palette-study-cool.html">
+        <span class="nm">Palette</span>
+        <span class="ds">Bright-blue backbone on near-white, cool neutrals, one coral signal, light gradients mixed from the scale.</span>
+        <span class="tag">colour</span>
+      </a>
+      <a class="item" href="landing.html">
+        <span class="nm">Layout</span>
+        <span class="ds">Sana-style structure &mdash; grainy mesh hero, product sections, testimonial. Prefaced by the dawn opening. Colour-cycling menu; quick clean load-in.</span>
+        <span class="tag">sanalabs.com</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="opt c">
+    <div class="opt-head">
+      <span class="k">Option C</span>
+      <span class="nm">Bright Field, Two Points</span>
+      <span class="mood">vivid · playful · front-of-house</span>
+    </div>
+    <div class="list">
+      <a class="item" href="palette-study-vivid.html">
+        <span class="nm">Palette</span>
+        <span class="ds">Vivid electric palette adapted down &mdash; sky-blue backbone, pale cyan/peach/pink field, two signal points (pink = opportunity, green = done).</span>
+        <span class="tag">colour</span>
+      </a>
+      <a class="item" href="home-study.html">
+        <span class="nm">Layout</span>
+        <span class="ds">amita-oshiete.jp container language &mdash; asymmetric panels, folder tabs, blueprint overlays, grain. Colour-cycling menu; springy pop load-in.</span>
+        <span class="tag">amita-oshiete.jp</span>
+      </a>
+    </div>
+  </section>
+
+  <h2>Shared explorations</h2>
   <div class="list">
     <a class="item" href="opening-screen.html">
       <span class="nm">Dawn opening</span>
-      <span class="ds">Grainy blue-to-coral gradient mesh (CSS blobs) that rises like a sunrise on load.</span>
+      <span class="ds">Grainy blue-to-coral gradient mesh (CSS blobs) that rises like a sunrise on load. Option B scale.</span>
       <span class="tag">CSS</span>
     </a>
     <a class="item" href="opening-screen-v2.html">
@@ -90,43 +137,20 @@
       <span class="ds">WebGL fragment shader &mdash; domain-warped noise, in-shader grain, edge frame.</span>
       <span class="tag">WebGL</span>
     </a>
-  </div>
-
-  <h2>Layouts</h2>
-  <div class="list">
-    <a class="item" href="landing.html">
-      <span class="nm">Landing study</span>
-      <span class="ds">Sana-style structure &mdash; grainy mesh hero, product sections, testimonial &mdash; on Option B. Colour-cycling menu; quick clean load-in.</span>
-      <span class="tag">Option B</span>
+    <a class="item" href="spark-vasarely.html">
+      <span class="nm">Spark &mdash; Vasarely grid</span>
+      <span class="ds">Canvas-2D sketch &mdash; a dot grid where a warm core radiates out through a cool blue field.</span>
+      <span class="tag">sketch</span>
     </a>
-    <a class="item o-a" href="studio-study.html">
-      <span class="nm">Studio study</span>
-      <span class="ds">Quarterre editorial language &mdash; warm cream, huge grotesque headline, serif body, sage rail, rotating badge. Colour-cycling menu; firm rising load-in.</span>
-      <span class="tag">Option A</span>
-    </a>
-    <a class="item" href="home-study.html">
-      <span class="nm">Home study</span>
-      <span class="ds">amita-oshiete.jp container language &mdash; asymmetric panels, folder tabs, blueprint overlays &mdash; on Option C. Colour-cycling menu; springy pop load-in.</span>
-      <span class="tag">Option C</span>
+    <a class="item" href="spark-orbs.html">
+      <span class="nm">Spark &mdash; orb cluster</span>
+      <span class="ds">Canvas-2D sketch &mdash; translucent blue orbs lit from behind by a warm core that grows in.</span>
+      <span class="tag">sketch</span>
     </a>
     <a class="item" href="parent-update-three-ways.html">
       <span class="nm">Parent update, three ways</span>
       <span class="ds">One product moment built three ways, to test whether the directions read as distinct.</span>
       <span class="tag">test</span>
-    </a>
-  </div>
-
-  <h2>Spark sketches</h2>
-  <div class="list">
-    <a class="item" href="spark-vasarely.html">
-      <span class="nm">Vasarely grid</span>
-      <span class="ds">Canvas-2D &mdash; a dot grid where a warm core radiates out through a cool blue field.</span>
-      <span class="tag">sketch</span>
-    </a>
-    <a class="item" href="spark-orbs.html">
-      <span class="nm">Orb cluster</span>
-      <span class="ds">Canvas-2D &mdash; translucent blue orbs lit from behind by a warm core that grows in.</span>
-      <span class="tag">sketch</span>
     </a>
   </div>
 

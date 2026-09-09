@@ -8,6 +8,14 @@ The direction combines three propositions into one system with a layered job spl
 - **Human Craft** — tone and texture (type, photography, voice — not palette)
 - **Curious Intelligence** — the highlight moment (a signal + light where an opportunity opens)
 
+**The three options pair up:** each palette take has a layout study that expresses it and a load-in motion modelled on a reference site.
+
+| Option | Palette | Layout | Reference |
+| --- | --- | --- | --- |
+| A · Slate, Earth & First Light | `palette-study.html` | `studio-study.html` | quarterre.com |
+| B · Clear Field, Bright Signal | `palette-study-cool.html` | `landing.html` | sanalabs.com |
+| C · Bright Field, Two Points | `palette-study-vivid.html` | `home-study.html` | amita-oshiete.jp |
+
 ## studies/
 
 | File | What it is |
