@@ -38,18 +38,63 @@
 
   /* left rail */
   .rail{
-    position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:20;
+    position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:40;
     background:var(--sage);color:var(--sage-deep);
-    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-    padding:18px 0;
   }
+  .nav-toggle{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    width:100%;height:100%;padding:18px 0;
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    color:inherit;
+  }
+  .nav-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:-4px}
   .rail .dots{display:grid;grid-template-columns:1fr 1fr;gap:5px}
-  .rail .dots i{width:6px;height:6px;border-radius:50%;background:var(--sage-deep)}
+  .rail .dots i{width:6px;height:6px;border-radius:50%;background:currentColor;transition:transform .3s}
+  .nav-open .rail .dots i:nth-child(1){transform:translate(3px,3px)}
+  .nav-open .rail .dots i:nth-child(4){transform:translate(-3px,-3px)}
   .rail .menu{
     writing-mode:vertical-rl;font-family:var(--sans);font-weight:600;font-size:.66rem;
     letter-spacing:.28em;text-transform:uppercase;
   }
   .rail .tick{width:1px;height:34px;background:currentColor;opacity:.5}
+
+  /* full-screen menu — takes a rotating brand colour each time it opens */
+  .site-nav{
+    position:fixed;left:var(--rail);top:0;right:0;bottom:0;z-index:35;
+    background:var(--nav-c,var(--sage));color:var(--nav-ink,var(--ink));
+    transform:translateX(-103%);
+    transition:transform .55s cubic-bezier(.15,.85,.45,1), background-color .3s ease;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(28px,7vw,84px) clamp(28px,7vw,84px) clamp(78px,14vh,120px);
+  }
+  .site-nav.open{transform:none}
+  .site-nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.06em}
+  .site-nav a{
+    font-family:var(--sans);font-weight:700;letter-spacing:-.025em;
+    font-size:clamp(2rem,7vw,4.6rem);line-height:1.08;
+    display:inline-flex;align-items:baseline;gap:.28em;
+  }
+  .site-nav a .u{
+    background-image:linear-gradient(currentColor,currentColor);
+    background-size:0 3px;background-repeat:no-repeat;background-position:0 92%;
+    transition:background-size .28s ease;
+  }
+  .site-nav a:hover .u,.site-nav a:focus-visible .u{background-size:100% 3px}
+  .site-nav a .sl{font-weight:400;color:var(--sl,currentColor)}
+  .site-nav .meta{
+    position:absolute;left:clamp(28px,7vw,84px);bottom:clamp(24px,5vh,52px);
+    font-family:var(--mono);font-size:.78rem;opacity:.75;letter-spacing:.02em;
+  }
+  .site-nav .close{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    position:absolute;top:clamp(20px,4vw,40px);right:clamp(20px,4vw,40px);
+    font-family:var(--mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
+    padding:8px 12px;border:1px solid currentColor;border-radius:999px;
+  }
+  @media (prefers-reduced-motion:reduce){
+    .site-nav{transition:background-color .2s ease}
+    .site-nav a .u{transition:none}
+  }
 
   .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
 
@@ -142,10 +187,24 @@
 </svg>
 
 <nav class="rail">
-  <span class="dots"><i></i><i></i><i></i><i></i></span>
-  <span class="menu">選單 · Menu</span>
-  <span class="tick"></span>
+  <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav">
+    <span class="dots"><i></i><i></i><i></i><i></i></span>
+    <span class="menu" id="navLabel">選單 · Menu</span>
+    <span class="tick"></span>
+  </button>
 </nav>
+
+<div class="site-nav" id="siteNav" role="dialog" aria-modal="true" aria-label="主選單" hidden>
+  <button class="close" id="navClose">關閉 · Close</button>
+  <ol>
+    <li><a href="#top"><span class="u">首頁</span><span class="sl">/</span></a></li>
+    <li><a href="#"><span class="u">產品</span><span class="sl">/</span></a></li>
+    <li><a href="#"><span class="u">生態系統</span><span class="sl">/</span></a></li>
+    <li><a href="#"><span class="u">關於</span><span class="sl">/</span></a></li>
+    <li><a href="#"><span class="u">聯絡</span><span class="sl">/</span></a></li>
+  </ol>
+  <p class="meta">香港教育城 · 教與學的智能夥伴</p>
+</div>
 
 <header>
   <div class="wrap">
@@ -218,6 +277,68 @@
     <span>本頁為品牌設計研究 · 內容為示意</span>
   </div>
 </footer>
+
+<script>
+  (function(){
+    var nav    = document.getElementById('siteNav');
+    var toggle = document.getElementById('navToggle');
+    var closeB = document.getElementById('navClose');
+    var label  = document.getElementById('navLabel');
+
+    /* Option A palette — each open takes the next fill; text flips light/dark to suit */
+    var FILLS = [
+      ['#6E7C99','#F5F0E5'],   /* slate  */
+      ['#9AA486','#1C1712'],   /* sage   */
+      ['#B26A44','#F5F0E5'],   /* clay   */
+      ['#CBC2B2','#1C1712'],   /* greige */
+      ['#BA3D04','#F5F0E5']    /* spark  */
+    ];
+    var SLASHES = ['#BA3D04','#6E7C99','#9AA486','#B26A44','#CBC2B2'];
+    var turn = 0;
+    var slashSpans = [].slice.call(nav.querySelectorAll('.sl'));
+
+    function open(){
+      var f = FILLS[turn % FILLS.length];
+      turn++;
+      nav.style.setProperty('--nav-c', f[0]);
+      nav.style.setProperty('--nav-ink', f[1]);
+      slashSpans.forEach(function(s, k){
+        var c = SLASHES[(turn + k) % SLASHES.length];
+        if(c === f[0]) c = SLASHES[(turn + k + 2) % SLASHES.length];
+        s.style.color = c;
+      });
+      nav.hidden = false;
+      /* reflow so the transform transition runs from the hidden state */
+      void nav.offsetWidth;
+      nav.classList.add('open');
+      document.documentElement.classList.add('nav-open');
+      document.body.style.overflow = 'hidden';
+      toggle.setAttribute('aria-expanded', 'true');
+      label.textContent = '關閉 · Close';
+      closeB.focus();
+    }
+    function close(){
+      nav.classList.remove('open');
+      document.documentElement.classList.remove('nav-open');
+      document.body.style.overflow = '';
+      toggle.setAttribute('aria-expanded', 'false');
+      label.textContent = '選單 · Menu';
+      setTimeout(function(){ if(!nav.classList.contains('open')) nav.hidden = true; }, 560);
+      toggle.focus();
+    }
+
+    toggle.addEventListener('click', function(){
+      nav.classList.contains('open') ? close() : open();
+    });
+    closeB.addEventListener('click', close);
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && nav.classList.contains('open')) close();
+    });
+    nav.addEventListener('click', function(e){
+      if(e.target.tagName === 'A') close();
+    });
+  })();
+</script>
 
 </body>
 </html>
