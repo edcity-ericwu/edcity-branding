@@ -135,6 +135,53 @@
   }
   @media (prefers-reduced-motion:reduce){ .squiggle path{animation:none;stroke-dashoffset:0} }
 
+  /* ---------- colour-cycling menu ---------- */
+  .menu-btn{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    width:44px;height:44px;border-radius:12px;border:1px solid var(--line);
+    background:var(--card);display:grid;place-content:center;gap:4px;flex-shrink:0;
+  }
+  .menu-btn span{display:block;width:18px;height:2px;background:var(--ink);transition:transform .25s,opacity .2s}
+  .nav-open .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  .nav-open .menu-btn span:nth-child(2){opacity:0}
+  .nav-open .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+  .site-nav{
+    position:fixed;inset:0;z-index:60;
+    background:var(--nav-c,var(--ink));color:var(--nav-ink,#fff);
+    transform:translateX(-103%);
+    transition:transform .55s cubic-bezier(.15,.85,.45,1), background-color .3s ease;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(28px,7vw,84px) clamp(28px,7vw,84px) clamp(78px,14vh,120px);
+  }
+  .site-nav.open{transform:none}
+  .site-nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.06em}
+  .site-nav a{
+    font-family:var(--sans);font-weight:700;letter-spacing:-.025em;
+    font-size:clamp(2rem,7vw,4.6rem);line-height:1.08;
+    display:inline-flex;align-items:baseline;gap:.28em;color:inherit;text-decoration:none;
+  }
+  .site-nav a .u{
+    background-image:linear-gradient(currentColor,currentColor);
+    background-size:0 3px;background-repeat:no-repeat;background-position:0 92%;transition:background-size .28s ease;
+  }
+  .site-nav a:hover .u,.site-nav a:focus-visible .u{background-size:100% 3px}
+  .site-nav a .sl{font-weight:400;color:var(--sl,currentColor)}
+  .site-nav .meta{
+    position:absolute;left:clamp(28px,7vw,84px);bottom:clamp(24px,5vh,52px);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.78rem;opacity:.75;
+  }
+  .site-nav .close{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    position:absolute;top:clamp(20px,4vw,40px);right:clamp(20px,4vw,40px);
+    font:600 .8rem/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;
+    padding:9px 14px;border:1px solid currentColor;border-radius:999px;
+  }
+  @media (prefers-reduced-motion:reduce){
+    .site-nav{transition:background-color .2s ease}
+    .site-nav a .u,.menu-btn span{transition:none}
+  }
+
   /* ---------- partner strip ---------- */
   .partners{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
   .partners .wrap{padding-top:26px;padding-bottom:26px}
@@ -377,8 +424,23 @@
     </nav>
     <span class="spacer"></span>
     <a class="pill pill-ink" href="#book">預約導覽</a>
+    <button class="menu-btn" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="選單">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<div class="site-nav" id="siteNav" role="dialog" aria-modal="true" aria-label="主選單" hidden>
+  <button class="close" id="navClose">關閉 · Close</button>
+  <ol>
+    <li><a href="#top"><span class="u">首頁</span><span class="sl">/</span></a></li>
+    <li><a href="#edcity-ai"><span class="u">產品</span><span class="sl">/</span></a></li>
+    <li><a href="#ecosystem"><span class="u">生態系統</span><span class="sl">/</span></a></li>
+    <li><a href="#about"><span class="u">關於</span><span class="sl">/</span></a></li>
+    <li><a href="#book"><span class="u">聯絡</span><span class="sl">/</span></a></li>
+  </ol>
+  <p class="meta">香港教育城 · 教與學的智能夥伴</p>
+</div>
 
 <main id="top">
 
@@ -546,6 +608,45 @@
 </footer>
 
 <script>
+  (function(){
+    var nav = document.getElementById('siteNav');
+    var toggle = document.getElementById('navToggle');
+    var closeB = document.getElementById('navClose');
+    var FILLS = [
+      ['#2450E6','#FBFCFE'], ['#12307A','#FBFCFE'], ['#FF6A3D','#FBFCFE'],
+      ['#0E1626','#FBFCFE'], ['#6E8BF5','#0E1626']
+    ];
+    var SLASHES = ['#FF6A3D','#6E8BF5','#2450E6','#FF9E7A','#12307A'];
+    var turn = 0, sl = [].slice.call(nav.querySelectorAll('.sl'));
+    function openNav(){
+      var f = FILLS[turn % FILLS.length]; turn++;
+      nav.style.setProperty('--nav-c', f[0]);
+      nav.style.setProperty('--nav-ink', f[1]);
+      sl.forEach(function(s,k){
+        var c = SLASHES[(turn+k) % SLASHES.length];
+        if(c === f[0]) c = SLASHES[(turn+k+2) % SLASHES.length];
+        s.style.color = c;
+      });
+      nav.hidden = false; void nav.offsetWidth;
+      nav.classList.add('open');
+      document.documentElement.classList.add('nav-open');
+      document.body.style.overflow = 'hidden';
+      toggle.setAttribute('aria-expanded','true'); closeB.focus();
+    }
+    function closeNav(){
+      nav.classList.remove('open');
+      document.documentElement.classList.remove('nav-open');
+      document.body.style.overflow = '';
+      toggle.setAttribute('aria-expanded','false');
+      setTimeout(function(){ if(!nav.classList.contains('open')) nav.hidden = true; }, 560);
+      toggle.focus();
+    }
+    toggle.addEventListener('click', function(){ nav.classList.contains('open') ? closeNav() : openNav(); });
+    closeB.addEventListener('click', closeNav);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && nav.classList.contains('open')) closeNav(); });
+    nav.addEventListener('click', function(e){ if(e.target.tagName === 'A') closeNav(); });
+  })();
+
   (function(){
     var intro = document.getElementById('intro');
     var body = document.body;
