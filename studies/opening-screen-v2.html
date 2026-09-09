@@ -217,27 +217,21 @@ void main(){
           + 0.14 * fbm(p * 1.35 + vec2(t * 0.5, -t * 0.3));
   float grad = dot(p, vec2(0.50, -0.92)) + 0.5 + w;
 
-  vec3 cCobalt = vec3(0.086, 0.259, 0.784);
-  vec3 cBlue   = vec3(0.153, 0.373, 0.941);
-  vec3 cCyan   = vec3(0.353, 0.780, 0.918);
-  vec3 cLilac  = vec3(0.690, 0.627, 0.898);
-  vec3 cSalmon = vec3(1.000, 0.471, 0.404);
-  vec3 cCoral  = vec3(0.980, 0.596, 0.518);
-  vec3 cCream  = vec3(0.969, 0.918, 0.800);
+  // clean, saturated ramp — deep blue → blue → periwinkle → warm
+  vec3 cDeep  = vec3(0.071, 0.188, 0.478);
+  vec3 cBlue  = vec3(0.141, 0.314, 0.902);
+  vec3 cPeri  = vec3(0.451, 0.565, 0.965);
+  vec3 cCoral = vec3(1.000, 0.416, 0.239);
+  vec3 cPeach = vec3(1.000, 0.639, 0.494);
+  vec3 cCream = vec3(0.980, 0.930, 0.820);
 
   float warmGate = 0.35 + 0.65 * u_progress;
 
-  vec3 col = cCobalt;
-  col = mix(col, cBlue,   smoothstep(-0.05, 0.45, grad));
-  col = mix(col, cCyan,   smoothstep(0.30, 0.50, grad) * (1.0 - smoothstep(0.50, 0.66, grad)) * 0.7);
-  col = mix(col, cLilac,  smoothstep(0.50, 0.72, grad) * 0.7);
-  col = mix(col, cSalmon, smoothstep(0.66, 0.98, grad) * warmGate);
-  col = mix(col, cCoral,  smoothstep(0.92, 1.28, grad) * warmGate);
-  col = mix(col, cCream,  smoothstep(1.12, 1.55, grad) * 0.4);
-
-  // a whisper of crease for texture — not a fold, not a spiral
-  float ridged = 1.0 - abs(fbm(p * 1.5 + 7.0 + w));
-  col *= mix(1.0, 0.90, smoothstep(0.86, 1.0, ridged));
+  vec3 col = mix(cDeep, cBlue, smoothstep(-0.15, 0.45, grad));
+  col = mix(col, cPeri,  smoothstep(0.25, 0.85, grad) * 0.85);
+  col = mix(col, cCoral, smoothstep(0.60, 1.15, grad) * warmGate);
+  col = mix(col, cPeach, smoothstep(0.95, 1.45, grad) * warmGate);
+  col = mix(col, cCream, smoothstep(1.20, 1.70, grad) * 0.35);
 
   col = clamp((col - 0.5) * 1.05 + 0.5, 0.0, 1.0);
 
