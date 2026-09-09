@@ -182,6 +182,16 @@
     .site-nav a .u,.menu-btn span{transition:none}
   }
 
+  /* content load-in — Sana: quick, clean, minimal travel */
+  html.r [data-r]{
+    opacity:0;transform:translateY(11px);
+    transition:opacity .42s cubic-bezier(.2,.6,.2,1), transform .42s cubic-bezier(.2,.6,.2,1);
+  }
+  html.r [data-r].in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html.r [data-r]{opacity:1;transform:none;transition:none}
+  }
+
   /* ---------- partner strip ---------- */
   .partners{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
   .partners .wrap{padding-top:26px;padding-bottom:26px}
@@ -374,6 +384,7 @@
     #intro .b-warm{opacity:.9}
   }
 </style>
+<script>document.documentElement.className += " r";</script>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="edcity-logo" viewBox="0 0 179 54" fill="currentColor">
@@ -452,25 +463,25 @@
 
     <div class="wrap hero-inner">
       <div class="hero-lead">
-        <h1>知道你在哪裡，<br>為你打開下一步</h1>
-        <svg class="squiggle" viewBox="0 0 240 56" aria-hidden="true">
+        <h1 data-r>知道你在哪裡，<br>為你打開下一步</h1>
+        <svg class="squiggle" data-r viewBox="0 0 240 56" aria-hidden="true">
           <path pathLength="1" d="M3 30 C 26 2, 46 50, 78 26 S 128 2, 152 34 S 196 54, 214 20 S 232 6, 238 26"/>
         </svg>
-        <p class="en">Intelligence that helps the right support appear at the right moment — for teachers, students, and families.</p>
+        <p class="en" data-r>Intelligence that helps the right support appear at the right moment — for teachers, students, and families.</p>
         <div class="cta-row">
           <a class="pill pill-blue" href="#edcity-ai">認識 EdCity.ai</a>
           <a class="pill pill-ghost" href="#ecosystem">了解生態系統</a>
         </div>
       </div>
 
-      <aside class="hero-stat" aria-hidden="true">
+      <aside class="hero-stat" data-r aria-hidden="true">
         <div class="num">01</div>
         <div class="vert">每一次登入 · 一個清晰的下一步 &nbsp;·&nbsp; The right support, the right moment</div>
       </aside>
     </div>
   </section>
 
-  <section class="partners">
+  <section class="partners" data-r>
     <div class="wrap">
       <p>與全港中小學、大專院校及夥伴機構協作</p>
       <ul>
@@ -479,7 +490,7 @@
     </div>
   </section>
 
-  <section class="product blue" id="edcity-ai">
+  <section class="product blue" id="edcity-ai" data-r>
     <div class="wrap">
       <p class="eyebrow">EdCity.ai</p>
       <h2>教師的 AI 助理與工具箱</h2>
@@ -509,7 +520,7 @@
     </div>
   </section>
 
-  <section class="quote">
+  <section class="quote" data-r>
     <div class="wrap">
       <blockquote>&ldquo;它沒有取代我的判斷，而是讓我更快看到全班的需要。&rdquo;</blockquote>
       <p class="who"><b>中學中文科教師</b> · 教師訪談摘錄（示意內容）</p>
@@ -517,7 +528,7 @@
     </div>
   </section>
 
-  <section class="product coral panel" id="ecosystem">
+  <section class="product coral panel" id="ecosystem" data-r>
     <div class="wrap">
       <p class="eyebrow">教育生態系統</p>
       <h2>讓合適的支援，<br>在合適的時候出現</h2>
@@ -547,7 +558,7 @@
     </div>
   </section>
 
-  <section class="updates" id="about">
+  <section class="updates" id="about" data-r>
     <div class="wrap">
       <h3>最新動向</h3>
       <div class="grid">
@@ -570,7 +581,7 @@
     </div>
   </section>
 
-  <section class="band" id="book">
+  <section class="band" id="book" data-r>
     <div class="wrap">
       <h2>由一個清晰的下一步開始</h2>
       <p>為你的學校預約一次導覽。</p>
@@ -685,6 +696,24 @@
       window.addEventListener('keydown', onKey);
       window.addEventListener('wheel', dismiss, { passive:true });
       window.addEventListener('touchmove', dismiss, { passive:true });
+    });
+  })();
+
+  /* content load-in — 55ms stagger, short travel */
+  (function(){
+    var els = [].slice.call(document.querySelectorAll('[data-r]'));
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+      els.forEach(function(e){ e.classList.add('in'); }); return;
+    }
+    var STAGGER = 55, vh = window.innerHeight, seq = 0;
+    var io = new IntersectionObserver(function(en){
+      en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    els.forEach(function(e){
+      if(e.getBoundingClientRect().top < vh * 0.92){
+        e.style.transitionDelay = (seq++ * STAGGER) + 'ms';
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ e.classList.add('in'); }); });
+      } else { io.observe(e); }
     });
   })();
 </script>

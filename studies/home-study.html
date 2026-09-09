@@ -181,7 +181,18 @@
     .site-nav{transition:background-color .2s ease}
     .site-nav a .u{transition:none}
   }
+
+  /* content load-in — amita: a springy pop, bigger stagger */
+  html.r [data-r]{
+    opacity:0;transform:translateY(22px) scale(.965);
+    transition:opacity .6s cubic-bezier(.2,.9,.3,1.06), transform .6s cubic-bezier(.2,.9,.3,1.06);
+  }
+  html.r [data-r].in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html.r [data-r]{opacity:1;transform:none;transition:none}
+  }
 </style>
+<script>document.documentElement.className += " r";</script>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="bp" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
@@ -244,15 +255,15 @@
         <div class="bp"><svg><use href="#bp"/></svg></div>
       </div>
       <div class="today">TODAY <b>2026 / 09 / 09</b></div>
-      <h1>知道你在哪裡，<br>為你打開下一步</h1>
-      <p class="lede">教與學的智能夥伴，把複雜的教育生態整理成清晰的下一步。</p>
+      <h1 data-r>知道你在哪裡，<br>為你打開下一步</h1>
+      <p class="lede" data-r>教與學的智能夥伴，把複雜的教育生態整理成清晰的下一步。</p>
       <div class="dock">
         <span class="badge"><svg viewBox="-3 -3 62 60"><use href="#edcity-logo"/></svg></span>
         <a class="pill pill-blue" href="#">開始使用</a>
       </div>
     </div>
 
-    <aside class="hero-side">
+    <aside class="hero-side" data-r>
       <div class="h"><b>熱門主題</b><span class="plus">+</span></div>
       <div class="tags">
         <span class="chip">#生成教材</span>
@@ -268,7 +279,7 @@
   </section>
 
   <section class="features">
-    <article class="feat t-blue">
+    <article class="feat t-blue" data-r>
       <span class="tab">教學</span>
       <h3>EdCity.ai 助理</h3>
       <p>由備課到批改，一個懂你課堂的助手。生成教材、整理學習需要、給出有理據的建議。</p>
@@ -277,7 +288,7 @@
         <button class="arrow-btn" aria-label="了解更多"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
     </article>
-    <article class="feat t-pink">
+    <article class="feat t-pink" data-r>
       <span class="tab">生態</span>
       <h3>教育生態系統</h3>
       <p>連結教學應用程式、智能助手與經審核的資源。讓合適的支援，在合適的時候出現。</p>
@@ -286,7 +297,7 @@
         <button class="arrow-btn" aria-label="了解更多"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
     </article>
-    <article class="feat t-green">
+    <article class="feat t-green" data-r>
       <span class="tab">洞察</span>
       <h3>學習洞察</h3>
       <p>把課堂數據整理成清晰的下一步 &mdash; 給教師，也給家長一句可以行動的話。</p>
@@ -297,7 +308,7 @@
     </article>
   </section>
 
-  <section class="band">
+  <section class="band" data-r>
     <div class="panel">
       <div class="grain"></div>
       <div class="bp"><svg><use href="#bp"/></svg></div>
@@ -376,6 +387,24 @@
     closeB.addEventListener('click', closeNav);
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && nav.classList.contains('open')) closeNav(); });
     nav.addEventListener('click', function(e){ if(e.target.tagName === 'A') closeNav(); });
+  })();
+
+  /* content load-in — 115ms stagger, springy pop */
+  (function(){
+    var els = [].slice.call(document.querySelectorAll('[data-r]'));
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+      els.forEach(function(e){ e.classList.add('in'); }); return;
+    }
+    var STAGGER = 115, vh = window.innerHeight, seq = 0;
+    var io = new IntersectionObserver(function(en){
+      en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    els.forEach(function(e){
+      if(e.getBoundingClientRect().top < vh * 0.92){
+        e.style.transitionDelay = (seq++ * STAGGER) + 'ms';
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ e.classList.add('in'); }); });
+      } else { io.observe(e); }
+    });
   })();
 </script>
 </body>

@@ -171,7 +171,18 @@
     html{scroll-behavior:auto}
     .badge .ring{animation:none}
   }
+
+  /* content load-in — Quarterre: a firm, generous rise that settles */
+  html.r [data-r]{
+    opacity:0;transform:translateY(30px);
+    transition:opacity .8s cubic-bezier(.15,.85,.45,1), transform .8s cubic-bezier(.15,.85,.45,1);
+  }
+  html.r [data-r].in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    html.r [data-r]{opacity:1;transform:none;transition:none}
+  }
 </style>
+<script>document.documentElement.className += " r";</script>
 </head>
 <body>
 
@@ -221,12 +232,12 @@
 
   <section class="hero">
     <div class="wrap">
-      <h1>知道你在哪裡，<br>為你打開下一步。</h1>
-      <p class="stand">一個以人為本的教育生態系統。把複雜的服務、工具與資源，整理成清晰、可行的下一步 &mdash; 為教師，為學生，也為每一個參與學習的人。</p>
+      <h1 data-r>知道你在哪裡，<br>為你打開下一步。</h1>
+      <p class="stand" data-r>一個以人為本的教育生態系統。把複雜的服務、工具與資源，整理成清晰、可行的下一步 &mdash; 為教師，為學生，也為每一個參與學習的人。</p>
     </div>
   </section>
 
-  <section class="stmt">
+  <section class="stmt" data-r>
     <div class="wrap">
       <p class="eyebrow">01 &mdash; 結構</p>
       <h2>先把路走清楚。</h2>
@@ -234,7 +245,7 @@
     </div>
   </section>
 
-  <section class="stmt light">
+  <section class="stmt light" data-r>
     <div class="wrap">
       <p class="eyebrow">02 &mdash; 手感</p>
       <h2>由人做，也為人而做。</h2>
@@ -242,7 +253,7 @@
     </div>
   </section>
 
-  <section class="stmt">
+  <section class="stmt" data-r>
     <div class="wrap">
       <p class="eyebrow">03 &mdash; 智能</p>
       <h2>在合適的時候，<br>打開一道門。</h2>
@@ -250,7 +261,7 @@
     </div>
   </section>
 
-  <section class="work">
+  <section class="work" data-r>
     <div class="wrap">
       <p class="lbl">產品</p>
       <ul>
@@ -262,7 +273,7 @@
     </div>
   </section>
 
-  <section class="cta">
+  <section class="cta" data-r>
     <div class="wrap">
       <h2>由一個清晰的<br>下一步開始。</h2>
       <a class="pill" href="#">為你的學校預約導覽 →</a>
@@ -336,6 +347,24 @@
     });
     nav.addEventListener('click', function(e){
       if(e.target.tagName === 'A') close();
+    });
+  })();
+
+  /* content load-in — 90ms stagger, firm rise */
+  (function(){
+    var els = [].slice.call(document.querySelectorAll('[data-r]'));
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){
+      els.forEach(function(e){ e.classList.add('in'); }); return;
+    }
+    var STAGGER = 90, vh = window.innerHeight, seq = 0;
+    var io = new IntersectionObserver(function(en){
+      en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    els.forEach(function(e){
+      if(e.getBoundingClientRect().top < vh * 0.92){
+        e.style.transitionDelay = (seq++ * STAGGER) + 'ms';
+        requestAnimationFrame(function(){ requestAnimationFrame(function(){ e.classList.add('in'); }); });
+      } else { io.observe(e); }
     });
   })();
 </script>
