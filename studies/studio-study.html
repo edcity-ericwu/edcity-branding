@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EdCity Studio Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --paper:#F5F0E5;
+    --paper-2:#EFE9DB;
+    --ink:#1C1712;
+    --ink-2:#5B5348;
+    --ink-3:#8B8172;
+    --slate:#6E7C99;
+    --slate-deep:#34415C;
+    --sage:#9AA486;
+    --sage-deep:#5E6A50;
+    --clay:#B26A44;
+    --spark:#BA3D04;
+    --rail:56px;
+    --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --serif:"Source Serif 4", Georgia, serif;
+    --mono:"IBM Plex Mono", ui-monospace, monospace;
+    --han:"Noto Sans TC", var(--sans);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:1.05rem;line-height:1.7;
+    padding-left:var(--rail);-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.sans{font-family:var(--sans);font-weight:700;letter-spacing:-.02em}
+  a{color:inherit;text-decoration:none}
+
+  /* left rail */
+  .rail{
+    position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:20;
+    background:var(--sage);color:var(--sage-deep);
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    padding:18px 0;
+  }
+  .rail .dots{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+  .rail .dots i{width:6px;height:6px;border-radius:50%;background:var(--sage-deep)}
+  .rail .menu{
+    writing-mode:vertical-rl;font-family:var(--sans);font-weight:600;font-size:.66rem;
+    letter-spacing:.28em;text-transform:uppercase;
+  }
+  .rail .tick{width:1px;height:34px;background:currentColor;opacity:.5}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+
+  /* top bar */
+  header{padding:26px 0 0}
+  header .wrap{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+  .brand{font-family:var(--sans);font-weight:700;font-size:1.15rem;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;color:var(--ink)}
+  .brand svg{width:26px;height:26px}
+  .brand svg path{fill:var(--ink)}
+  .badge{width:96px;height:96px;flex-shrink:0}
+  .badge .ring{animation:spin 24s linear infinite;transform-origin:50% 50%}
+  .badge text{font-family:var(--sans);font-weight:600;font-size:8.4px;letter-spacing:.14em;fill:var(--ink);text-transform:uppercase}
+  .badge .mk path{fill:var(--ink)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* hero */
+  .hero{padding:clamp(40px,9vh,110px) 0 clamp(48px,9vh,110px)}
+  .hero h1{
+    font-size:clamp(2.8rem,9vw,7rem);line-height:.98;margin:0;
+    text-wrap:balance;
+  }
+  .hero .stand{
+    max-width:52ch;margin:30px 0 0;color:var(--ink-2);font-size:clamp(1.05rem,1.7vw,1.25rem);
+  }
+
+  /* statement sections */
+  .stmt{border-top:1px solid rgba(28,23,18,.16);padding:clamp(44px,8vh,88px) 0}
+  .stmt.light{
+    background:
+      radial-gradient(70% 90% at 88% 100%, rgba(186,61,4,.09), transparent 60%),
+      radial-gradient(60% 80% at 6% 0%, rgba(110,124,153,.08), transparent 60%);
+  }
+  .stmt .eyebrow{
+    font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;color:var(--ink-3);margin:0 0 18px;
+  }
+  .stmt h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:1.08;margin:0;max-width:16ch}
+  .stmt .body{max-width:56ch;margin:22px 0 0;color:var(--ink-2)}
+  .stmt .body .spark{color:var(--spark);font-family:var(--sans);font-weight:600}
+
+  /* work list */
+  .work{border-top:1px solid rgba(28,23,18,.16);padding:clamp(44px,8vh,80px) 0}
+  .work > .wrap > .lbl{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin:0 0 8px}
+  .work ul{list-style:none;margin:18px 0 0;padding:0}
+  .work li{border-top:1px solid rgba(28,23,18,.14)}
+  .work li:last-child{border-bottom:1px solid rgba(28,23,18,.14)}
+  .work a{
+    display:flex;align-items:baseline;gap:20px;padding:22px 4px;
+    transition:padding-left .16s ease, color .16s ease;
+  }
+  .work a:hover{padding-left:16px;color:var(--slate-deep)}
+  .work a .n{font-family:var(--mono);font-size:.82rem;color:var(--ink-3);flex-shrink:0}
+  .work a .t{font-family:var(--sans);font-weight:700;font-size:clamp(1.2rem,2.6vw,1.9rem);flex:1}
+  .work a .k{font-size:.9rem;color:var(--ink-2)}
+  .work a .go{font-family:var(--mono);font-size:1rem;color:var(--spark)}
+
+  /* cta */
+  .cta{border-top:1px solid rgba(28,23,18,.16);padding:clamp(56px,11vh,120px) 0}
+  .cta h2{font-size:clamp(2.2rem,6vw,4.6rem);line-height:1;margin:0}
+  .pill{
+    display:inline-flex;align-items:center;gap:9px;margin-top:28px;
+    font-family:var(--sans);font-weight:600;font-size:.95rem;
+    background:var(--ink);color:var(--paper);border-radius:999px;padding:14px 26px;
+  }
+
+  footer{border-top:1px solid rgba(28,23,18,.16);padding:26px 0 40px;font-family:var(--mono);font-size:.76rem;color:var(--ink-3)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  @media (max-width:720px){
+    :root{--rail:40px}
+    .rail .menu{font-size:.58rem}
+    .badge{width:74px;height:74px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .badge .ring{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mk" viewBox="0 0 57 54">
+    <path d="M27.1927 1.81771C27.7177 3.67516 27.5415 6.76482 26.5247 7.04371C25.5097 7.32078 23.8377 4.87274 23.2357 3.04264C22.6135 1.14327 23.5367 0.386805 24.5553 0.111561C25.5721 -0.165506 26.6678 -0.0397325 27.1909 1.81771"/>
+    <path d="M12.5574 6.18152C13.8054 7.66165 14.925 10.5453 14.1156 11.2161C13.3007 11.8887 10.7661 10.3412 9.46112 8.91574C8.10663 7.44109 8.64072 6.37474 9.44644 5.70759C10.2595 5.04044 11.3075 4.70869 12.5592 6.18152"/>
+    <path d="M3.19317 18.9067C4.99181 19.6449 7.32088 21.6919 6.91343 22.658C6.50231 23.6241 3.53454 23.4127 1.7102 22.7528C-0.169204 22.0638 -0.196734 20.8717 0.21255 19.9074C0.623669 18.9395 1.40186 18.1703 3.19317 18.9067Z"/>
+    <path d="M43.6562 23.7716C43.6562 27.7855 40.114 31.0428 35.7403 31.0428C31.3667 31.0428 27.8245 27.7873 27.8245 23.7716C27.8245 19.756 31.3704 16.5004 35.7403 16.5004C40.1103 16.5004 43.6562 19.7578 43.6562 23.7716Z"/>
+    <path d="M19.9485 30.6364C19.9485 30.6364 19.754 30.2445 20.0843 30.0932C20.3798 29.9601 20.6019 30.3447 20.6019 30.3447C20.6019 30.3447 26.141 39.7559 40.7963 36.3017C40.7963 36.3017 52.7903 33.2193 53.128 20.7677C53.128 20.7677 53.128 20.3247 53.4235 20.2937C53.4235 20.2937 53.7961 20.1662 53.9191 20.7185C54.1063 21.5606 56.1454 36.8048 42.0333 40.5835C42.0333 40.5835 25.2729 44.5736 19.9503 30.6346"/>
+    <path d="M56.011 33.3177C55.5778 33.2429 55.4787 33.5619 55.2365 34.3403C52.7789 42.1747 44.9126 47.9074 35.5908 47.9074C24.3034 47.9074 15.1541 39.5006 15.1541 29.138C15.1541 20.62 21.5981 13.8318 29.848 11.4567C35.1008 10.1935 38.8082 10.9755 39.9314 11.1669C40.5518 11.2781 40.7445 11.2434 40.7445 11.2434C41.0602 11.1814 41.0932 10.8716 41.0492 10.7403C40.9335 10.3794 40.4123 10.2099 40.4123 10.2099C37.4298 9.1162 34.0638 8.95579 32.3936 8.95215H32.3533C31.7219 8.95215 31.3346 8.97584 31.3346 8.97584V8.98496C31.1694 8.9886 31.0043 8.98496 30.8464 8.99954C18.1623 9.73049 8.07886 19.4734 8.07886 31.3016C8.07886 43.1299 18.9368 53.58 32.3331 53.58C44.6318 53.58 54.9171 45.7985 56.3762 34.2856C56.4441 33.7661 56.2881 33.3669 56.0128 33.3195"/>
+  </symbol>
+</svg>
+
+<nav class="rail">
+  <span class="dots"><i></i><i></i><i></i><i></i></span>
+  <span class="menu">選單 · Menu</span>
+  <span class="tick"></span>
+</nav>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="#"><svg viewBox="0 0 57 54"><use href="#mk"/></svg>EdCity</a>
+    <svg class="badge" viewBox="0 0 100 100" aria-label="EdCity">
+      <defs><path id="bc" d="M50 50 m -37 0 a 37 37 0 1 1 74 0 a 37 37 0 1 1 -74 0"/></defs>
+      <g class="ring"><text><textPath href="#bc" startOffset="0%">教與學的智能夥伴 · 育人為本 · 素養為先 · </textPath></text></g>
+      <g class="mk" transform="translate(37 37) scale(0.46)"><use href="#mk"/></g>
+    </svg>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <h1>知道你在哪裡，<br>為你打開下一步。</h1>
+      <p class="stand">一個以人為本的教育生態系統。把複雜的服務、工具與資源，整理成清晰、可行的下一步 &mdash; 為教師，為學生，也為每一個參與學習的人。</p>
+    </div>
+  </section>
+
+  <section class="stmt">
+    <div class="wrap">
+      <p class="eyebrow">01 &mdash; 結構</p>
+      <h2>先把路走清楚。</h2>
+      <p class="body">許多服務在背後運作，教師面前只有一個平靜的下一步。導覽像地圖，不像市集：你永遠知道自己在哪裡，下一步往哪走。</p>
+    </div>
+  </section>
+
+  <section class="stmt light">
+    <div class="wrap">
+      <p class="eyebrow">02 &mdash; 手感</p>
+      <h2>由人做，也為人而做。</h2>
+      <p class="body">溫度來自文字、相片、圓角與語氣，而不是靠色彩堆砌。系統友善，判斷仍然由你作主 &mdash; 參與比表現重要。</p>
+    </div>
+  </section>
+
+  <section class="stmt">
+    <div class="wrap">
+      <p class="eyebrow">03 &mdash; 智能</p>
+      <h2>在合適的時候，<br>打開一道門。</h2>
+      <p class="body">系統呈現有用的關係、訊號與機會，而不替你做主。每一次，一個清晰的下一步 &mdash; <span class="spark">一點光，落在剛剛出現的機會上</span>。</p>
+    </div>
+  </section>
+
+  <section class="work">
+    <div class="wrap">
+      <p class="lbl">產品</p>
+      <ul>
+        <li><a href="#"><span class="n">01</span><span class="t">EdCity.ai 助理</span><span class="k">備課 · 生成 · 批改</span><span class="go">→</span></a></li>
+        <li><a href="#"><span class="n">02</span><span class="t">教育生態系統</span><span class="k">應用程式 · 智能助手 · 資源配對</span><span class="go">→</span></a></li>
+        <li><a href="#"><span class="n">03</span><span class="t">學習洞察</span><span class="k">班別比較 · 成長歷程</span><span class="go">→</span></a></li>
+        <li><a href="#"><span class="n">04</span><span class="t">校本教材庫</span><span class="k">整理 · 共享 · 版本</span><span class="go">→</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>由一個清晰的<br>下一步開始。</h2>
+      <a class="pill" href="#">為你的學校預約導覽 →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 香港教育城 2026</span>
+    <span>本頁為品牌設計研究 · 內容為示意</span>
+  </div>
+</footer>
+
+</body>
+</html>
