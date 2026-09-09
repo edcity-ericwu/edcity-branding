@@ -61,7 +61,7 @@
   .hero-main{
     background:linear-gradient(150deg,#6AA0FF 0%,#5692FF 55%,#4E7EEB 100%);
     color:#fff;border-radius:34px 34px 10px 34px;overflow:visible;
-    min-height:clamp(360px,52vh,520px);padding:clamp(26px,4vw,44px);
+    min-height:clamp(440px,66vh,640px);padding:clamp(26px,4vw,44px) clamp(26px,4vw,44px) clamp(96px,12vh,120px);
     display:flex;flex-direction:column;
   }
   .hero-main .today{font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;opacity:.85;display:flex;gap:14px;align-items:baseline}
@@ -69,9 +69,10 @@
   .hero-main h1{font-size:clamp(2.2rem,5.4vw,4rem);line-height:1.05;margin-top:auto}
   .hero-main .lede{font-family:var(--sans);font-weight:500;margin-top:16px;max-width:30ch;opacity:.95}
   .dock{
-    position:absolute;left:clamp(20px,4vw,40px);bottom:clamp(-14px,-1vw,-10px);
-    background:var(--card);color:var(--ink);border-radius:22px;padding:12px 14px;
-    display:flex;align-items:center;gap:14px;box-shadow:0 14px 34px -16px rgba(10,14,26,.4);
+    position:absolute;left:0;bottom:0;z-index:3;
+    background:var(--card);color:var(--ink);border-radius:0 26px 0 34px;
+    padding:16px 24px 16px 20px;
+    display:flex;align-items:center;gap:14px;box-shadow:0 -10px 30px -16px rgba(10,14,26,.28);
   }
   .dock .badge{width:40px;height:40px;border-radius:50%;background:var(--blue);display:grid;place-items:center;flex-shrink:0}
   .dock .badge svg{width:24px;height:auto}
@@ -80,6 +81,7 @@
 
   .hero-side{
     background:var(--ink);color:#EAECF7;border-radius:34px;padding:24px;display:flex;flex-direction:column;gap:16px;
+    position:relative;z-index:2;align-self:start;margin-left:-34px;
   }
   .hero-side .h{display:flex;justify-content:space-between;align-items:center}
   .hero-side .h b{font-family:var(--sans);font-size:.95rem}
@@ -102,8 +104,16 @@
   .feat.t-pink  .tab{background:var(--pink-s)}
   .feat.t-green .tab{background:var(--green-s);color:#04321E}
   .feat h3{font-size:1.15rem;margin-bottom:8px}
-  .feat p{color:var(--ink-2);font-size:.92rem;margin:0 0 16px}
-  .feat .more{font-family:var(--sans);font-weight:600;font-size:.85rem;color:var(--blue-ink)}
+  .feat p{color:var(--ink-2);font-size:.92rem;margin:0 0 18px}
+  .feat-foot{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .feat-foot .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .feat-foot .chips span{font-family:var(--sans);font-size:.68rem;color:var(--ink-3);
+    border:1px solid var(--line);border-radius:999px;padding:3px 9px;white-space:nowrap}
+  .arrow-btn{width:40px;height:40px;border-radius:50%;flex-shrink:0;border:0;cursor:pointer;
+    display:grid;place-items:center;color:#fff}
+  .feat.t-blue  .arrow-btn{background:var(--blue)}
+  .feat.t-pink  .arrow-btn{background:var(--pink-s)}
+  .feat.t-green .arrow-btn{background:var(--green-s);color:#04321E}
 
   /* ---- band ---- */
   .band{margin-top:44px}
@@ -129,6 +139,7 @@
 
   @media (max-width:900px){
     .hero{grid-template-columns:1fr}
+    .hero-side{margin-left:0}
     .features{grid-template-columns:1fr}
     footer .cols{grid-template-columns:1fr 1fr}
   }
@@ -136,16 +147,18 @@
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="bp" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+  <symbol id="bp" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
     <g fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke">
-      <circle cx="336" cy="66" r="188"/>
-      <circle cx="52" cy="250" r="96"/>
-      <path d="M-20 92 H 420"/>
-      <path d="M124 -20 V 320"/>
-      <path d="M-20 -30 L 430 330"/>
-      <path d="M118 86 h12 M124 80 v12"/>
-      <path d="M118 244 h12 M124 238 v12"/>
-      <path d="M330 92 h12 M336 86 v12"/>
+      <line x1="200" y1="-60" x2="200" y2="460"/>
+      <line x1="-60" y1="200" x2="460" y2="200"/>
+      <circle cx="200" cy="200" r="118"/>
+      <circle cx="200" cy="200" r="205"/>
+      <circle cx="150" cy="336" r="150"/>
+      <path d="M193 200 h14 M200 193 v14"/>
+      <path d="M193 82 h14 M200 75 v14"/>
+      <path d="M193 318 h14 M200 311 v14"/>
+      <path d="M82 193 v14 M75 200 h14"/>
+      <path d="M318 193 v14 M311 200 h14"/>
     </g>
   </symbol>
   <symbol id="edcity-logo" viewBox="0 0 179 54" fill="currentColor">
@@ -222,19 +235,28 @@
       <span class="tab">教學</span>
       <h3>EdCity.ai 助理</h3>
       <p>由備課到批改，一個懂你課堂的助手。生成教材、整理學習需要、給出有理據的建議。</p>
-      <span class="more">了解更多 →</span>
+      <div class="feat-foot">
+        <div class="chips"><span>#生成教材</span><span>#AI 批改</span></div>
+        <button class="arrow-btn" aria-label="了解更多"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
     </article>
     <article class="feat t-pink">
       <span class="tab">生態</span>
       <h3>教育生態系統</h3>
       <p>連結教學應用程式、智能助手與經審核的資源。讓合適的支援，在合適的時候出現。</p>
-      <span class="more">了解更多 →</span>
+      <div class="feat-foot">
+        <div class="chips"><span>#應用程式</span><span>#資源配對</span></div>
+        <button class="arrow-btn" aria-label="了解更多"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
     </article>
     <article class="feat t-green">
       <span class="tab">洞察</span>
       <h3>學習洞察</h3>
       <p>把課堂數據整理成清晰的下一步 &mdash; 給教師，也給家長一句可以行動的話。</p>
-      <span class="more">了解更多 →</span>
+      <div class="feat-foot">
+        <div class="chips"><span>#班別比較</span><span>#成長歷程</span></div>
+        <button class="arrow-btn" aria-label="了解更多"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
     </article>
   </section>
 

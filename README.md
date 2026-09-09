@@ -23,6 +23,8 @@ The direction combines three propositions into one system with a layered job spl
 | `opening-screen-v2.html` | The same idea with a WebGL fragment shader — domain-warped fractal noise across the palette, in-shader film grain, pointer parallax, a `progress` uniform driving the sunrise reveal. CSS-gradient + reduced-motion fallbacks. |
 | `landing.html` | Landing-page study — a Sana-style structure (centred hero, partner strip, two product sections, testimonial, updates, CTA) in the Option B palette, prefaced by the dawn opening screen. |
 
+`imagery-notes.md` — mood-board links (Pinterest, per direction), the no-lifting-reference-images rule, and a "hero space" reference for later.
+
 `spark-concepts.md` — collected visual references for "the spark" (warm light emerging from a cool structured field) and two buildable directions: an orb cluster and a Vasarely-style dot grid. Concepts only, not built.
 
 `assets/edcity-logo-white.svg` — the EdCity wordmark + mark, white fill. Recolour via CSS `fill` when placing on light grounds.
