@@ -198,71 +198,57 @@ float snoise(vec2 v){
   return 130.0 * dot(m, g);
 }
 
-// 3 octaves — smooth colour masses and domain warp
+// 3 octaves — smooth colour masses and a gentle domain warp
 float fbm(vec2 p){
   float s = 0.0, a = 0.6;
   for(int i = 0; i < 3; i++){ s += a * snoise(p); p = p * 1.95 + vec2(2.1, -1.3); a *= 0.55; }
-  return s;
-}
-// 5 octaves — detail and grooves
-float fbmR(vec2 p){
-  float s = 0.0, a = 0.5;
-  for(int i = 0; i < 5; i++){ s += a * snoise(p); p = p * 2.02 + vec2(-1.7, 2.9); a *= 0.52; }
   return s;
 }
 
 void main(){
   vec2 p = (v_uv - 0.5);
   p.x *= u_res.x / u_res.y;
-  p += u_pointer * 0.035;
+  p += u_pointer * 0.03;
 
-  float t = u_time * 0.028;
+  float t = u_time * 0.022;
 
-  // two-scale domain warp — big drift plus mid-scale distortion
-  vec2 warp = 0.55 * vec2(fbm(p * 0.7 + vec2(0.0, t)),   fbm(p * 0.7 + vec2(3.1, -t)))
-            + 0.20 * vec2(fbm(p * 1.7 + vec2(t*0.5, 1.0)), fbm(p * 1.7 + vec2(-t*0.4, 5.0)));
-  vec2 pw = p + warp;
+  // gentle low-frequency warp — colour moves in large soft masses, no swirl
+  float w = 0.38 * fbm(p * 0.62 + vec2(0.0, t))
+          + 0.14 * fbm(p * 1.35 + vec2(t * 0.5, -t * 0.3));
+  float grad = dot(p, vec2(0.50, -0.92)) + 0.5 + w;
 
-  float masses = fbm(pw * 1.05);
-  float detail = fbmR(pw * 2.3 + 4.0);
-  float h = 0.5 + 0.42 * masses + 0.16 * detail + dot(p, vec2(0.22, -0.34));
-
-  // ridged field → defined grooves and folded rims
-  float ridged = 1.0 - abs(fbmR(pw * 2.0 + 9.0));
-  float groove = smoothstep(0.62, 0.99, ridged);
-  float rim    = smoothstep(0.40, 0.52, ridged) - smoothstep(0.52, 0.66, ridged);
-
-  vec3 cCobalt = vec3(0.098, 0.290, 0.831);
+  vec3 cCobalt = vec3(0.086, 0.259, 0.784);
   vec3 cBlue   = vec3(0.153, 0.373, 0.941);
-  vec3 cCyan   = vec3(0.286, 0.792, 0.910);
-  vec3 cLilac  = vec3(0.671, 0.616, 0.882);
-  vec3 cSalmon = vec3(1.000, 0.447, 0.376);
-  vec3 cCoral  = vec3(0.965, 0.573, 0.494);
-  vec3 cCream  = vec3(0.965, 0.918, 0.792);
+  vec3 cCyan   = vec3(0.353, 0.780, 0.918);
+  vec3 cLilac  = vec3(0.690, 0.627, 0.898);
+  vec3 cSalmon = vec3(1.000, 0.471, 0.404);
+  vec3 cCoral  = vec3(0.980, 0.596, 0.518);
+  vec3 cCream  = vec3(0.969, 0.918, 0.800);
 
   float warmGate = 0.35 + 0.65 * u_progress;
 
   vec3 col = cCobalt;
-  col = mix(col, cBlue,   smoothstep(0.12, 0.42, h));
-  col = mix(col, cCyan,   smoothstep(0.34, 0.50, h) * (1.0 - smoothstep(0.52, 0.66, h)));
-  col = mix(col, cLilac,  smoothstep(0.50, 0.66, h));
-  col = mix(col, cSalmon, smoothstep(0.60, 0.80, h) * warmGate);
-  col = mix(col, cCoral,  smoothstep(0.76, 0.92, h) * warmGate);
-  col = mix(col, cCream,  smoothstep(0.88, 1.04, h) * 0.55);
+  col = mix(col, cBlue,   smoothstep(-0.05, 0.45, grad));
+  col = mix(col, cCyan,   smoothstep(0.30, 0.50, grad) * (1.0 - smoothstep(0.50, 0.66, grad)) * 0.7);
+  col = mix(col, cLilac,  smoothstep(0.50, 0.72, grad) * 0.7);
+  col = mix(col, cSalmon, smoothstep(0.66, 0.98, grad) * warmGate);
+  col = mix(col, cCoral,  smoothstep(0.92, 1.28, grad) * warmGate);
+  col = mix(col, cCream,  smoothstep(1.12, 1.55, grad) * 0.4);
 
-  col *= mix(1.0, 0.70, groove);
-  col += rim * 0.10;
+  // a whisper of crease for texture — not a fold, not a spiral
+  float ridged = 1.0 - abs(fbm(p * 1.5 + 7.0 + w));
+  col *= mix(1.0, 0.90, smoothstep(0.86, 1.0, ridged));
 
-  col = clamp((col - 0.5) * 1.10 + 0.5, 0.0, 1.0);
+  col = clamp((col - 0.5) * 1.05 + 0.5, 0.0, 1.0);
 
-  float vig = smoothstep(1.42, 0.42, length((v_uv - 0.5) * vec2(1.08, 1.0)));
-  col *= mix(0.72, 1.0, vig);
+  float vig = smoothstep(1.45, 0.42, length((v_uv - 0.5) * vec2(1.06, 1.0)));
+  col *= mix(0.78, 1.0, vig);
 
-  // gritty grain: coarse clumps + fine sparkle, heavier in shadow
+  // grain: coarse clumps + fine sparkle, a little heavier in shadow
   float luma = dot(col, vec3(0.299, 0.587, 0.114));
-  float gc = fract(sin(dot(floor(gl_FragCoord.xy / 2.0) + t * 19.0, vec2(12.9898, 78.233))) * 43758.5453);
-  float gf = fract(sin(dot(gl_FragCoord.xy + t * 57.0, vec2(39.35, 11.14))) * 24634.63);
-  col += ((gc - 0.5) * 0.10 + (gf - 0.5) * 0.06) * (1.15 - 0.5 * luma);
+  float gc = fract(sin(dot(floor(gl_FragCoord.xy / 2.0) + t * 17.0, vec2(12.9898, 78.233))) * 43758.5453);
+  float gf = fract(sin(dot(gl_FragCoord.xy + t * 51.0, vec2(39.35, 11.14))) * 24634.63);
+  col += ((gc - 0.5) * 0.075 + (gf - 0.5) * 0.05) * (1.10 - 0.45 * luma);
 
   col = mix(vec3(0.04, 0.055, 0.12), col, clamp(u_progress * 1.12, 0.0, 1.0));
 
