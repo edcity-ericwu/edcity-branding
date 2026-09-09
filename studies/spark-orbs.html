@@ -38,7 +38,9 @@
 
   function mix(a, b, t){ t = Math.max(0, Math.min(1, t));
     return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
-  function rgba(c, a){ return 'rgba(' + (c[0]|0) + ',' + (c[1]|0) + ',' + (c[2]|0) + ',' + a + ')'; }
+  function rgba(c, a){ return 'rgba(' + cl(c[0]) + ',' + cl(c[1]) + ',' + cl(c[2]) + ',' + a + ')'; }
+  function scale(c, k){ return [c[0]*k, c[1]*k, c[2]*k]; }
+  function cl(v){ return Math.max(0, Math.min(255, v|0)); }
 
   function build(){
     orbs = [];
@@ -54,7 +56,8 @@
           depth: 0.3 + Math.random()*0.9,
           s1: 0.12 + Math.random()*0.28, p1: Math.random()*6.28,
           s2: 0.12 + Math.random()*0.28, p2: Math.random()*6.28,
-          a:  0.82 + Math.random()*0.14
+          a:  0.82 + Math.random()*0.14,
+          bright: 0.80 + Math.random()*0.42
         });
       }
     }
@@ -99,43 +102,52 @@
     x.fillStyle = glow;
     x.fillRect(0, 0, W, H);
 
-    // spheres — near-opaque shaded balls; navy ground shows in the gaps
+    // spheres — crisp shaded balls, slightly translucent; navy shows in the gaps
+    x.globalAlpha = 0.9;
     for(var i=0;i<orbs.length;i++){
       var o = orbs[i];
-      var driftX = reduce ? 0 : Math.sin(elapsed*o.s1 + o.p1) * 0.016;
-      var driftY = reduce ? 0 : Math.cos(elapsed*o.s2 + o.p2) * 0.016;
-      var px = (o.bx + driftX) * W + ptr.x * o.depth * U * 0.03;
-      var py = (o.by + driftY) * H + ptr.y * o.depth * U * 0.03;
+      var driftX = reduce ? 0 : Math.sin(elapsed*o.s1 + o.p1) * 0.014;
+      var driftY = reduce ? 0 : Math.cos(elapsed*o.s2 + o.p2) * 0.014;
+      var px = (o.bx + driftX) * W + ptr.x * o.depth * U * 0.028;
+      var py = (o.by + driftY) * H + ptr.y * o.depth * U * 0.028;
       var r  = o.r * U;
 
       var dc  = Math.hypot(px - gx, py - gy) / U;
       var lit = Math.max(0, 1 - dc / 0.40) * prog;      // 0..1 warmth from the core
 
-      // hi / mid / rim, lerped blue -> warm by lit
-      var hi  = mix([150,180,255], [255,214,168], lit);
-      var mid = mix([ 74,108,232], [255,168,120], lit);
-      var rim = mix([ 34, 52,140], [196, 96, 70], lit);
+      // hi / body / edge, lerped blue -> warm by lit — all opaque (crisp rim)
+      var b = o.bright;
+      var hi   = scale(mix([170,196,255], [255,222,168], lit), b);
+      var body = scale(mix([ 78,116,240], [255,150, 86], lit), b);
+      var edge = scale(mix([ 30, 46,132], [186, 78, 46], lit), b);
 
-      var body = x.createRadialGradient(px - r*0.32, py - r*0.36, r*0.08, px, py, r);
-      body.addColorStop(0,    rgba(hi,  o.a));
-      body.addColorStop(0.55, rgba(mid, o.a));
-      body.addColorStop(0.9,  rgba(rim, o.a));
-      body.addColorStop(1,    rgba(rim, o.a * 0.35));
-      x.fillStyle = body;
+      var g = x.createRadialGradient(px - r*0.34, py - r*0.40, r*0.06, px, py, r);
+      g.addColorStop(0,    rgba(hi,   1));
+      g.addColorStop(0.52, rgba(body, 1));
+      g.addColorStop(0.9,  rgba(edge, 1));
+      g.addColorStop(1,    rgba(edge, 1));
+      x.fillStyle = g;
       x.beginPath(); x.arc(px, py, r, 0, Math.PI*2); x.fill();
 
-      // inner glow for the core-lit ones
-      if(lit > 0.04){
+      // faint contact shadow on the lower-right for depth between overlapping orbs
+      var sh = x.createRadialGradient(px + r*0.4, py + r*0.42, r*0.2, px + r*0.4, py + r*0.42, r*1.1);
+      sh.addColorStop(0, 'rgba(6,10,26,0.28)');
+      sh.addColorStop(1, 'rgba(6,10,26,0)');
+      x.fillStyle = sh;
+      x.beginPath(); x.arc(px, py, r, 0, Math.PI*2); x.fill();
+
+      // inner warm glow for the core-lit ones
+      if(lit > 0.06){
         x.globalCompositeOperation = 'lighter';
-        var w = x.createRadialGradient(px, py, 0, px, py, r*0.9);
-        w.addColorStop(0,   'rgba(255, 210, 158, ' + (0.5*lit) + ')');
-        w.addColorStop(0.7, 'rgba(255, 176, 120, ' + (0.14*lit) + ')');
-        w.addColorStop(1,   'rgba(255, 176, 120, 0)');
+        var w = x.createRadialGradient(px, py, 0, px, py, r*0.85);
+        w.addColorStop(0,   'rgba(255, 214, 164, ' + (0.42*lit) + ')');
+        w.addColorStop(1,   'rgba(255, 180, 128, 0)');
         x.fillStyle = w;
-        x.beginPath(); x.arc(px, py, r*0.9, 0, Math.PI*2); x.fill();
+        x.beginPath(); x.arc(px, py, r*0.85, 0, Math.PI*2); x.fill();
         x.globalCompositeOperation = 'source-over';
       }
     }
+    x.globalAlpha = 1;
 
     // grain
     x.globalAlpha = 0.08;
