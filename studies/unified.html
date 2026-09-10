@@ -304,7 +304,7 @@
 
   /* colour-cycling menu */
   .site-nav{
-    position:fixed;inset:0;z-index:60;
+    position:fixed;inset:0;z-index:90;
     background:var(--nav-c,var(--ink));color:var(--nav-ink,#fff);
     transform:translateX(-103%);
     transition:transform .55s cubic-bezier(.15,.85,.45,1), background-color .3s ease;
@@ -618,7 +618,7 @@ void main(){
       </div>
       <aside class="hero-stat" data-r aria-hidden="true">
         <div class="num">01</div>
-        <div class="vert">每一次登入 · 一個清晰的下一步 &nbsp;·&nbsp; The right support, the right moment</div>
+        <div class="vert">每一次登入 · 一個清晰的下一步</div>
       </aside>
     </div>
   </section>
@@ -788,6 +788,7 @@ void main(){
       <div>
         <a class="brand" href="#top" aria-label="EdCity"><svg viewBox="0 0 179 54" role="img" aria-label="EdCity"><use href="#edcity-logo"/></svg></a>
         <p style="margin:14px 0 0;max-width:30ch;opacity:.8">教與學的智能夥伴，把複雜的教育生態整理成清晰的下一步。</p>
+        <button class="replay-intro" id="replayIntro" type="button" style="margin-top:14px">▸ 重播開場</button>
       </div>
       <div>
         <h4>產品</h4>
@@ -805,7 +806,6 @@ void main(){
     <div class="legal">
       <span>© 香港教育城 2026 · 本頁為品牌設計研究，內容為示意 · 統一版 / Unified</span>
       <span id="pName">方案 B · Clear Field, Bright Signal</span>
-      <button class="replay-intro" id="replayIntro" type="button">▸ 重播開場</button>
     </div>
   </div>
 </footer>
