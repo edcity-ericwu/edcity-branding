@@ -191,6 +191,37 @@
   .why li::before{content:"";position:absolute;left:5px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--blue)}
   .why li:not(:last-child)::after{content:"";position:absolute;left:7px;top:13px;bottom:-7px;width:1px;background:var(--line)}
 
+  /* ---- media placeholders (photos / video / illustration supplied later) ---- */
+  .media{
+    position:relative;border-radius:18px;overflow:hidden;
+    border:1px solid rgba(120,210,255,.45);
+    background:
+      linear-gradient(135deg, rgba(140,231,242,.16), rgba(185,168,242,.16)),
+      repeating-linear-gradient(135deg,transparent 0 11px,rgba(10,14,26,.05) 11px 12px);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    color:var(--ink-2);font-family:var(--mono);font-size:.74rem;padding:18px;
+  }
+  .media[data-ar="16:9"]{aspect-ratio:16/9}
+  .media[data-ar="4:3"]{aspect-ratio:4/3}
+  .media[data-ar="1:1"]{aspect-ratio:1/1}
+  .media[data-ar="3:4"]{aspect-ratio:3/4}
+  .media .cap{position:absolute;left:12px;bottom:9px;font-size:.66rem}
+  .media.video::after{
+    content:"▶";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:56px;height:56px;border-radius:50%;background:#fff;color:var(--ink);
+    display:grid;place-items:center;font-size:1rem;padding-left:4px;box-shadow:0 8px 24px -8px rgba(10,14,26,.4);
+  }
+  .hero-photo{margin-top:20px;border-radius:14px}
+  .hero-photo[data-ar="16:9"]{aspect-ratio:16/6}
+
+  /* refracted photo grid — the same moment, seen from more than one angle */
+  .mgrid{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .mgrid .media:nth-child(1){grid-column:span 2;grid-row:span 2}
+  .mgrid .media:nth-child(4){grid-column:span 2}
+  @media (max-width:760px){ .mgrid{grid-template-columns:1fr 1fr} .mgrid .media:nth-child(n){grid-column:auto;grid-row:auto} }
+
+  .feat .ic{width:30px;height:30px;border-radius:9px;border:1px dashed var(--ink-3);display:block;margin-bottom:8px}
+
   /* ---- learner need -> signal -> resource -> next action ---- */
   .flow{margin-top:24px;display:flex;flex-wrap:wrap;align-items:stretch;gap:0}
   .flow .step{
@@ -375,6 +406,7 @@
       <h1 data-r>知道你在哪裡，<br>為你打開下一步</h1>
       <p class="lede" data-r>一個以 AI 為核心的教與學平台。把複雜的服務、工具與資源，整理成清晰、可行的下一步。</p>
       <p class="en" data-r>An AI-native platform for teaching and learning — the right support, at the right moment, for teachers, students, and families.</p>
+      <div class="media hero-photo" data-ar="16:9" data-r><span class="cap">主視覺照片：香港課堂的探索時刻 · 待拍攝</span></div>
       <div class="dock">
         <span class="badge"><svg viewBox="-3 -3 62 60"><use href="#edcity-logo"/></svg></span>
         <a class="pill pill-blue" href="#meet">認識 EdCity</a>
@@ -410,12 +442,12 @@
       <p class="lede" data-r>EdCity 將學習管理、教學工具、智能助手與經審核的資源生態，收攏成一個以 AI 為核心的平台 &mdash; 環繞課堂、學生與家庭真正發生的時刻。</p>
     </div>
     <div class="cards">
-      <article class="feat t-blue" data-r><span class="tab">01</span><span class="n">學習支援</span><h3>一對一學習支援</h3><p>按每名學生的進度與需要，給出下一步。</p></article>
-      <article class="feat t-pink" data-r><span class="tab">02</span><span class="n">助手</span><h3>智能助手</h3><p>為特定學習情境而設的助理，教師定稿。</p></article>
-      <article class="feat t-green" data-r><span class="tab">03</span><span class="n">資源</span><h3>適時學習</h3><p>合適的資源，在需要的一刻出現。</p></article>
-      <article class="feat t-blue" data-r><span class="tab">04</span><span class="n">備課</span><h3>協作備課</h3><p>共同編寫教材、共用校本資源庫。</p></article>
-      <article class="feat t-pink" data-r><span class="tab">05</span><span class="n">管理</span><h3>學習管理</h3><p>課程、紀錄與進度，同一個視圖。</p></article>
-      <article class="feat t-green" data-r><span class="tab">06</span><span class="n">洞察</span><h3>學習洞察</h3><p>把課堂數據整理成清晰的行動。</p></article>
+      <article class="feat t-blue" data-r><span class="tab">01</span><span class="ic"></span><span class="n">學習支援</span><h3>一對一學習支援</h3><p>按每名學生的進度與需要，給出下一步。</p></article>
+      <article class="feat t-pink" data-r><span class="tab">02</span><span class="ic"></span><span class="n">助手</span><h3>智能助手</h3><p>為特定學習情境而設的助理，教師定稿。</p></article>
+      <article class="feat t-green" data-r><span class="tab">03</span><span class="ic"></span><span class="n">資源</span><h3>適時學習</h3><p>合適的資源，在需要的一刻出現。</p></article>
+      <article class="feat t-blue" data-r><span class="tab">04</span><span class="ic"></span><span class="n">備課</span><h3>協作備課</h3><p>共同編寫教材、共用校本資源庫。</p></article>
+      <article class="feat t-pink" data-r><span class="tab">05</span><span class="ic"></span><span class="n">管理</span><h3>學習管理</h3><p>課程、紀錄與進度，同一個視圖。</p></article>
+      <article class="feat t-green" data-r><span class="tab">06</span><span class="ic"></span><span class="n">洞察</span><h3>學習洞察</h3><p>把課堂數據整理成清晰的行動。</p></article>
     </div>
   </section>
 
@@ -429,6 +461,7 @@
         <a class="pill pill-ghost" href="#book">觀看示範</a>
       </div>
     </div>
+    <div class="media video" data-ar="16:9" data-r style="margin-top:20px"><span class="cap">產品示範短片 · 備課到批改的一次流程 · 待製作</span></div>
     <div class="prod blue" data-r>
       <div class="grid">
         <div class="mock">
@@ -459,6 +492,19 @@
     <div class="panel">
       <blockquote>「它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
       <p class="who">中學中文科教師 · 教師訪談摘錄（示意內容）</p>
+    </div>
+  </section>
+
+  <section class="sec" data-r>
+    <div class="sec-head">
+      <span class="eb">課堂裡的可能</span>
+      <h2>同一個時刻，多看一個角度</h2>
+    </div>
+    <div class="mgrid">
+      <div class="media" data-ar="4:3"><span class="cap">主照片：學生探索一道題的多種解法</span></div>
+      <div class="media" data-ar="1:1"><span class="cap">教師視角</span></div>
+      <div class="media" data-ar="1:1"><span class="cap">學習關係圖</span></div>
+      <div class="media" data-ar="16:9"><span class="cap">插畫：折射／可能性（大理石紋）· 待繪製</span></div>
     </div>
   </section>
 
