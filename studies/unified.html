@@ -864,7 +864,10 @@ void main(){
       gl.uniform1f(uProg, prog);
       gl.uniform2f(uPtr, ptr[0], ptr[1]);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      if(running) raf = requestAnimationFrame(frame);
+      /* the opening is meant to be clicked through in seconds; if it is
+         left sitting, stop drawing after 24s and hold the last frame */
+      if(running && elapsed < 24) raf = requestAnimationFrame(frame);
+      else running = false;
     }
     function renderOnce(fixedTime){
       gl.uniform1f(uTime, fixedTime); gl.uniform1f(uProg, 1.0); gl.uniform2f(uPtr, 0, 0);
