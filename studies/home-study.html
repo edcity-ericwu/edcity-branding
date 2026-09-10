@@ -60,13 +60,23 @@
   .icobtn.solid{background:var(--blue);color:#fff;border-color:var(--blue)}
   @media (max-width:720px){ header nav{display:none} }
 
-  /* ---- hero ---- */
+  /* ---- hero: refracted possibilities, not a bright gradient ---- */
   .hero{display:grid;grid-template-columns:1.7fr 1fr;gap:18px;margin-top:8px}
   .hero-main{
-    background:linear-gradient(150deg,#6AA0FF 0%,#5692FF 55%,#4E7EEB 100%);
+    /* translucent colour planes over a legible base + fine fluting, like light through ribbed glass */
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 22px),
+      radial-gradient(130% 80% at 16% 12%, rgba(140,231,242,.5), transparent 58%),
+      radial-gradient(120% 100% at 98% 92%, rgba(185,168,242,.5), transparent 55%),
+      radial-gradient(90% 70% at 72% 46%, rgba(252,220,198,.32), transparent 60%),
+      #2E44A6;
     color:#fff;border-radius:34px 34px 10px 34px;overflow:visible;
     min-height:clamp(440px,66vh,640px);padding:clamp(26px,4vw,44px) clamp(26px,4vw,44px) clamp(96px,12vh,120px);
     display:flex;flex-direction:column;
+  }
+  .hero-main .clip::after{
+    content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.5;
+    background:linear-gradient(115deg, transparent 38%, rgba(120,220,255,.35) 46%, rgba(255,180,230,.28) 52%, transparent 60%);
   }
   .hero-main .kick{font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;opacity:.85}
   .hero-main h1{font-size:clamp(2.2rem,5.4vw,4rem);line-height:1.05;margin-top:auto}
@@ -150,6 +160,59 @@
   .subfeats .sf{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
   .subfeats .sf b{font-family:var(--sans);font-size:.92rem;display:block;margin-bottom:4px}
   .subfeats .sf span{font-size:.82rem;color:var(--ink-2);line-height:1.45}
+
+  /* ---- refracted edge: cards read as seen through glass, from a slight angle ---- */
+  .feat,.mock,.subfeats .sf{position:relative}
+  .feat::after,.mock::after{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    border-left:1px solid rgba(120,210,255,.5);border-top:1px solid rgba(120,210,255,.35);
+    transform:translate(-3px,-3px);
+  }
+  .feat::before{
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    border-right:1px solid rgba(255,150,220,.4);border-bottom:1px solid rgba(255,150,220,.28);
+    transform:translate(3px,3px);
+  }
+  @media (prefers-reduced-motion:reduce){ .feat::after,.feat::before,.mock::after{transform:none;opacity:.6} }
+
+  /* ---- "why this recommendation?" — a visible, repeatable pattern ---- */
+  .why{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+  .why summary{
+    font-family:var(--sans);font-weight:600;font-size:.8rem;color:var(--blue-ink);cursor:pointer;
+    list-style:none;display:flex;align-items:center;gap:7px;
+  }
+  .why summary::-webkit-details-marker{display:none}
+  .why summary::before{content:"?";display:grid;place-items:center;width:16px;height:16px;border-radius:50%;
+    border:1px solid currentColor;font-size:.66rem;flex-shrink:0}
+  .why[open] summary::before{content:"–"}
+  .why ol{margin:10px 0 0;padding:0 0 0 2px;list-style:none;display:flex;flex-direction:column;gap:7px}
+  .why li{position:relative;padding-left:20px;font-size:.82rem;color:var(--ink-2);line-height:1.5}
+  .why li::before{content:"";position:absolute;left:5px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--blue)}
+  .why li:not(:last-child)::after{content:"";position:absolute;left:7px;top:13px;bottom:-7px;width:1px;background:var(--line)}
+
+  /* ---- learner need -> signal -> resource -> next action ---- */
+  .flow{margin-top:24px;display:flex;flex-wrap:wrap;align-items:stretch;gap:0}
+  .flow .step{
+    flex:1;min-width:130px;position:relative;
+    background:rgba(140,231,242,.10);border:1px solid rgba(120,210,255,.4);border-radius:14px;
+    padding:14px 14px 14px 16px;
+  }
+  .flow .step + .step{margin-left:18px}
+  .flow .step + .step::before{
+    content:"";position:absolute;left:-18px;top:50%;width:18px;height:1px;background:var(--ink-3);
+  }
+  .flow .step + .step::after{
+    content:"";position:absolute;left:-8px;top:50%;transform:translateY(-50%) rotate(45deg);
+    width:6px;height:6px;border-top:1px solid var(--ink-3);border-right:1px solid var(--ink-3);
+  }
+  .flow .step .st-k{font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+  .flow .step .st-v{font-family:var(--sans);font-weight:600;font-size:.9rem;margin-top:4px}
+  @media (max-width:760px){
+    .flow{flex-direction:column}
+    .flow .step + .step{margin-left:0;margin-top:20px}
+    .flow .step + .step::before{left:50%;top:-20px;width:1px;height:20px}
+    .flow .step + .step::after{left:50%;top:-9px;transform:translateX(-50%) rotate(135deg)}
+  }
 
   /* ---- quote ---- */
   .quote{margin-top:20px}
@@ -371,6 +434,14 @@
           <span class="m-tag">EdCity.ai · 備課建議</span>
           <p class="m-line">建議：先重溫《岳陽樓記》的借景抒情，四名學生未掌握前置概念。</p>
           <div class="m-row"><span class="m-btn solid">採用</span><span class="m-btn">調整</span><span class="m-btn">略過</span></div>
+          <details class="why">
+            <summary>為何推薦？</summary>
+            <ol>
+              <li>4 名學生上週隨堂測「借景抒情」一題未達標</li>
+              <li>本課文依賴此前置概念</li>
+              <li>關聯到校本資源：《岳陽樓記》複習包（10 分鐘）</li>
+            </ol>
+          </details>
           <div class="m-rail"><i class="on"></i><i class="on"></i><i class="now"></i><i></i><i></i></div>
         </div>
         <div class="subfeats">
@@ -418,6 +489,12 @@
           <div class="sf"><b>資源配對</b><span>按課程情境推薦合適資源。</span></div>
           <div class="sf"><b>安全審核</b><span>資料、私隱與保護兒童的把關。</span></div>
         </div>
+      </div>
+      <div class="flow" data-r>
+        <div class="step"><span class="st-k">學習需要</span><span class="st-v">中一 · 記敘文閱讀延伸</span></div>
+        <div class="step"><span class="st-k">訊號</span><span class="st-v">4 名學生閱讀速度落後一個級別</span></div>
+        <div class="step"><span class="st-k">經審核資源</span><span class="st-v">中文橋樑書單 · 親子共讀指南</span></div>
+        <div class="step"><span class="st-k">下一步</span><span class="st-v">派給家長，兩週後回看進度</span></div>
       </div>
     </div>
   </section>
