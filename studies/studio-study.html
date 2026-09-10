@@ -242,12 +242,40 @@
   .cmp .row .old{color:var(--ink-2)}
   .cmp .row .new{color:var(--ink);font-weight:500}
 
-  /* labelled placeholder — real teaching photography, not yet produced */
-  .ph{
-    margin:36px 0 0;border:1px solid var(--line-2);
+  /* labelled placeholders — editorial photography / video, supplied later */
+  .ph,.media{
+    border:1px solid var(--line-2);
     background:repeating-linear-gradient(135deg,transparent 0 11px,rgba(28,23,18,.05) 11px 12px);
     display:flex;align-items:center;justify-content:center;text-align:center;
-    color:var(--ink-3);font-family:var(--mono);font-size:.76rem;padding:24px;min-height:200px;
+    color:var(--ink-3);font-family:var(--mono);font-size:.76rem;padding:24px;position:relative;overflow:hidden;
+  }
+  .ph{margin:36px 0 0;min-height:200px}
+  .media[data-ar="21:9"]{aspect-ratio:21/9}
+  .media[data-ar="16:9"]{aspect-ratio:16/9}
+  .media[data-ar="3:2"]{aspect-ratio:3/2}
+  .media .cap{position:absolute;left:14px;bottom:10px;font-size:.68rem}
+  .media.video::after{
+    content:"▶";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:58px;height:58px;border-radius:50%;background:var(--ink);color:var(--paper);
+    display:grid;place-items:center;font-size:1rem;padding-left:4px;
+  }
+  .hero-shot{margin:clamp(36px,7vh,72px) 0 0}
+  .mgrid{margin:40px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line-2)}
+  .mgrid .media{aspect-ratio:3/2;border:0}
+  .mgrid figcaption{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);padding:8px 2px 0;background:var(--paper)}
+  @media (max-width:760px){ .mgrid{grid-template-columns:1fr} }
+
+  /* Quarterre-style index: the thread's node opens a thumbnail on hover */
+  .enum li{position:relative}
+  .enum .thumb{
+    position:absolute;right:0;top:50%;transform:translateY(-50%) scale(.96);
+    width:200px;aspect-ratio:3/2;border:1px solid var(--line-2);background:rgba(28,23,18,.05);
+    font-family:var(--mono);font-size:.62rem;color:var(--ink-3);display:none;align-items:center;justify-content:center;
+    text-align:center;padding:8px;pointer-events:none;
+  }
+  @media (min-width:900px){
+    .enum li:hover .thumb{display:flex}
+    .enum li:hover .t{color:var(--clay)}
   }
 
   @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .badge .ring{animation:none} }
@@ -318,6 +346,7 @@
         <a class="pill ghost" href="#book">預約導覽</a>
       </div>
       <p class="marg" data-r><b>01</b> 每一次登入 · 一個清晰的下一步 &nbsp;/&nbsp; The right support, the right moment</p>
+      <div class="media hero-shot" data-ar="21:9" data-r><span class="cap">全幅編輯攝影：教師與學生在課室 · 待拍攝</span></div>
     </div>
   </section>
 
@@ -336,12 +365,12 @@
       <h2 data-r>把教與學的每個時刻，整合到一個平台。</h2>
       <p class="lead" data-r>EdCity 將學習管理、教學工具、智能助手與經審核的資源生態，收攏成一個以 AI 為核心的平台 &mdash; 環繞課堂、學生與家庭真正發生的時刻。</p>
       <ol class="enum">
-        <li data-r><span class="n">01</span><span class="t">一對一學習支援</span><span class="d">按每名學生的進度與需要，給出下一步。</span></li>
-        <li data-r><span class="n">02</span><span class="t">智能助手</span><span class="d">為特定學習情境而設的助理，教師定稿。</span></li>
-        <li data-r><span class="n">03</span><span class="t">適時學習</span><span class="d">合適的資源，在需要的一刻出現。</span></li>
-        <li data-r><span class="n">04</span><span class="t">協作備課</span><span class="d">共同編寫教材、共用校本資源庫。</span></li>
-        <li data-r><span class="n">05</span><span class="t">學習管理</span><span class="d">課程、紀錄與進度，同一個視圖。</span></li>
-        <li data-r><span class="n">06</span><span class="t">學習洞察</span><span class="d">把課堂數據整理成清晰的行動。</span></li>
+        <li data-r><span class="n">01</span><span class="t">一對一學習支援</span><span class="d">按每名學生的進度與需要，給出下一步。</span><span class="thumb">配圖：學生與進度視圖</span></li>
+        <li data-r><span class="n">02</span><span class="t">智能助手</span><span class="d">為特定學習情境而設的助理，教師定稿。</span><span class="thumb">配圖：教師檢視助手草稿</span></li>
+        <li data-r><span class="n">03</span><span class="t">適時學習</span><span class="d">合適的資源，在需要的一刻出現。</span><span class="thumb">配圖：課堂上翻開資源</span></li>
+        <li data-r><span class="n">04</span><span class="t">協作備課</span><span class="d">共同編寫教材、共用校本資源庫。</span><span class="thumb">配圖：科組一起備課</span></li>
+        <li data-r><span class="n">05</span><span class="t">學習管理</span><span class="d">課程、紀錄與進度，同一個視圖。</span><span class="thumb">配圖：班級總覽畫面</span></li>
+        <li data-r><span class="n">06</span><span class="t">學習洞察</span><span class="d">把課堂數據整理成清晰的行動。</span><span class="thumb">配圖：洞察轉為下一步</span></li>
       </ol>
     </div>
   </section>
@@ -380,7 +409,12 @@
     <div class="wrap">
       <blockquote>「它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
       <p class="who">中學中文科教師 · 教師訪談摘錄（示意內容）</p>
-      <div class="ph">課堂實況照片（教師與學生、備課討論、同儕協作）· 待拍攝<br>teaching &amp; collaboration photography — placeholder</div>
+      <div class="media video" data-ar="16:9" style="margin-top:32px"><span class="cap">教師訪談影片 · 3–4 分鐘 · 待拍攝</span></div>
+      <figure class="mgrid">
+        <div><div class="media" data-ar="3:2"><span class="cap">備課</span></div><figcaption>與 AI 一起備課，教師定稿</figcaption></div>
+        <div><div class="media" data-ar="3:2"><span class="cap">課堂</span></div><figcaption>課堂上的即時支援</figcaption></div>
+        <div><div class="media" data-ar="3:2"><span class="cap">家校</span></div><figcaption>一句可以行動的話，給家長</figcaption></div>
+      </figure>
     </div>
   </section>
 
