@@ -221,8 +221,8 @@
     fill:none;stroke:var(--clay);stroke-width:1.4;stroke-linecap:round;
     stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--t,0));vector-effect:non-scaling-stroke;
   }
-  .thread circle{fill:var(--paper);stroke:var(--clay);stroke-width:1.4;vector-effect:non-scaling-stroke;transition:fill .3s}
-  .thread circle.on{fill:var(--clay)}
+  .thread ellipse{fill:var(--paper);stroke:var(--clay);stroke-width:1.4;vector-effect:non-scaling-stroke;transition:fill .3s}
+  .thread ellipse.on{fill:var(--clay)}
   @media (max-width:1000px){ .thread{display:none} }
   @media (prefers-reduced-motion:reduce){ .thread path{stroke-dashoffset:0} }
 
@@ -569,18 +569,22 @@
     if(!thread) return;
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var secs = [].slice.call(document.querySelectorAll('main .sec, main .close-cta'));
+    var vb = 1000, aspect = 1;
+    function nodeR(){ var r = thread.getBoundingClientRect(); aspect = (r.height/vb) / (r.width/24) || 1; }
     var nodes = secs.map(function(){
-      var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      c.setAttribute('r','3.4'); c.setAttribute('cx','12');
+      var c = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+      c.setAttribute('cx','12'); c.setAttribute('rx','3.2'); c.setAttribute('ry','3.2');
       thread.appendChild(c); return c;
     });
     var main = document.querySelector('main');
     var raf = 0;
     function layout(){
       var mTop = main.offsetTop, mH = main.offsetHeight || 1;
+      nodeR();
       secs.forEach(function(s, i){
         var y = (s.getBoundingClientRect().top + window.scrollY - mTop) / mH * 1000;
         nodes[i].setAttribute('cy', Math.max(0, Math.min(1000, y)).toFixed(1));
+        nodes[i].setAttribute('ry', (3.2 / aspect).toFixed(2));
       });
     }
     function update(){
