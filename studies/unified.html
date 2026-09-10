@@ -192,8 +192,8 @@
   /* ============ generic section ============ */
   section.blk{padding:clamp(60px,10vw,120px) 0}
   section.blk.panel{background:var(--panel)}
-  .eyebrow{font-family:var(--sans);font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 16px;color:var(--brand)}
-  .blk.spark .eyebrow{color:var(--spark-deep)}
+  .eyebrow{font-family:var(--sans);font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 16px;color:var(--ink-3)}
+  .blk.spark .eyebrow{color:var(--ink-3)}
   h2.big{font-size:clamp(2rem,5vw,3.3rem);line-height:1.08}
   .lead{max-width:54ch;color:var(--ink-2);font-size:1.06rem;margin:18px 0 0}
   .center{text-align:center}
@@ -211,9 +211,7 @@
   .cards6 .c .n{font-family:var(--mono);font-size:.72rem;color:var(--ink-3)}
   .cards6 .c b{font-family:var(--sans);font-size:1.04rem}
   .cards6 .c span{font-size:.9rem;color:var(--ink-2);line-height:1.5}
-  .cards6 .c i{width:22px;height:22px;border-radius:6px;background:var(--brand);opacity:.9;display:block}
-  .cards6 .c:nth-child(3n-1) i{background:var(--spark)}
-  .cards6 .c:nth-child(3n) i{background:var(--ok)}
+  .cards6 .c i{width:26px;height:1px;background:var(--ink-3);display:block;margin-bottom:4px}
   @media (max-width:860px){ .cards6{grid-template-columns:1fr 1fr} }
   @media (max-width:520px){ .cards6{grid-template-columns:1fr} }
 
@@ -240,8 +238,8 @@
 
   /* feature row */
   .features{max-width:var(--wrap);margin:52px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;text-align:left}
-  .features .f{border-top:2px solid var(--brand);padding-top:14px}
-  .blk.spark .features .f{border-top-color:var(--spark)}
+  .features .f{border-top:1px solid var(--ink);padding-top:14px}
+  .blk.spark .features .f{border-top-color:var(--ink)}
   .features .f b{font-family:var(--sans);font-size:.98rem;display:block;margin-bottom:5px}
   .features .f span{font-size:.86rem;color:var(--ink-2);line-height:1.5}
   @media (max-width:860px){ .features{grid-template-columns:1fr 1fr} }
@@ -262,9 +260,9 @@
   .cmp .row > div{padding:16px 18px;font-size:.92rem;line-height:1.5}
   .cmp .row .h{font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
   .cmp .row .k{font-family:var(--sans);font-weight:600;color:var(--ink)}
-  .cmp .row .old{color:var(--ink-2);background:var(--paper)}
-  .cmp .row .new{color:var(--ink);background:color-mix(in srgb,var(--brand) 8%,var(--paper))}
-  .cmp .head .new{background:color-mix(in srgb,var(--brand) 16%,var(--paper));color:var(--brand-deep)}
+  .cmp .row .old{color:var(--ink-3);background:var(--paper)}
+  .cmp .row .new{color:var(--ink);background:var(--panel);box-shadow:inset 2px 0 0 var(--ink)}
+  .cmp .head .new{color:var(--ink);font-weight:700}
   .blk.panel .cmp .row .old{background:var(--panel)}
   @media (max-width:640px){
     .cmp .row{grid-template-columns:1fr}
@@ -276,7 +274,7 @@
   .updates .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
   .updates .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:8px;min-height:150px}
   .blk.panel .updates .card{background:var(--panel-2)}
-  .updates .card .k{font-family:var(--sans);font-weight:700;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}
+  .updates .card .k{font-family:var(--sans);font-weight:700;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
   .updates .card p{margin:0;font-size:.95rem}
   .updates .card .meta{margin-top:auto;font-size:.78rem;color:var(--ink-3)}
   @media (max-width:820px){ .updates .grid{grid-template-columns:1fr} }
@@ -331,20 +329,103 @@
 
   :focus-visible{outline:2px solid var(--brand);outline-offset:3px}
 
+  /* ============ guided thresholds ============ */
+  /* progress rail — a quiet orientation cue down the left edge (desktop) */
+  .rail{
+    position:fixed;left:max(14px,2vw);top:0;bottom:0;width:1px;z-index:15;
+    background:var(--line);display:none;
+  }
+  @media (min-width:1180px){ .rail{display:block} body{--rail-pad:26px} }
+  .rail .fill{position:absolute;left:0;top:0;width:1px;height:0;background:var(--ink);transition:height .15s linear}
+  .rail .tick{
+    position:absolute;left:-3px;width:7px;height:7px;border:1px solid var(--ink-3);
+    background:var(--paper);border-radius:50%;transform:translateY(-50%);transition:background .3s,border-color .3s;
+  }
+  .rail .tick.done{background:var(--ink);border-color:var(--ink)}
+  .rail .tick.here{background:var(--brand);border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent)}
+  .rail .now{
+    position:absolute;left:16px;transform:translateY(-50%);white-space:nowrap;
+    font:600 .64rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+    opacity:0;transition:opacity .3s, top .25s ease;
+  }
+  .rail.awake .now{opacity:1}
+
+  /* threshold — the doorway between two sections */
+  .threshold{
+    position:relative;height:1px;background:var(--line);
+    max-width:var(--wrap);margin:0 auto;
+  }
+  .threshold::before{
+    content:"";position:absolute;left:50%;top:50%;width:150px;height:9px;
+    background:var(--paper);transform:translate(-50%,-50%);
+    transition:width .5s cubic-bezier(.2,.7,.2,1);
+  }
+  .blk.panel + .threshold::before,.threshold.on-panel::before{background:var(--panel)}
+  .threshold .mark{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    font:600 .6rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
+    transition:opacity .5s .1s;
+  }
+  .threshold .mark svg{width:11px;height:7px;color:var(--brand)}
+  html.r .threshold:not(.in)::before{width:0}
+  html.r .threshold:not(.in) .mark{opacity:0}
+
+  /* nested frame — each block quietly framed; top+left draw in on entry */
+  .blk{position:relative}
+  .blk > .wrap{position:relative}
+  .blk > .wrap::before{
+    content:"";position:absolute;left:-14px;right:-14px;top:-22px;bottom:-22px;
+    border:1px solid var(--line);border-right:0;border-bottom:0;pointer-events:none;
+    transition:clip-path .7s cubic-bezier(.2,.7,.2,1);
+  }
+  html.r .blk:not(.in) > .wrap::before{clip-path:inset(0 100% 100% 0)}
+  @media (max-width:760px){ .blk > .wrap::before{display:none} }
+
+  /* plain-language governance note — a warmth / reassurance point */
+  .governance{
+    max-width:var(--wrap);margin:36px auto 0;display:flex;flex-wrap:wrap;gap:10px 22px;
+    font-family:var(--sans);font-size:.82rem;color:var(--ink-2);
+  }
+  .governance span{display:flex;align-items:center;gap:8px}
+  .governance span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--ok);flex-shrink:0}
+
+  /* labelled placeholder — for real classroom photography, not yet produced */
+  .ph{
+    position:relative;border:1px dashed var(--ink-3);border-radius:var(--radius);
+    background:repeating-linear-gradient(135deg,transparent 0 10px,color-mix(in srgb,var(--ink-3) 8%,transparent) 10px 11px);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    color:var(--ink-3);font-family:var(--mono);font-size:.74rem;padding:20px;min-height:180px;
+  }
+  .ph.wide{margin:40px auto 0;max-width:var(--wrap)}
+
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     *{animation:none!important;transition:none!important}
     html.r [data-r]{opacity:1;transform:none}
+    html.r .threshold::before{width:64px}
+    html.r .threshold .mark{opacity:1}
+    html.r .blk > .wrap::before{clip-path:inset(0 0 0 0)}
   }
 
   /* ============ WebGL opening ============ */
-  body.intro-lock{overflow:hidden}
+  /* deliberately non-blocking: no scroll lock; skip / Esc / click / scroll all dismiss */
   #intro{
     position:fixed;inset:0;z-index:999;overflow:hidden;
     background:#0B1024;color:#FBFCFE;cursor:pointer;
     font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
     transition:opacity .9s ease, transform .9s ease;
   }
+  #intro .skip{
+    position:absolute;top:clamp(16px,3.4vh,26px);right:clamp(20px,4.5vw,44px);z-index:4;
+    background:rgba(251,252,254,.1);border:1px solid rgba(251,252,254,.28);color:#FBFCFE;
+    font:600 .72rem/1 "Archivo",sans-serif;letter-spacing:.06em;
+    padding:9px 16px;border-radius:999px;cursor:pointer;
+    -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+    animation:in-up .8s ease-out .3s both;
+  }
+  #intro .skip:hover{background:rgba(251,252,254,.2)}
+  #intro .skip:focus-visible{outline:2px solid #FBFCFE;outline-offset:3px}
   #intro.gone{opacity:0;transform:translateY(-4%);pointer-events:none}
   #intro .stage{
     position:absolute;inset:0;
@@ -458,11 +539,12 @@
     <div class="grain-fallback"></div>
     <div class="vignette"></div>
   </div>
+  <button class="skip" id="introSkip" type="button">跳過 · Skip</button>
   <div class="frame" aria-hidden="true">
     <div class="fr fr-top"><span>EdCity</span><span class="ln"></span><span>開場 · Opening</span></div>
     <div class="fr fr-bottom"><span>香港教育城</span><span class="ln"></span><span>hkedcity.hk</span></div>
     <div class="fr fr-left"><span>2026</span><span class="ln"></span><span>香港 · Hong Kong</span></div>
-    <div class="fr fr-right"><span>Brand study</span><span class="ln"></span><span>Three takes · One direction</span></div>
+    <div class="fr fr-right"><span>Brand study</span><span class="ln"></span><span>Calm Momentum</span></div>
   </div>
   <div class="content">
     <div class="bloom"></div>
@@ -470,7 +552,7 @@
     <h1 class="mark"><svg viewBox="0 0 179 54" role="img" aria-label="EdCity"><use href="#edcity-logo"/></svg></h1>
     <p class="tag">育人為本 · 素養為先 · 應用導向 · 智能向善</p>
   </div>
-  <p class="hint">點擊任意位置進入 · Click anywhere</p>
+  <p class="hint">捲動或點擊進入 · Scroll, click, or press Esc</p>
 </div>
 
 <script id="vert" type="x-shader/x-vertex">
@@ -597,6 +679,8 @@ void main(){
   <p class="meta">香港教育城 · 教與學的智能夥伴</p>
 </div>
 
+<nav class="rail" id="rail" aria-hidden="true"><span class="fill" id="railFill"></span><span class="now" id="railNow"></span></nav>
+
 <main id="top">
 
   <section class="hero">
@@ -631,6 +715,8 @@ void main(){
       </ul>
     </div>
   </section>
+
+  <div class="threshold"><span class="mark"><svg viewBox="0 0 11 7" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>認識 EdCity</span></div>
 
   <section class="blk center" id="meet">
     <div class="wrap">
@@ -680,9 +766,12 @@ void main(){
     <div class="wrap">
       <blockquote data-r>&ldquo;它沒有取代我的判斷，而是讓我更快看到全班的需要。&rdquo;</blockquote>
       <p class="who" data-r><b>中學中文科教師</b> · 教師訪談摘錄（示意內容）</p>
+      <div class="ph wide" data-r style="min-height:220px;margin-top:32px">課堂實況照片（教師、學生、協作）· 待拍攝 · classroom photography placeholder</div>
       <div class="cta-row center" data-r><a class="pill pill-ghost" href="#book">觀看訪談影片</a></div>
     </div>
   </section>
+
+  <div class="threshold on-panel"><span class="mark"><svg viewBox="0 0 11 7" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>教育生態系統</span></div>
 
   <section class="blk center spark" id="ecosystem">
     <div class="wrap">
@@ -709,8 +798,15 @@ void main(){
         <div class="f" data-r><b>資源配對</b><span>按課程情境推薦合適資源。</span></div>
         <div class="f" data-r><b>安全審核</b><span>資料、私隱與保護兒童的把關。</span></div>
       </div>
+      <div class="governance" data-r>
+        <span>學生資料留在本地，不作模型訓練</span>
+        <span>家長可查看給孩子的每一項建議</span>
+        <span>教師可隨時關閉 AI 建議</span>
+      </div>
     </div>
   </section>
+
+  <div class="threshold"><span class="mark"><svg viewBox="0 0 11 7" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>為何不同</span></div>
 
   <section class="blk" id="compare">
     <div class="wrap">
@@ -821,8 +917,6 @@ void main(){
     var ptr = [0,0], ptrTarget = [0,0], DPR = Math.min(window.devicePixelRatio || 1, 1.75);
     var uRes, uTime, uProg, uPtr;
 
-    document.body.classList.add('intro-lock');
-
     function compile(type, src){
       var s = gl.createShader(type);
       gl.shaderSource(s, src); gl.compileShader(s);
@@ -900,7 +994,6 @@ void main(){
       if(dismissed) return;
       dismissed = true;
       intro.classList.add('gone');
-      document.body.classList.remove('intro-lock');
       running = false; cancelAnimationFrame(raf);
       setTimeout(function(){ intro.style.display = 'none'; }, 950);
       window.removeEventListener('keydown', onKey);
@@ -909,6 +1002,7 @@ void main(){
     }
     function onKey(e){ if(['Enter',' ','Spacebar','Escape'].indexOf(e.key) !== -1) dismiss(); }
     intro.addEventListener('click', dismiss);
+    document.getElementById('introSkip').addEventListener('click', function(e){ e.stopPropagation(); dismiss(); });
     window.addEventListener('keydown', onKey);
     window.addEventListener('wheel', dismiss, { passive: true });
     window.addEventListener('touchmove', dismiss, { passive: true });
@@ -918,7 +1012,6 @@ void main(){
       intro.style.display = '';
       void intro.offsetWidth;
       intro.classList.remove('gone');
-      document.body.classList.add('intro-lock');
       window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
       if(gl && !intro.classList.contains('nogl')) run();
       window.addEventListener('keydown', onKey);
@@ -983,6 +1076,69 @@ void main(){
       });
     };
     runIn(document.documentElement.getAttribute('data-p') || 'b');
+  })();
+
+  /* ---------- guided thresholds: section frames + doorway dividers ---------- */
+  (function(){
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var marked = [].slice.call(document.querySelectorAll('.threshold, .blk'));
+    if(reduce){ marked.forEach(function(e){ e.classList.add('in'); }); }
+    else {
+      var io = new IntersectionObserver(function(en){
+        en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+      }, { rootMargin: '0px 0px -8% 0px' });
+      marked.forEach(function(e){
+        if(e.getBoundingClientRect().top < window.innerHeight) e.classList.add('in');
+        else io.observe(e);
+      });
+    }
+  })();
+
+  /* ---------- progress rail: quiet orientation down the left edge ---------- */
+  (function(){
+    var rail = document.getElementById('rail');
+    var fill = document.getElementById('railFill');
+    var now  = document.getElementById('railNow');
+    if(!rail) return;
+    var STOPS = [
+      ['top','首頁'], ['meet','認識 EdCity'], ['edcity-ai','EdCity.ai'],
+      ['ecosystem','生態系統'], ['compare','為何不同'], ['about','最新動向'], ['book','下一步']
+    ];
+    var nodes = STOPS.map(function(s){ return { el: document.getElementById(s[0]), label: s[1] }; })
+                     .filter(function(n){ return n.el; });
+    var ticks = nodes.map(function(n){
+      var t = document.createElement('span'); t.className = 'tick'; rail.appendChild(t); return t;
+    });
+    var raf = 0;
+    function place(){
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      nodes.forEach(function(n, i){
+        var y = n.el.getBoundingClientRect().top + window.scrollY;
+        n.pct = Math.max(0, Math.min(1, y / docH));
+        ticks[i].style.top = (n.pct * 100) + '%';
+      });
+    }
+    function update(){
+      raf = 0;
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      var p = docH > 0 ? window.scrollY / docH : 0;
+      fill.style.height = (p * 100) + '%';
+      var cur = 0;
+      nodes.forEach(function(n, i){
+        var passed = window.scrollY + window.innerHeight * 0.32 >= n.el.getBoundingClientRect().top + window.scrollY;
+        ticks[i].classList.toggle('done', passed && i < nodes.length);
+        if(passed) cur = i;
+      });
+      ticks.forEach(function(t, i){ t.classList.toggle('here', i === cur); ticks[i].classList.toggle('done', i < cur); });
+      now.textContent = nodes[cur].label;
+      now.style.top = ticks[cur].style.top;
+      rail.classList.toggle('awake', window.scrollY > 40);
+    }
+    function onScroll(){ if(!raf) raf = requestAnimationFrame(update); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function(){ place(); update(); });
+    window.addEventListener('load', function(){ place(); update(); });
+    place(); update();
   })();
 
   /* ---------- colour-cycling menu ---------- */
