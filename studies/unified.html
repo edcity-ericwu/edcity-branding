@@ -946,10 +946,13 @@ void main(){
       if(replay) runIn(p);
     }
     btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set, true); }); });
+    /* ?p=a|b|c in the URL wins — lets the index link a specific option; otherwise remember the last choice */
+    var forced = (location.search.match(/[?&]p=([abc])\b/) || [])[1];
     var saved;
     try{ saved = localStorage.getItem(KEY); }catch(e){}
-    if(saved && NAMES[saved] && saved !== 'b') apply(saved, false);
-    else pName.textContent = NAMES[root.getAttribute('data-p') || 'b'];
+    var pick = forced || (saved && NAMES[saved] ? saved : 'b');
+    if(pick !== 'b') apply(pick, false);
+    else { root.setAttribute('data-p','b'); pName.textContent = NAMES.b; try{ localStorage.setItem(KEY,'b'); }catch(e){} }
 
     window.__applyPalette = apply;
   })();
