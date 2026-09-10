@@ -188,7 +188,54 @@
   .partners{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
   .partners .wrap{padding:26px clamp(20px,5vw,44px)}
   .partners p{font-size:.78rem;letter-spacing:.02em;color:var(--ink-3);margin:0 0 14px;font-family:var(--sans);font-weight:600;text-transform:uppercase}
-  .partners ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:14px 34px;font-family:var(--sans);font-weight:700;font-size:1.05rem;color:var(--ink-3)}
+  .partners ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+  .partners li{
+    height:40px;border:1px dashed var(--ink-3);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:.66rem;color:var(--ink-3);text-align:center;padding:4px;
+  }
+  @media (max-width:760px){ .partners ul{grid-template-columns:repeat(3,1fr)} }
+
+  /* ============ media placeholders — the client supplies photos / logos / video later ============ */
+  .media{
+    position:relative;border:1px dashed var(--ink-3);border-radius:var(--radius);overflow:hidden;
+    background:repeating-linear-gradient(135deg,transparent 0 10px,color-mix(in srgb,var(--ink-3) 8%,transparent) 10px 11px);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    color:var(--ink-3);font-family:var(--mono);font-size:.74rem;padding:16px;
+  }
+  .media[data-ar="16:9"]{aspect-ratio:16/9}
+  .media[data-ar="4:3"]{aspect-ratio:4/3}
+  .media[data-ar="1:1"]{aspect-ratio:1/1}
+  .media[data-ar="21:9"]{aspect-ratio:21/9}
+  .media.video::after{
+    content:"▶";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:56px;height:56px;border-radius:50%;background:var(--ink);color:var(--paper);
+    display:grid;place-items:center;font-size:1rem;padding-left:4px;
+  }
+  .media .cap{position:absolute;left:10px;bottom:8px;font-size:.68rem}
+
+  .mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+  .mgrid .media{aspect-ratio:4/3}
+  @media (max-width:760px){ .mgrid{grid-template-columns:1fr 1fr} }
+
+  .carousel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;margin-top:24px}
+  .carousel > *{scroll-snap-align:start;flex:0 0 clamp(240px,32vw,320px)}
+  .carousel .media{aspect-ratio:16/10}
+
+  .stories{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
+  .stories .st{border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--paper)}
+  .stories .st .logo{height:26px;border:1px dashed var(--ink-3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.6rem;color:var(--ink-3)}
+  .stories .st b{font-family:var(--sans);font-size:1.4rem;letter-spacing:-.02em}
+  .stories .st span{font-size:.82rem;color:var(--ink-2)}
+  @media (max-width:860px){ .stories{grid-template-columns:1fr 1fr} }
+
+  .trust{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;max-width:var(--wrap);margin:28px auto 0}
+  .trust .t{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:.74rem;color:var(--ink-2)}
+  .trust .t i{width:34px;height:34px;border:1px dashed var(--ink-3);border-radius:9px;display:block}
+  @media (max-width:760px){ .trust{grid-template-columns:repeat(3,1fr)} }
+
+  .qphoto{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:18px}
+  .qphoto .head{width:44px;height:44px;border-radius:50%;border:1px dashed var(--ink-3);flex-shrink:0}
 
   /* ============ generic section ============ */
   section.blk{padding:clamp(60px,10vw,120px) 0}
@@ -712,7 +759,10 @@ void main(){
     <div class="wrap">
       <p>與全港中小學、大專院校及夥伴機構協作</p>
       <ul>
-        <li>官立中學</li><li>資助小學</li><li>特殊學校</li><li>大專院校</li><li>出版夥伴</li><li>服務機構</li>
+        <li>官立中學 標誌</li><li>資助小學 標誌</li><li>特殊學校 標誌</li>
+        <li>大專院校 標誌</li><li>出版夥伴 標誌</li><li>服務機構 標誌</li>
+        <li>學校標誌</li><li>學校標誌</li><li>學校標誌</li>
+        <li>學校標誌</li><li>學校標誌</li><li>學校標誌</li>
       </ul>
     </div>
   </section>
@@ -754,6 +804,9 @@ void main(){
         </div>
         <div class="m-rail"><i class="on"></i><i class="on"></i><i class="now"></i><i></i><i></i></div>
       </div>
+      <div class="media video" data-ar="16:9" data-r style="max-width:var(--wrap);margin:32px auto 0">
+        <span class="cap">產品示範短片 · EdCity.ai 備課流程 · 待製作</span>
+      </div>
       <div class="features">
         <div class="f" data-r><b>生成教材</b><span>工作紙、簡報、評估，數分鐘完成。</span></div>
         <div class="f" data-r><b>備課建議</b><span>按班別學習數據，指出當堂重點。</span></div>
@@ -766,8 +819,13 @@ void main(){
   <section class="blk center quote panel">
     <div class="wrap">
       <blockquote data-r>&ldquo;它沒有取代我的判斷，而是讓我更快看到全班的需要。&rdquo;</blockquote>
-      <p class="who" data-r><b>中學中文科教師</b> · 教師訪談摘錄（示意內容）</p>
-      <div class="ph wide" data-r style="min-height:220px;margin-top:32px">課堂實況照片（教師、學生、協作）· 待拍攝 · classroom photography placeholder</div>
+      <div class="qphoto" data-r><span class="head"></span><p class="who"><b>陳老師</b> · 中學中文科 · 教師訪談摘錄（示意）</p></div>
+      <div class="stories" data-r>
+        <div class="st"><span class="logo">學校標誌</span><b>−30%</b><span>備課時間（示意數字）</span></div>
+        <div class="st"><span class="logo">學校標誌</span><b>4×</b><span>更快看到全班需要</span></div>
+        <div class="st"><span class="logo">學校標誌</span><b>92%</b><span>教師保留最終決定</span></div>
+        <div class="st"><span class="logo">學校標誌</span><b>1</b><span>每次登入一個下一步</span></div>
+      </div>
       <div class="cta-row center" data-r><a class="pill pill-ghost" href="#book">觀看訪談影片</a></div>
     </div>
   </section>
@@ -803,6 +861,14 @@ void main(){
         <span>學生資料留在本地，不作模型訓練</span>
         <span>家長可查看給孩子的每一項建議</span>
         <span>教師可隨時關閉 AI 建議</span>
+      </div>
+      <div class="trust" data-r>
+        <span class="t"><i></i>資料本地</span>
+        <span class="t"><i></i>私隱保護</span>
+        <span class="t"><i></i>保護兒童</span>
+        <span class="t"><i></i>存取控制</span>
+        <span class="t"><i></i>稽核紀錄</span>
+        <span class="t"><i></i>傳輸加密</span>
       </div>
     </div>
   </section>
@@ -843,34 +909,30 @@ void main(){
           <div class="new">即時洞察，指向具體行動。</div>
         </div>
       </div>
+      <div class="media" data-ar="21:9" data-r style="max-width:var(--wrap);margin:28px auto 0">
+        <span class="cap">產品畫面：學習洞察面板（進度 · 需要 · 下一步同一視圖）· 待提供</span>
+      </div>
     </div>
   </section>
 
   <section class="blk updates panel" id="about">
     <div class="wrap">
       <h2 class="big" data-r style="font-size:clamp(1.5rem,3.4vw,2rem)">最新動向</h2>
-      <div class="grid">
-        <div class="card" data-r>
-          <span class="k">教師工作坊</span>
-          <p>AI 與讀寫教學 &mdash; 實作坊</p>
-          <span class="meta">2026 年秋季 · 示意內容</span>
-        </div>
-        <div class="card" data-r>
-          <span class="k">產品更新</span>
-          <p>學習洞察面板 &mdash; 新增班別比較</p>
-          <span class="meta">更新記錄 · 示意內容</span>
-        </div>
-        <div class="card" data-r>
-          <span class="k">活動</span>
-          <p>EdCity AI 教育峰會 &mdash; 香港</p>
-          <span class="meta">日期待定 · 示意內容</span>
-        </div>
+      <div class="carousel" data-r>
+        <div><div class="media" data-ar="16:9"><span class="cap">教師工作坊照片</span></div><p style="margin:8px 0 0;font-size:.9rem">AI 與讀寫教學 — 實作坊 <span style="color:var(--ink-3)">· 2026 秋</span></p></div>
+        <div><div class="media" data-ar="16:9"><span class="cap">產品更新畫面</span></div><p style="margin:8px 0 0;font-size:.9rem">學習洞察面板 — 新增班別比較 <span style="color:var(--ink-3)">· 更新記錄</span></p></div>
+        <div><div class="media" data-ar="16:9"><span class="cap">活動主視覺</span></div><p style="margin:8px 0 0;font-size:.9rem">EdCity AI 教育峰會 — 香港 <span style="color:var(--ink-3)">· 日期待定</span></p></div>
+        <div><div class="media" data-ar="16:9"><span class="cap">個案研究照片</span></div><p style="margin:8px 0 0;font-size:.9rem">學校個案 — 中文科組 <span style="color:var(--ink-3)">· 示意</span></p></div>
+        <div><div class="media" data-ar="16:9"><span class="cap">教師分享短片</span></div><p style="margin:8px 0 0;font-size:.9rem">三位老師談 AI 與判斷 <span style="color:var(--ink-3)">· 待製作</span></p></div>
       </div>
     </div>
   </section>
 
+  <div class="threshold"><span class="mark"><svg viewBox="0 0 11 7" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>下一步</span></div>
+
   <section class="band" id="book">
     <div class="wrap">
+      <div class="media" data-ar="21:9" data-r style="margin-bottom:36px"><span class="cap">全幅照片：香港的課室與校園 · 待拍攝</span></div>
       <h2 data-r>由一個清晰的下一步開始</h2>
       <p data-r>為你的學校預約一次導覽。</p>
       <div class="cta-row center" data-r><a class="pill pill-ink" href="#top">預約導覽</a></div>
