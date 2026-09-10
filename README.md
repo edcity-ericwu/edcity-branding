@@ -16,6 +16,8 @@ The direction combines three propositions into one system with a layered job spl
 | B · Clear Field, Bright Signal | `palette-study-cool.html` | `landing.html` | sanalabs.com |
 | C · Bright Field, Two Points | `palette-study-vivid.html` | `home-study.html` | amita-oshiete.jp |
 
+**To compare them fairly:** `unified.html` renders one page — one section skeleton, one set of copy — with a palette switch (A/B/C) that swaps only colour, corner-radius, body type and load-in motion. Everything else is held constant, so the switch isolates what each option changes. Section structure follows sanalabs.com/products/sana-learn.
+
 ## studies/
 
 | File | What it is |
@@ -31,6 +33,7 @@ The direction combines three propositions into one system with a layered job spl
 | `opening-screen.html` | Animated opening screen — a grainy blue-to-coral gradient mesh (CSS radial blobs) that rises like a sunrise on load, carrying the wordmark and tagline. Built on the Option B scale. |
 | `opening-screen-v2.html` | The same idea with a WebGL fragment shader — domain-warped fractal noise across the palette, in-shader film grain, pointer parallax, a `progress` uniform driving the sunrise reveal. CSS-gradient + reduced-motion fallbacks. |
 | `landing.html` | Landing-page study — a Sana-style structure (centred hero, partner strip, two product sections, testimonial, updates, CTA) in the Option B palette, prefaced by the dawn opening screen. |
+| `unified.html` | The three options on **one** page — identical structure and copy, a bottom-right switch (A/B/C) swapping only palette, corner-radius, body type and load-in motion. Adds a "Meet EdCity" six-card section and an AI-comparison table over `landing.html`. Built as a controlled side-by-side; structure after sanalabs.com/products/sana-learn. |
 
 `imagery-notes.md` — mood-board links (Pinterest, per direction), the no-lifting-reference-images rule, and a "hero space" reference for later.
 

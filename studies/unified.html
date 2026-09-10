@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="zh-Hant" data-p="b">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EdCity Unified Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  /* ============ palette / style tokens ============ */
+  :root, [data-p="b"]{
+    --paper:#FBFCFE; --panel:#F0F3FC; --panel-2:#EAF0FF;
+    --ink:#0E1626; --ink-2:#48526A; --ink-3:#7C879F; --line:#E2E7F4;
+    --brand:#2450E6; --brand-deep:#12307A; --spark:#FF6A3D; --spark-deep:#DC490F;
+    --ok:#2450E6;
+    --mesh-1:rgba(110,139,245,.60); --mesh-2:rgba(255,106,61,.62); --mesh-3:rgba(169,155,224,.5);
+    --radius:12px; --radius-lg:18px;
+    --font-body:"Noto Sans TC","Archivo",system-ui,sans-serif;
+    --r-y:11px; --r-scale:1; --r-dur:.42s; --r-ease:cubic-bezier(.2,.6,.2,1);
+    --grain-op:.34;
+  }
+  [data-p="a"]{
+    --paper:#F5F0E5; --panel:#EBE4D5; --panel-2:#E4DAC6;
+    --ink:#1C1712; --ink-2:#5A5147; --ink-3:#8A7F70; --line:#DBD1BE;
+    --brand:#34415C; --brand-deep:#232D42; --spark:#BA3D04; --spark-deep:#8F2E03;
+    --ok:#5E6A50;
+    --mesh-1:rgba(110,124,153,.52); --mesh-2:rgba(178,106,68,.5); --mesh-3:rgba(203,194,178,.6);
+    --radius:4px; --radius-lg:6px;
+    --font-body:"Source Serif 4",Georgia,"Noto Sans TC",serif;
+    --r-y:30px; --r-scale:1; --r-dur:.8s; --r-ease:cubic-bezier(.15,.85,.45,1);
+    --grain-op:.28;
+  }
+  [data-p="c"]{
+    --paper:#F7F9FF; --panel:#ECF2FF; --panel-2:#E4EBFF;
+    --ink:#0A0E1A; --ink-2:#3B4463; --ink-3:#7C879F; --line:#DAE4FA;
+    --brand:#3B78F0; --brand-deep:#2C63D6; --spark:#F35BEC; --spark-deep:#C42BBD;
+    --ok:#12E27E;
+    --mesh-1:rgba(86,146,255,.55); --mesh-2:rgba(243,91,236,.5); --mesh-3:rgba(140,231,242,.5);
+    --radius:22px; --radius-lg:30px;
+    --font-body:"Noto Sans TC","Archivo",system-ui,sans-serif;
+    --r-y:22px; --r-scale:.965; --r-dur:.6s; --r-ease:cubic-bezier(.2,.9,.3,1.06);
+    --grain-op:.4;
+  }
+  :root{
+    color-scheme:light;
+    --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+    --wrap:1120px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--font-body);font-size:1rem;line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color .35s ease, color .35s ease;
+  }
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{font-family:var(--sans);font-weight:700;letter-spacing:-.02em;text-wrap:balance;margin:0}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 clamp(20px,5vw,44px)}
+
+  /* ============ palette switcher ============ */
+  .switch{
+    position:fixed;right:clamp(12px,3vw,26px);bottom:clamp(12px,3vw,26px);z-index:80;
+    display:flex;gap:6px;padding:6px;border-radius:999px;
+    background:color-mix(in srgb, var(--paper) 82%, transparent);
+    border:1px solid var(--line);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    box-shadow:0 10px 34px -16px rgba(10,14,26,.4);
+  }
+  .switch button{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    font:600 .74rem/1 var(--sans);letter-spacing:.02em;
+    padding:8px 12px;border-radius:999px;color:var(--ink-2);
+    display:flex;align-items:center;gap:7px;transition:background .18s,color .18s;
+  }
+  .switch button .dot{width:9px;height:9px;border-radius:50%;background:var(--sw);box-shadow:0 0 0 2px color-mix(in srgb,var(--sw) 30%,transparent)}
+  .switch button[data-set="a"]{--sw:#B26A44}
+  .switch button[data-set="b"]{--sw:#2450E6}
+  .switch button[data-set="c"]{--sw:#F35BEC}
+  .switch button:hover{color:var(--ink)}
+  .switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .switch .lbl{display:none}
+  @media (min-width:560px){ .switch .lbl{display:inline} }
+
+  /* ============ pills / buttons ============ */
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--sans);font-weight:600;font-size:.9rem;
+    padding:11px 20px;border-radius:999px;cursor:pointer;border:1px solid transparent;
+    transition:transform .14s ease, background .14s ease, border-color .14s ease;
+  }
+  .pill:hover{transform:translateY(-1px)}
+  .pill-ink{background:var(--ink);color:var(--paper)}
+  .pill-brand{background:var(--brand);color:#fff}
+  .pill-spark{background:var(--spark);color:#fff}
+  .pill-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .pill-ghost:hover{border-color:var(--ink-3)}
+
+  /* ============ header ============ */
+  header{
+    position:sticky;top:0;z-index:20;
+    background:color-mix(in srgb, var(--paper) 86%, transparent);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  header .wrap{display:flex;align-items:center;gap:28px;height:66px}
+  .brand{display:flex;align-items:center;color:var(--ink)}
+  .brand svg{width:104px;height:auto;display:block}
+  header nav{display:flex;gap:22px;font-size:.9rem;color:var(--ink-2);font-weight:500;font-family:var(--sans)}
+  header nav a:hover{color:var(--ink)}
+  header .spacer{flex:1}
+  @media (max-width:680px){ header nav{display:none} }
+
+  .menu-btn{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    width:44px;height:44px;border-radius:calc(var(--radius) * .8);border:1px solid var(--line);
+    display:grid;place-content:center;gap:4px;flex-shrink:0;
+  }
+  .menu-btn span{display:block;width:18px;height:2px;background:var(--ink);transition:transform .25s,opacity .2s}
+  .nav-open .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  .nav-open .menu-btn span:nth-child(2){opacity:0}
+  .nav-open .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+  /* ============ grain ============ */
+  .grain{
+    position:absolute;inset:0;pointer-events:none;opacity:var(--grain-op);mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:160px 160px;
+  }
+
+  /* ============ hero ============ */
+  .hero{position:relative;overflow:hidden;background:var(--paper);min-height:88vh;min-height:88dvh;display:flex}
+  .hero-mesh{
+    position:absolute;inset:0;transform:scale(1.08);filter:blur(14px);
+    background:
+      radial-gradient(46% 56% at 12% 26%, var(--mesh-1), transparent 60%),
+      radial-gradient(38% 46% at 32% 8%,  var(--mesh-3), transparent 62%),
+      radial-gradient(52% 60% at 84% 74%, var(--mesh-2), transparent 56%),
+      radial-gradient(70% 60% at 50% 104%, color-mix(in srgb,var(--paper) 92%,transparent), transparent 55%),
+      var(--paper);
+    transition:background .35s ease;
+  }
+  .corner{position:absolute;width:13px;height:13px;border:1.5px solid var(--ink-3);opacity:.55;z-index:2}
+  .corner.tl{top:clamp(78px,11vh,116px);left:clamp(20px,4.5vw,44px);border-right:0;border-bottom:0}
+  .corner.tr{top:clamp(78px,11vh,116px);right:clamp(20px,4.5vw,44px);border-left:0;border-bottom:0}
+  .corner.bl{bottom:clamp(24px,5vh,54px);left:clamp(20px,4.5vw,44px);border-right:0;border-top:0}
+  .corner.br{bottom:clamp(24px,5vh,54px);right:clamp(20px,4.5vw,44px);border-left:0;border-top:0}
+
+  .hero-inner{
+    position:relative;z-index:2;align-self:stretch;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:30px;
+    width:100%;padding-top:clamp(96px,15vh,170px);padding-bottom:clamp(40px,8vh,92px);
+  }
+  .hero-lead{max-width:min(90vw,600px)}
+  .hero h1{font-size:clamp(2.4rem,6.4vw,4.9rem);line-height:1.05}
+  .squiggle{display:block;width:clamp(150px,20vw,240px);height:auto;color:var(--spark);margin:16px 0 20px;overflow:visible}
+  .squiggle path{
+    fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;
+    stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.3s ease-out .45s forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0 } }
+  .hero-lead .en{font-family:var(--sans);font-size:.9rem;color:var(--ink-2);margin:0 0 20px;max-width:34ch}
+  .hero .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+  .hero-stat{flex-shrink:0;display:flex;align-items:flex-end;gap:14px}
+  .hero-stat .num{font-family:var(--sans);font-weight:700;letter-spacing:-.03em;color:var(--ink);font-size:clamp(3rem,8vw,6rem);line-height:.78}
+  .hero-stat .vert{
+    writing-mode:vertical-rl;
+    font-family:var(--sans);font-size:.6rem;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-2);max-height:210px;
+  }
+  @media (max-width:760px){
+    .hero-inner{flex-direction:column;align-items:flex-start;gap:34px}
+    .hero-stat .vert{max-height:150px}
+  }
+
+  /* ============ content load-in ============ */
+  html.r [data-r]{
+    opacity:0;transform:translateY(var(--r-y)) scale(var(--r-scale));
+    transition:opacity var(--r-dur) var(--r-ease), transform var(--r-dur) var(--r-ease);
+  }
+  html.r [data-r].in{opacity:1;transform:none}
+
+  /* ============ partner strip ============ */
+  .partners{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
+  .partners .wrap{padding:26px clamp(20px,5vw,44px)}
+  .partners p{font-size:.78rem;letter-spacing:.02em;color:var(--ink-3);margin:0 0 14px;font-family:var(--sans);font-weight:600;text-transform:uppercase}
+  .partners ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:14px 34px;font-family:var(--sans);font-weight:700;font-size:1.05rem;color:var(--ink-3)}
+
+  /* ============ generic section ============ */
+  section.blk{padding:clamp(60px,10vw,120px) 0}
+  section.blk.panel{background:var(--panel)}
+  .eyebrow{font-family:var(--sans);font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 16px;color:var(--brand)}
+  .blk.spark .eyebrow{color:var(--spark-deep)}
+  h2.big{font-size:clamp(2rem,5vw,3.3rem);line-height:1.08}
+  .lead{max-width:54ch;color:var(--ink-2);font-size:1.06rem;margin:18px 0 0}
+  .center{text-align:center}
+  .center .lead{margin-left:auto;margin-right:auto}
+  .cta-row{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+  .center .cta-row{justify-content:center}
+
+  /* meet — 6 cards */
+  .cards6{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+  .cards6 .c{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);
+    padding:22px;display:flex;flex-direction:column;gap:8px;
+  }
+  .blk.panel .cards6 .c{background:var(--panel-2)}
+  .cards6 .c .n{font-family:var(--mono);font-size:.72rem;color:var(--ink-3)}
+  .cards6 .c b{font-family:var(--sans);font-size:1.04rem}
+  .cards6 .c span{font-size:.9rem;color:var(--ink-2);line-height:1.5}
+  .cards6 .c i{width:22px;height:22px;border-radius:6px;background:var(--brand);opacity:.9;display:block}
+  .cards6 .c:nth-child(3n-1) i{background:var(--spark)}
+  .cards6 .c:nth-child(3n) i{background:var(--ok)}
+  @media (max-width:860px){ .cards6{grid-template-columns:1fr 1fr} }
+  @media (max-width:520px){ .cards6{grid-template-columns:1fr} }
+
+  /* product mock */
+  .mock{
+    margin:44px auto 0;max-width:430px;text-align:left;
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);
+    box-shadow:0 18px 50px -24px rgba(14,22,38,.28);padding:18px 18px 20px;
+  }
+  .blk.panel .mock{background:var(--panel-2)}
+  .mock .m-tag{font-family:var(--sans);font-weight:700;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .mock .m-line{font-size:.92rem;line-height:1.55;margin:10px 0 14px}
+  .mock .m-row{display:flex;gap:8px;align-items:center}
+  .mock .m-btn{font-family:var(--sans);font-weight:600;font-size:.78rem;border-radius:calc(var(--radius) * .75);padding:8px 13px;border:1px solid var(--line)}
+  .mock .m-btn.solid{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .blk.spark .mock .m-btn.solid{background:var(--spark);border-color:var(--spark)}
+  .mock .m-rail{display:flex;gap:5px;margin-top:16px}
+  .mock .m-rail i{height:4px;flex:1;border-radius:3px;background:var(--line)}
+  .mock .m-rail i.on{background:var(--brand)}
+  .mock .m-rail i.now{background:var(--spark);flex:0 0 10px;border-radius:50%;height:10px;margin-top:-3px}
+  .mock ul.m-match{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .mock ul.m-match li{display:flex;justify-content:space-between;gap:10px;font-size:.86rem}
+  .mock ul.m-match .need{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--spark-deep);align-self:center;white-space:nowrap}
+
+  /* feature row */
+  .features{max-width:var(--wrap);margin:52px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;text-align:left}
+  .features .f{border-top:2px solid var(--brand);padding-top:14px}
+  .blk.spark .features .f{border-top-color:var(--spark)}
+  .features .f b{font-family:var(--sans);font-size:.98rem;display:block;margin-bottom:5px}
+  .features .f span{font-size:.86rem;color:var(--ink-2);line-height:1.5}
+  @media (max-width:860px){ .features{grid-template-columns:1fr 1fr} }
+  @media (max-width:520px){ .features{grid-template-columns:1fr} }
+
+  /* testimonial */
+  .quote blockquote{
+    font-family:var(--sans);font-weight:600;font-size:clamp(1.5rem,3.6vw,2.4rem);line-height:1.3;
+    letter-spacing:-.015em;max-width:22ch;margin:0 auto;text-wrap:balance;
+  }
+  .quote .who{margin-top:22px;font-size:.9rem;color:var(--ink-2)}
+  .quote .who b{font-family:var(--sans)}
+
+  /* comparison table */
+  .cmp{margin-top:44px;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+  .cmp .row{display:grid;grid-template-columns:1.1fr 1fr 1fr;border-top:1px solid var(--line)}
+  .cmp .row:first-child{border-top:0}
+  .cmp .row > div{padding:16px 18px;font-size:.92rem;line-height:1.5}
+  .cmp .row .h{font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .cmp .row .k{font-family:var(--sans);font-weight:600;color:var(--ink)}
+  .cmp .row .old{color:var(--ink-2);background:var(--paper)}
+  .cmp .row .new{color:var(--ink);background:color-mix(in srgb,var(--brand) 8%,var(--paper))}
+  .cmp .head .new{background:color-mix(in srgb,var(--brand) 16%,var(--paper));color:var(--brand-deep)}
+  .blk.panel .cmp .row .old{background:var(--panel)}
+  @media (max-width:640px){
+    .cmp .row{grid-template-columns:1fr}
+    .cmp .row > div{border-top:1px solid var(--line)}
+    .cmp .row .k{border-top:0}
+  }
+
+  /* updates */
+  .updates .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+  .updates .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:8px;min-height:150px}
+  .blk.panel .updates .card{background:var(--panel-2)}
+  .updates .card .k{font-family:var(--sans);font-weight:700;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}
+  .updates .card p{margin:0;font-size:.95rem}
+  .updates .card .meta{margin-top:auto;font-size:.78rem;color:var(--ink-3)}
+  @media (max-width:820px){ .updates .grid{grid-template-columns:1fr} }
+
+  /* CTA band */
+  .band{
+    padding:clamp(64px,10vw,120px) 0;text-align:center;position:relative;overflow:hidden;
+    background:
+      radial-gradient(70% 120% at 82% 100%, var(--mesh-2), transparent 60%),
+      radial-gradient(60% 120% at 12% 0%, var(--mesh-1), transparent 60%),
+      var(--panel-2);
+  }
+  .band h2{font-size:clamp(1.9rem,4.6vw,3rem)}
+  .band p{color:var(--ink-2);margin:14px 0 0}
+
+  /* footer */
+  footer{background:var(--ink);color:color-mix(in srgb,var(--paper) 78%,#7C879F);padding:56px 0 40px;font-size:.86rem}
+  footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
+  footer .brand svg{width:96px;color:var(--paper)}
+  footer h4{font-family:var(--sans);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb,var(--paper) 55%,#7C879F);margin:0 0 12px;font-weight:700}
+  footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  footer a:hover{color:var(--paper)}
+  footer .legal{margin-top:40px;padding-top:20px;border-top:1px solid color-mix(in srgb,var(--paper) 14%,transparent);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:color-mix(in srgb,var(--paper) 55%,#7C879F);font-size:.78rem}
+  @media (max-width:820px){ footer .cols{grid-template-columns:1fr 1fr} }
+
+  /* colour-cycling menu */
+  .site-nav{
+    position:fixed;inset:0;z-index:60;
+    background:var(--nav-c,var(--ink));color:var(--nav-ink,#fff);
+    transform:translateX(-103%);
+    transition:transform .55s cubic-bezier(.15,.85,.45,1), background-color .3s ease;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:clamp(28px,7vw,84px) clamp(28px,7vw,84px) clamp(78px,14vh,120px);
+  }
+  .site-nav.open{transform:none}
+  .site-nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.06em}
+  .site-nav a{
+    font-family:var(--sans);font-weight:700;letter-spacing:-.025em;
+    font-size:clamp(2rem,7vw,4.4rem);line-height:1.08;
+    display:inline-flex;align-items:baseline;gap:.28em;color:inherit;
+  }
+  .site-nav a .u{background-image:linear-gradient(currentColor,currentColor);background-size:0 3px;background-repeat:no-repeat;background-position:0 92%;transition:background-size .28s ease}
+  .site-nav a:hover .u,.site-nav a:focus-visible .u{background-size:100% 3px}
+  .site-nav a .sl{font-weight:400;color:var(--sl,currentColor)}
+  .site-nav .meta{position:absolute;left:clamp(28px,7vw,84px);bottom:clamp(24px,5vh,52px);font-family:var(--mono);font-size:.78rem;opacity:.75}
+  .site-nav .close{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    position:absolute;top:clamp(20px,4vw,40px);right:clamp(20px,4vw,40px);
+    font:600 .8rem/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;
+    padding:9px 14px;border:1px solid currentColor;border-radius:999px;
+  }
+
+  :focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{animation:none!important;transition:none!important}
+    html.r [data-r]{opacity:1;transform:none}
+  }
+</style>
+<script>document.documentElement.className += " r";</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="edcity-logo" viewBox="0 0 179 54" fill="currentColor">
+<path d="M27.1927 1.81771C27.7177 3.67516 27.5415 6.76482 26.5247 7.04371C25.5097 7.32078 23.8377 4.87274 23.2357 3.04264C22.6135 1.14327 23.5367 0.386805 24.5553 0.111561C25.5721 -0.165506 26.6678 -0.0397325 27.1909 1.81771"/>
+<path d="M12.5574 6.18152C13.8054 7.66165 14.925 10.5453 14.1156 11.2161C13.3007 11.8887 10.7661 10.3412 9.46112 8.91574C8.10663 7.44109 8.64072 6.37474 9.44644 5.70759C10.2595 5.04044 11.3075 4.70869 12.5592 6.18152"/>
+<path d="M3.19317 18.9067C4.99181 19.6449 7.32088 21.6919 6.91343 22.658C6.50231 23.6241 3.53454 23.4127 1.7102 22.7528C-0.169204 22.0638 -0.196734 20.8717 0.21255 19.9074C0.623669 18.9395 1.40186 18.1703 3.19317 18.9067Z"/>
+<path d="M43.6562 23.7716C43.6562 27.7855 40.114 31.0428 35.7403 31.0428C31.3667 31.0428 27.8245 27.7873 27.8245 23.7716C27.8245 19.756 31.3704 16.5004 35.7403 16.5004C40.1103 16.5004 43.6562 19.7578 43.6562 23.7716Z"/>
+<path d="M19.9485 30.6364C19.9485 30.6364 19.754 30.2445 20.0843 30.0932C20.3798 29.9601 20.6019 30.3447 20.6019 30.3447C20.6019 30.3447 26.141 39.7559 40.7963 36.3017C40.7963 36.3017 52.7903 33.2193 53.128 20.7677C53.128 20.7677 53.128 20.3247 53.4235 20.2937C53.4235 20.2937 53.7961 20.1662 53.9191 20.7185C54.1063 21.5606 56.1454 36.8048 42.0333 40.5835C42.0333 40.5835 25.2729 44.5736 19.9503 30.6346"/>
+<path d="M56.011 33.3177C55.5778 33.2429 55.4787 33.5619 55.2365 34.3403C52.7789 42.1747 44.9126 47.9074 35.5908 47.9074C24.3034 47.9074 15.1541 39.5006 15.1541 29.138C15.1541 20.62 21.5981 13.8318 29.848 11.4567C35.1008 10.1935 38.8082 10.9755 39.9314 11.1669C40.5518 11.2781 40.7445 11.2434 40.7445 11.2434C41.0602 11.1814 41.0932 10.8716 41.0492 10.7403C40.9335 10.3794 40.4123 10.2099 40.4123 10.2099C37.4298 9.1162 34.0638 8.95579 32.3936 8.95215H32.3533C31.7219 8.95215 31.3346 8.97584 31.3346 8.97584V8.98496C31.1694 8.9886 31.0043 8.98496 30.8464 8.99954C18.1623 9.73049 8.07886 19.4734 8.07886 31.3016C8.07886 43.1299 18.9368 53.58 32.3331 53.58C44.6318 53.58 54.9171 45.7985 56.3762 34.2856C56.4441 33.7661 56.2881 33.3669 56.0128 33.3195"/>
+<path d="M70.7843 9.14731C69.617 9.44078 68.1267 9.67592 66.2914 9.85274V11.6755H72.8362C72.9647 11.6755 73.0271 11.7722 73.0271 11.9581V12.5341C73.0271 12.7346 72.9647 12.833 72.8362 12.833H66.7741C67.4421 13.5166 68.0423 14.0525 68.5764 14.4444C69.2555 14.9876 70.0722 15.4889 71.0192 15.9482C71.7974 16.3182 72.5995 16.5935 73.4052 16.7849C73.4052 16.8815 73.3428 16.9526 73.2235 16.9982C72.9886 17.277 72.7793 17.5341 72.6031 17.7729C72.5444 17.8713 72.4875 17.9205 72.4416 17.9205C71.2376 17.4502 70.2686 16.9818 69.5216 16.4787C68.6406 15.9282 67.8844 15.3449 67.2714 14.736C66.9503 14.4389 66.6236 14.0835 66.2877 13.6825V16.5935C66.2877 16.7138 66.2014 16.7849 66.0252 16.7849H65.3774C65.2122 16.7849 65.1333 16.7138 65.1333 16.5935V13.9832C64.9901 14.1181 64.8414 14.2676 64.7038 14.4079C64.1367 14.9767 63.5493 15.4816 62.9565 15.9209C62.2866 16.3893 61.5451 16.8232 60.7082 17.2133C59.6988 17.6835 59.1188 17.9223 58.9646 17.9223C58.893 17.9223 58.8215 17.8385 58.7664 17.6908C58.6141 17.4885 58.4214 17.2643 58.1956 17.0164C58.113 16.9252 58.0671 16.845 58.0671 16.7867C59.1757 16.455 60.1209 16.1196 60.9083 15.7641C61.6865 15.3941 62.472 14.9183 63.2373 14.3296C63.6319 13.9869 64.1165 13.4892 64.7038 12.8349H58.6416C58.5168 12.8349 58.4452 12.7364 58.4452 12.5359V11.9599C58.4452 11.774 58.5168 11.6774 58.6416 11.6774H65.1333V9.96393C63.7164 10.0678 62.2609 10.1152 60.7669 10.1152C60.6091 10.1152 60.5173 10.0551 60.4806 9.90195C60.3613 9.60666 60.2384 9.37698 60.1209 9.19653C60.1209 9.0106 60.1888 8.91764 60.3154 8.91764C62.8005 8.91764 64.5698 8.86113 65.6306 8.75723C67.3192 8.64786 68.7764 8.39631 70.0006 7.99711C70.1419 7.94972 70.2998 7.92603 70.4705 7.92603C70.5329 7.92603 70.5953 7.97707 70.6797 8.06821C71.133 8.62963 71.3606 8.94498 71.3606 9.00331C71.3606 9.14002 71.3184 9.1947 71.2285 9.1947L70.7825 9.14731H70.7843ZM61.1469 17.3645H70.4613C70.6301 17.3645 70.7201 17.432 70.7201 17.5541V24.0944C70.7201 24.2147 70.6301 24.2912 70.4613 24.2912H69.8207C69.6409 24.2912 69.5528 24.2147 69.5528 24.0944V23.646H62.0388V24.0944C62.0388 24.2147 61.9581 24.2912 61.7929 24.2912H61.1469C60.967 24.2912 60.8734 24.2147 60.8734 24.0944V17.6343C60.8734 17.4502 60.967 17.3645 61.1469 17.3645ZM62.0388 19.9584H69.5528V18.4783H62.0388V19.9584ZM62.0388 22.5122H69.5528V21.0284H62.0388V22.5122Z"/>
+<path d="M76.8132 12.4465C77.3656 12.7636 77.8024 13.0425 78.1475 13.2868C78.5549 13.6222 78.9018 13.9083 79.1881 14.1508C79.1881 14.1654 79.1587 14.2146 79.1147 14.3148C78.8008 14.8362 78.632 15.0986 78.6118 15.0986C78.1732 14.683 77.7051 14.3002 77.1931 13.9594C76.7875 13.6878 76.4442 13.4873 76.1689 13.3761C76.1689 13.3178 76.3433 13.048 76.6865 12.5795C76.7397 12.4975 76.7746 12.4465 76.8113 12.4465M79.1899 17.06C79.2487 17.06 79.2872 17.1074 79.3111 17.1985C79.5717 17.8693 79.7057 18.2266 79.7057 18.2722C79.7057 18.3615 79.6745 18.438 79.6286 18.5128C79.1808 19.7742 78.7495 20.8514 78.3402 21.7154C78.1383 22.2113 77.8703 22.7672 77.5455 23.3614C77.4922 23.5091 77.4555 23.695 77.4555 23.9283C77.4555 24.0942 77.4133 24.158 77.3344 24.158C77.2628 24.158 76.9068 23.777 76.2809 23.0133C76.224 22.9805 76.1855 22.9039 76.1726 22.7982C76.1726 22.7216 76.2001 22.6487 76.2479 22.5886C76.525 22.2714 76.8168 21.8722 77.0811 21.4019C77.4941 20.7348 77.8795 19.9911 78.2429 19.1672C78.5714 18.4599 78.8651 17.8 79.0982 17.1821C79.1367 17.1074 79.1642 17.06 79.1936 17.06M77.5803 8.29773C78.1034 8.55475 78.5366 8.81359 78.8798 9.05784C79.2725 9.34038 79.6066 9.60104 79.8947 9.85259C79.8947 9.86353 79.8653 9.91092 79.8121 9.99477C79.5001 10.5052 79.3313 10.7603 79.3092 10.7603C78.8816 10.3739 78.4209 10.0476 77.9401 9.74687C77.5436 9.49167 77.2096 9.30575 76.9416 9.19456C76.9416 9.13987 77.1141 8.87374 77.4555 8.40345C77.5051 8.33054 77.5455 8.29773 77.5822 8.29773M80.6766 10.1133H82.9818V8.06806C82.9818 7.92588 83.0644 7.85297 83.2332 7.85297C84.0444 7.85297 84.4409 7.92588 84.4409 8.06806C84.4409 8.23029 84.3968 8.32507 84.2886 8.34512C84.1858 8.35606 84.1234 8.47637 84.1234 8.70786V10.1133H86.8837V8.06806C86.8837 7.92588 86.9718 7.85297 87.1517 7.85297C87.9611 7.85297 88.3649 7.92588 88.3649 8.06806C88.3649 8.23029 88.3172 8.32507 88.2125 8.34512C88.1006 8.35606 88.0529 8.47637 88.0529 8.70786V10.1133H90.4168C90.5489 10.1133 90.6132 10.2135 90.6132 10.4049V10.9754C90.6132 11.1705 90.5489 11.2707 90.4168 11.2707H88.0529V13.6841H90.8665C90.9931 13.6841 91.05 13.7789 91.05 13.9484V14.5245C91.05 14.7049 90.9949 14.7906 90.8665 14.7906H88.2052C88.508 15.4085 88.7925 15.8952 89.055 16.247C89.3817 16.761 89.7854 17.2186 90.2314 17.6269C90.5985 17.9805 90.9803 18.2448 91.3693 18.407C91.3693 18.5 91.318 18.5711 91.2097 18.5984C90.9839 18.8609 90.782 19.1015 90.6224 19.3312C90.5618 19.4242 90.5104 19.4679 90.4847 19.4679C89.879 19.0614 89.4092 18.6076 89.055 18.1409C88.8109 17.8711 88.6053 17.5995 88.4309 17.3079V20.6108C88.4309 20.7949 88.3447 20.8861 88.1611 20.8861H83.4902V22.1657C83.4902 22.6742 83.7655 22.9404 84.3289 22.9404H88.5686C89.0898 22.9404 89.3963 22.7727 89.4973 22.4446C89.6074 22.2787 89.7304 21.9032 89.8497 21.3071C90.1855 21.5842 90.4719 21.7647 90.7049 21.8467C90.8242 21.8722 90.8793 21.9488 90.8793 22.0909C90.716 22.7854 90.5361 23.2648 90.3489 23.5146C90.1654 23.9028 89.6827 24.1033 88.9357 24.1033H83.76C82.8441 24.1033 82.3945 23.7114 82.3945 22.9495V17.8256C82.2458 18.0662 82.0898 18.2813 81.9154 18.4818C81.4713 19.014 81.0418 19.4624 80.6068 19.8252C80.4875 19.8252 80.3921 19.7942 80.3077 19.7249C80.1113 19.4971 79.8984 19.2984 79.6873 19.1015C79.6524 19.0304 79.6286 18.9648 79.6286 18.9247C80.0581 18.6094 80.4104 18.3031 80.6802 18.0297C81.062 17.6579 81.4621 17.1384 81.8806 16.4676C82.11 16.1212 82.4275 15.5653 82.8056 14.7924H80.2177C80.0911 14.7924 80.025 14.7067 80.025 14.5263V13.9503C80.025 13.7807 80.0911 13.686 80.2177 13.686H82.9836V11.2726H80.6784C80.5408 11.2726 80.4747 11.1723 80.4747 10.9773V10.4067C80.4747 10.2153 80.5408 10.1151 80.6784 10.1151M83.0332 16.7993C83.057 16.7847 83.0809 16.7774 83.1066 16.7774H88.1171C88.051 16.6972 88.0051 16.6116 87.9703 16.5295C87.7133 16.0666 87.4435 15.4887 87.1664 14.7869H84.0316C83.6627 15.6273 83.3268 16.2999 83.0368 16.7993M83.4883 19.7468H87.2582V17.9131H83.4883V19.7468ZM84.1234 13.6823H86.8837V11.2689H84.1234V13.6823Z"/>
+<path d="M96.1415 10.0533H98.5073V8.21951C98.5073 8.07186 98.6046 7.9953 98.7826 7.9953C99.5901 7.9953 99.9994 8.07186 99.9994 8.21951C99.9994 8.38356 99.9444 8.47105 99.8361 8.48746C99.7278 8.50386 99.6709 8.61688 99.6709 8.84473V10.0551H101.732C101.855 10.0551 101.912 10.1444 101.912 10.3321V10.9009C101.912 11.0886 101.857 11.1834 101.732 11.1834H99.6709V13.0299H101.029C101.363 12.6344 101.655 12.2096 101.93 11.7722C102.33 11.0831 102.694 10.2975 103.017 9.40433C103.039 9.31137 103.064 9.26762 103.081 9.26762L104.118 9.79988C104.241 9.87097 104.296 9.94935 104.296 10.0533C104.296 10.1134 104.241 10.1462 104.118 10.1462C104.012 10.1462 103.922 10.2137 103.845 10.3303C103.371 11.4386 102.881 12.3372 102.393 13.0281H103.079C103.213 13.0281 103.277 13.1174 103.277 13.3015V13.872C103.277 14.0543 103.213 14.1528 103.079 14.1528H101.57C101.126 14.7105 100.655 15.2173 100.128 15.693C100.01 15.7769 99.915 15.8698 99.8214 15.95H101.996C102.138 15.95 102.231 15.981 102.255 16.0211C102.468 16.2235 102.563 16.3821 102.563 16.4987L100.253 19.1874C100.253 19.1874 100.218 19.2074 100.203 19.2256V19.6084C101.115 19.4079 101.996 19.2056 102.853 19.0124C102.879 18.985 102.907 18.9796 102.964 18.9796C103.037 18.9796 103.079 19.0288 103.079 19.1163C103.079 19.7178 103.063 20.0477 103.015 20.1042C102.073 20.3157 101.139 20.5162 100.205 20.693V23.2249C100.205 24.078 99.6305 24.5027 98.5055 24.5027L97.5034 24.3623C97.4428 24.3623 97.4061 24.2566 97.3969 24.0379C97.373 23.779 97.2739 23.5111 97.1124 23.2249C97.1124 23.1301 97.1345 23.0864 97.1858 23.0864C97.7511 23.285 98.2026 23.3835 98.5073 23.3835C98.8597 23.3835 99.0359 23.1702 99.0359 22.7528V20.9263C98.2173 21.0886 97.3841 21.2417 96.5398 21.3802C96.3746 21.7192 96.2388 21.9015 96.1507 21.9015C96.0534 21.9015 95.8369 21.4021 95.5047 20.4123C96.4682 20.2829 97.6282 20.0769 99.0065 19.8235H99.0377V18.327C99.0377 18.2103 99.1258 18.1392 99.313 18.1392L99.636 18.2978L100.75 17.062H98.199C97.9897 17.195 97.7768 17.3244 97.5548 17.4648C96.9326 17.7984 96.4297 18.0372 96.0277 18.2176C95.8626 18.2176 95.7763 18.1757 95.7488 18.0682C95.5928 17.7528 95.4092 17.4429 95.1853 17.1385C95.9525 16.8505 96.7343 16.4969 97.5162 16.0594C98.4045 15.5162 99.2304 14.8855 99.9554 14.1692C99.9554 14.1619 99.9646 14.1546 99.9774 14.1546H95.624C95.5047 14.1546 95.4514 14.0561 95.4514 13.8739V13.3033C95.4514 13.1192 95.5047 13.0299 95.624 13.0299H98.5091V11.1834H96.1434C96.0112 11.1834 95.9451 11.0886 95.9451 10.9009V10.3321C95.9451 10.1444 96.0112 10.0551 96.1434 10.0551M105.645 7.9953L106.768 8.46923C106.877 8.56584 106.928 8.63875 106.928 8.70802C106.928 8.81374 106.889 8.87754 106.803 8.91582C106.673 8.91582 106.592 9.00878 106.574 9.19471C106.436 9.96211 106.293 10.6274 106.163 11.1816H110.2C110.327 11.1816 110.382 11.2691 110.382 11.4605V12.0419C110.382 12.2242 110.327 12.3135 110.2 12.3135H109.279C109.217 14.5556 109.072 16.1961 108.831 17.2333C108.519 18.6861 108.082 19.9019 107.512 20.8643C107.726 21.1378 107.965 21.4075 108.225 21.6627C108.906 22.3262 109.708 22.9405 110.65 23.5092C110.65 23.5895 110.606 23.6496 110.501 23.7098C110.316 23.872 110.098 24.0506 109.852 24.2548C109.775 24.324 109.681 24.3605 109.567 24.3605C108.983 23.9577 108.405 23.5092 107.831 22.9788C107.434 22.5997 107.086 22.2278 106.799 21.876C106.48 22.2278 106.141 22.5559 105.755 22.8476C105.131 23.4053 104.32 23.9084 103.321 24.3605C103.037 24.0251 102.784 23.7207 102.558 23.4582C103.079 23.2632 103.694 22.895 104.415 22.3536C105.063 21.8687 105.612 21.3583 106.045 20.8078C105.691 20.2008 105.375 19.459 105.094 18.5767C104.848 17.8093 104.685 16.8195 104.588 15.5891C104.472 15.8115 104.364 16.0175 104.239 16.2107C104.103 16.2107 103.99 16.1907 103.883 16.1542C103.676 16.0685 103.472 15.9847 103.255 15.9154C103.189 15.8771 103.153 15.837 103.153 15.806C103.153 15.7131 103.153 15.6402 103.189 15.591C103.659 14.8691 104.076 13.9832 104.447 12.9278C104.665 12.3263 104.848 11.6683 105.023 10.9756C105.195 10.2538 105.375 9.31137 105.533 8.16664C105.553 8.04816 105.595 7.9953 105.643 7.9953M104.982 14.7871H105.32C105.535 14.7871 105.645 14.891 105.645 15.0988C105.706 16.2344 105.832 17.1349 106.049 17.8002C106.24 18.4127 106.465 19.0488 106.743 19.6868C107.163 18.8392 107.469 17.9478 107.655 16.9963C107.915 15.9409 108.079 14.3751 108.147 12.3135H105.832V12.3318C105.614 13.1156 105.37 13.8666 105.096 14.5611C105.054 14.6358 105.025 14.7251 104.982 14.7871Z"/>
+<path d="M120.568 7.6416C121.387 7.6416 121.781 7.70722 121.781 7.85123C121.781 8.00799 121.734 8.09548 121.625 8.11553C121.521 8.12647 121.462 8.25407 121.462 8.48556V9.2639H127.876C128.01 9.2639 128.078 9.35869 128.078 9.54826V10.1115C128.078 10.3084 128.01 10.4032 127.876 10.4032H124.085C124.863 11.0174 125.516 11.5862 126.039 12.1148C126.685 12.822 127.234 13.4454 127.687 14.0141C127.687 14.0433 127.665 14.0798 127.618 14.1509C127.285 14.6685 127.126 14.9383 127.115 14.9383C126.687 14.3878 126.241 13.8756 125.775 13.398C122.717 13.686 119.272 13.9558 115.473 14.1873C115.302 14.1873 115.167 14.2584 115.04 14.3878C115.012 14.5191 114.923 14.5738 114.79 14.5738C114.671 14.5738 114.42 14.0798 114.032 13.0936C114.867 13.0572 115.703 13.0262 116.539 12.9879C117.187 12.2551 117.795 11.5023 118.333 10.7331C118.41 10.6255 118.476 10.518 118.535 10.4032H113.83C113.713 10.4032 113.654 10.3084 113.654 10.1115V9.54826C113.654 9.35869 113.713 9.2639 113.83 9.2639H120.296V7.85123C120.296 7.70722 120.379 7.6416 120.566 7.6416M116.536 15.0987H125.111C125.327 15.0987 125.435 15.168 125.435 15.2938V23.2977C125.435 23.624 125.184 23.8828 124.685 24.0943C124.213 24.2146 123.587 24.3094 122.811 24.3604C122.699 24.3604 122.626 24.2966 122.62 24.1563C122.594 23.9029 122.471 23.5201 122.225 23.0134C122.225 22.9806 122.28 22.9569 122.38 22.9569C123.303 22.9569 123.841 22.9241 123.993 22.8493C124.186 22.7855 124.292 22.6579 124.292 22.4884V21.4512H117.426V24.1544C117.426 24.2948 117.345 24.3586 117.175 24.3586H116.534C116.367 24.3586 116.283 24.2948 116.283 24.1544V15.2919C116.283 15.1662 116.367 15.0969 116.534 15.0969M117.428 17.7728H124.294V16.1432H117.428V17.7728ZM117.428 20.4122H124.294V18.8592H117.428V20.4122ZM124.764 12.3627C124.151 11.8213 123.664 11.4221 123.268 11.1797C123.268 11.1049 123.431 10.8497 123.747 10.4032H120.128C119.691 10.9445 119.114 11.5643 118.417 12.2734C118.222 12.4921 118.01 12.6981 117.797 12.9132C120.126 12.7619 122.442 12.5778 124.764 12.3609"/>
+<path d="M130.907 12.9533H132.588V8.70614C132.588 8.55302 132.663 8.48558 132.834 8.48558C133.656 8.48558 134.067 8.55302 134.067 8.70614C134.067 8.85926 134.012 8.96316 133.9 8.98503C133.805 8.99779 133.744 9.11992 133.744 9.33865V12.9533H135.152C135.284 12.9533 135.347 13.028 135.347 13.1629V13.8683C135.347 14.0506 135.284 14.1509 135.152 14.1509H133.744V18.9139C134.28 18.697 134.783 18.4709 135.26 18.2413C135.295 18.223 135.326 18.2121 135.347 18.2121C135.433 18.2121 135.475 18.2723 135.475 18.4035C135.475 19.0561 135.455 19.4042 135.409 19.4644C134.141 20.075 132.86 20.6383 131.549 21.1122C131.369 21.4275 131.222 21.5843 131.103 21.5843C130.995 21.5843 130.784 21.0739 130.463 20.0313C131.055 19.8909 131.76 19.6631 132.588 19.3623V14.1509H130.907C130.788 14.1509 130.74 14.0506 130.74 13.8683V13.1629C130.74 13.0262 130.788 12.9533 130.907 12.9533ZM137.072 11.958V14.787H139.955C140.096 14.787 140.148 14.8909 140.148 15.1006C140.148 16.8322 140.095 18.0936 140.001 18.861C139.887 19.7706 139.751 20.4414 139.57 20.888C139.417 21.3674 138.97 21.6007 138.232 21.6007C137.846 21.6007 137.648 21.4804 137.648 21.2453C137.613 20.9609 137.529 20.6401 137.395 20.25V20.1078C137.701 20.2044 137.989 20.25 138.234 20.25C138.507 20.25 138.683 20.1005 138.769 19.7998C138.869 19.53 138.931 19.0469 138.984 18.3233C139.037 17.8093 139.078 17.0218 139.089 15.9482H137.074V16.1432C137.074 17.8111 136.967 19.1253 136.752 20.0914C136.611 20.9117 136.336 21.7192 135.932 22.5358C135.717 23.0207 135.414 23.4891 135.014 23.9375C134.95 23.9375 134.897 23.9248 134.855 23.9029C134.684 23.7389 134.473 23.5894 134.253 23.4582C134.198 23.4016 134.185 23.3306 134.185 23.2321C134.552 22.8256 134.879 22.2697 135.18 21.5606C135.455 20.826 135.657 20.055 135.778 19.2365C135.915 18.3944 135.983 17.3517 135.983 16.1414V11.105C135.983 10.9172 136.046 10.8297 136.176 10.8297H140.858C140.829 9.93471 140.809 8.96498 140.799 7.92233C140.799 7.8239 140.843 7.78015 140.92 7.78015C141.904 7.88223 142.407 7.98066 142.407 8.06451C142.407 8.18664 142.321 8.27231 142.147 8.31606C142.022 8.47464 141.957 8.62776 141.957 8.77358C141.957 9.49906 141.968 10.1863 141.981 10.8297H145.292C145.419 10.8297 145.491 10.9172 145.491 11.105V11.6719C145.491 11.8632 145.419 11.9562 145.292 11.9562H141.981C142 13.3343 142.042 14.4972 142.108 15.4305C142.183 16.8596 142.341 18.0772 142.559 19.0852C142.57 19.1235 142.581 19.1709 142.581 19.2238C142.87 18.604 143.123 17.9113 143.349 17.1348C143.62 16.269 143.846 15.3302 144.006 14.3149C144.044 14.1582 144.11 14.0816 144.198 14.0816C145.059 14.4134 145.491 14.6285 145.491 14.7251C145.491 14.8472 145.419 14.9383 145.292 15.0258C145.134 15.0258 145.026 15.117 144.973 15.312C144.657 16.608 144.307 17.7947 143.905 18.8537C143.617 19.5592 143.321 20.2026 143.009 20.7804C143.068 20.9408 143.13 21.0976 143.187 21.2416C143.35 21.6663 143.505 21.9908 143.653 22.1986C143.782 22.4064 143.91 22.5139 144.063 22.5139C144.2 22.5139 144.334 22.3681 144.459 22.0765C144.619 21.6499 144.767 21.1268 144.887 20.4997C144.909 20.3904 144.936 20.3339 144.975 20.3339C145.079 20.3339 145.149 20.3904 145.19 20.4997C145.391 20.6802 145.586 20.8843 145.781 21.0976C145.839 21.1286 145.867 21.1942 145.867 21.3072C145.457 22.4246 145.123 23.203 144.844 23.6477C144.586 23.9868 144.349 24.1581 144.131 24.1581C143.912 24.1581 143.692 24.0287 143.477 23.7735C143.167 23.5311 142.857 23.1009 142.563 22.4921C142.486 22.3335 142.394 22.153 142.303 21.9689C141.754 22.7728 141.104 23.5238 140.339 24.2091C140.256 24.2711 140.177 24.2948 140.087 24.2948C139.968 24.2948 139.874 24.2183 139.794 24.098C139.672 23.9066 139.544 23.7498 139.412 23.6131C139.313 23.5584 139.254 23.4837 139.254 23.3852C139.254 23.3324 139.3 23.2686 139.375 23.2267C139.707 23.0553 140.051 22.7874 140.374 22.4337C140.909 21.9124 141.394 21.3091 141.816 20.6237C141.805 20.5307 141.79 20.4396 141.768 20.3521C141.488 19.2948 141.251 18.0663 141.065 16.6718C140.99 15.6383 140.924 14.0689 140.88 11.9599H137.075L137.072 11.958ZM143.571 8.29601C143.954 8.55302 144.279 8.81186 144.529 9.05794C144.839 9.33866 145.1 9.60114 145.301 9.85087C145.301 9.8618 145.267 9.89826 145.21 9.97117C144.905 10.4451 144.729 10.6821 144.703 10.6821C144.384 10.3102 144.05 9.96023 143.707 9.66129C143.415 9.40428 143.167 9.24205 142.987 9.14726C142.987 9.07799 143.128 8.81915 143.442 8.40355C143.497 8.33064 143.532 8.29783 143.571 8.29783"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M88.5317 32.1785V47.7891H85.362V41.3254H79.5917V47.7891H76.4238V32.1785H79.5917V38.5493H85.362V32.1785H88.5317Z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M88.6875 39.8871L94.4028 32.1766H98.5764L92.349 39.8871L98.2827 47.789H94.0963L88.6875 39.8871Z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M147.5 30.6C147.5 29.2766 148.583 28.1975 149.915 28.1975C151.248 28.1975 152.331 29.2766 152.331 30.6C152.331 31.9233 151.251 33.0006 149.915 33.0006C148.579 33.0006 147.5 31.9252 147.5 30.6Z"/>
+<path d="M151.823 34.1818H148.069V47.7818H151.823V34.1818Z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M174.839 44.8834V34.1835H178.604V47.5192C178.604 49.2909 178.13 50.5906 177.188 51.4054C176.254 52.2257 174.769 52.6358 172.725 52.6358H165.996V49.7284H172.725C173.531 49.7175 174.061 49.63 174.305 49.4513C174.489 49.362 174.608 49.2107 174.663 49.0376C174.727 48.8516 174.782 48.436 174.841 47.7926H171.479C167.612 47.8837 165.791 45.8805 165.998 41.7882V34.1853H169.761V41.4182C169.761 42.8272 169.887 43.7605 170.15 44.2126C170.401 44.6628 170.934 44.8852 171.743 44.8852H174.841L174.839 44.8834Z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M156.512 34.1818V29.1618H160.274V34.1818H163.759V37.0892H160.274V42.0308C160.274 43.1847 160.377 43.9138 160.59 44.2109C160.907 44.6593 161.474 44.8817 162.278 44.8817H163.761V47.7891H161.03C159.399 47.7891 158.235 47.3936 157.541 46.6152C156.853 45.8314 156.513 44.519 156.513 42.6834V37.0892H154.12V34.1818H156.513H156.512Z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M145.663 44.4715V47.7909H140.165C138.924 47.7909 137.973 47.7271 137.309 47.5995C135.018 47.1492 133.381 45.8751 132.41 43.7643C131.764 42.3516 131.448 40.6053 131.448 38.5182C131.448 36.0228 131.939 33.9776 132.919 32.41C133.618 31.2817 134.567 30.4541 135.749 29.9364C136.938 29.4188 138.476 29.1599 140.357 29.1599H145.665V32.472H140.812C139.028 32.472 137.72 32.9495 136.881 33.8956C136.197 34.6776 135.857 36.0975 135.857 38.1518C135.857 40.8988 136.393 42.7034 137.463 43.5674C138.208 44.1689 139.377 44.4697 140.963 44.4697H145.665L145.663 44.4715Z"/>
+<path d="M125.606 47.7725V46.8411C125.311 47.1692 124.806 47.4499 124.098 47.6905C123.386 47.9275 122.653 48.0459 121.895 48.0459C119.748 48.0459 118.052 47.3751 116.826 46.0226C115.595 44.6737 114.969 42.7908 114.969 40.3774C114.969 37.964 115.683 35.999 117.098 34.486C118.515 32.9695 120.284 32.2112 122.417 32.2112C123.586 32.2112 124.65 32.4481 125.606 32.9203V25.8532H129.196V47.7725H125.606ZM125.606 36.1357C124.839 35.5342 124.043 35.2279 123.209 35.2279C121.767 35.2279 120.655 35.6581 119.878 36.5276C119.102 37.3953 118.715 38.6439 118.715 40.2716C118.715 43.447 120.26 45.0328 123.345 45.0328C123.689 45.0328 124.114 44.9253 124.623 44.723C125.126 44.517 125.456 44.3128 125.606 44.1014V36.1339V36.1357Z"/>
+<path d="M113.419 39.2419C113.419 37.2003 112.738 35.5142 111.389 34.1945C110.04 32.873 108.255 32.2131 106.03 32.2131C103.942 32.2131 102.143 32.9587 100.645 34.4515C99.1495 35.9426 98.397 37.8912 98.397 40.2918C98.397 42.6925 99.0834 44.6429 100.443 46.0045C101.803 47.368 103.653 48.0479 105.99 48.0479C108.099 48.0479 109.763 47.687 110.991 46.9688L110.999 46.9852C111.887 46.3946 112.08 46.1467 112.265 45.8295L110.78 43.274C110.688 43.4344 110.468 43.6403 110.253 43.8172C110.152 43.9119 110.04 43.994 109.936 44.0742C109.914 44.0778 109.901 44.0924 109.886 44.107C109.016 44.7231 107.943 45.0676 106.517 45.0676C105.212 45.0676 104.173 44.7286 103.396 44.0541C102.622 43.387 102.202 42.4391 102.137 41.2288H113.113C113.315 40.3465 113.419 39.6848 113.419 39.2437M102.292 38.5492C102.47 36.4457 104.05 35.1934 106.089 35.1934C108.308 35.1934 109.78 36.7793 109.8 38.5492H102.292Z"/>
+  </symbol>
+</svg>
+
+<div class="switch" role="group" aria-label="配色方案 / Palette">
+  <button data-set="a" aria-pressed="false"><span class="dot"></span><span class="lbl">A</span></button>
+  <button data-set="b" aria-pressed="true"><span class="dot"></span><span class="lbl">B</span></button>
+  <button data-set="c" aria-pressed="false"><span class="dot"></span><span class="lbl">C</span></button>
+</div>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="EdCity"><svg viewBox="0 0 179 54" role="img" aria-label="EdCity"><use href="#edcity-logo"/></svg></a>
+    <nav>
+      <a href="#meet">產品</a>
+      <a href="#ecosystem">生態系統</a>
+      <a href="#compare">比較</a>
+      <a href="#about">關於</a>
+    </nav>
+    <span class="spacer"></span>
+    <a class="pill pill-ink" href="#book">預約導覽</a>
+    <button class="menu-btn" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="選單">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="site-nav" id="siteNav" role="dialog" aria-modal="true" aria-label="主選單" hidden>
+  <button class="close" id="navClose">關閉 · Close</button>
+  <ol>
+    <li><a href="#top"><span class="u">首頁</span><span class="sl">/</span></a></li>
+    <li><a href="#meet"><span class="u">產品</span><span class="sl">/</span></a></li>
+    <li><a href="#ecosystem"><span class="u">生態系統</span><span class="sl">/</span></a></li>
+    <li><a href="#compare"><span class="u">比較</span><span class="sl">/</span></a></li>
+    <li><a href="#book"><span class="u">聯絡</span><span class="sl">/</span></a></li>
+  </ol>
+  <p class="meta">香港教育城 · 教與學的智能夥伴</p>
+</div>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-mesh"></div>
+    <div class="grain"></div>
+    <span class="corner tl"></span><span class="corner tr"></span>
+    <span class="corner bl"></span><span class="corner br"></span>
+    <div class="wrap hero-inner">
+      <div class="hero-lead">
+        <h1 data-r>知道你在哪裡，<br>為你打開下一步</h1>
+        <svg class="squiggle" data-r viewBox="0 0 240 56" aria-hidden="true">
+          <path pathLength="1" d="M3 30 C 26 2, 46 50, 78 26 S 128 2, 152 34 S 196 54, 214 20 S 232 6, 238 26"/>
+        </svg>
+        <p class="en" data-r>An AI-native platform for teaching and learning — the right support, at the right moment, for teachers, students, and families.</p>
+        <div class="cta-row" data-r>
+          <a class="pill pill-brand" href="#meet">認識 EdCity</a>
+          <a class="pill pill-ghost" href="#book">預約導覽</a>
+        </div>
+      </div>
+      <aside class="hero-stat" data-r aria-hidden="true">
+        <div class="num">01</div>
+        <div class="vert">每一次登入 · 一個清晰的下一步 &nbsp;·&nbsp; The right support, the right moment</div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="partners" data-r>
+    <div class="wrap">
+      <p>與全港中小學、大專院校及夥伴機構協作</p>
+      <ul>
+        <li>官立中學</li><li>資助小學</li><li>特殊學校</li><li>大專院校</li><li>出版夥伴</li><li>服務機構</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="blk center" id="meet">
+    <div class="wrap">
+      <p class="eyebrow" data-r>認識 EdCity</p>
+      <h2 class="big" data-r>把教與學的每個時刻，<br>整合到一個平台</h2>
+      <p class="lead" data-r>EdCity 將學習管理、教學工具、智能助手與經審核的資源生態，收攏成一個以 AI 為核心的平台 &mdash; 環繞課堂、學生與家庭真正發生的時刻。</p>
+      <div class="cards6">
+        <div class="c" data-r><i></i><span class="n">01</span><b>一對一學習支援</b><span>按每名學生的進度與需要，給出下一步。</span></div>
+        <div class="c" data-r><i></i><span class="n">02</span><b>智能助手</b><span>為特定學習情境而設的助理，教師定稿。</span></div>
+        <div class="c" data-r><i></i><span class="n">03</span><b>適時學習</b><span>合適的資源，在需要的一刻出現。</span></div>
+        <div class="c" data-r><i></i><span class="n">04</span><b>協作備課</b><span>共同編寫教材、共用校本資源庫。</span></div>
+        <div class="c" data-r><i></i><span class="n">05</span><b>學習管理</b><span>課程、紀錄與進度，同一個視圖。</span></div>
+        <div class="c" data-r><i></i><span class="n">06</span><b>學習洞察</b><span>把課堂數據整理成清晰的行動。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk center" id="edcity-ai">
+    <div class="wrap">
+      <p class="eyebrow" data-r>EdCity.ai</p>
+      <h2 class="big" data-r>教師的 AI 助理與工具箱</h2>
+      <p class="lead" data-r>由備課到批改，一個懂你課堂的助手。生成教材、整理學習需要、給出有理據的建議 &mdash; 每一個決定仍然由你作主。</p>
+      <div class="cta-row center" data-r>
+        <a class="pill pill-brand" href="#book">了解 EdCity.ai</a>
+        <a class="pill pill-ghost" href="#book">觀看示範</a>
+      </div>
+      <div class="mock" data-r>
+        <span class="m-tag">EdCity.ai · 備課建議</span>
+        <p class="m-line">建議：先重溫《岳陽樓記》的借景抒情，四名學生未掌握前置概念。</p>
+        <div class="m-row">
+          <span class="m-btn solid">採用</span>
+          <span class="m-btn">調整</span>
+          <span class="m-btn">略過</span>
+        </div>
+        <div class="m-rail"><i class="on"></i><i class="on"></i><i class="now"></i><i></i><i></i></div>
+      </div>
+      <div class="features">
+        <div class="f" data-r><b>生成教材</b><span>工作紙、簡報、評估，數分鐘完成。</span></div>
+        <div class="f" data-r><b>備課建議</b><span>按班別學習數據，指出當堂重點。</span></div>
+        <div class="f" data-r><b>AI 批改</b><span>中文作文回饋，教師可逐項調整。</span></div>
+        <div class="f" data-r><b>學習洞察</b><span>把課堂數據整理成清晰的下一步。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk center quote panel">
+    <div class="wrap">
+      <blockquote data-r>&ldquo;它沒有取代我的判斷，而是讓我更快看到全班的需要。&rdquo;</blockquote>
+      <p class="who" data-r><b>中學中文科教師</b> · 教師訪談摘錄（示意內容）</p>
+      <div class="cta-row center" data-r><a class="pill pill-ghost" href="#book">觀看訪談影片</a></div>
+    </div>
+  </section>
+
+  <section class="blk center spark" id="ecosystem">
+    <div class="wrap">
+      <p class="eyebrow" data-r>教育生態系統</p>
+      <h2 class="big" data-r>讓合適的支援，<br>在合適的時候出現</h2>
+      <p class="lead" data-r>連結教學應用程式、智能助手與經審核的資源。系統呈現有用的關係與機會，而不會替你做主。</p>
+      <div class="cta-row center" data-r>
+        <a class="pill pill-spark" href="#book">探索生態系統</a>
+        <a class="pill pill-ghost" href="#book">供應商專區</a>
+      </div>
+      <div class="mock" data-r>
+        <span class="m-tag">資源配對 · 按學習需要</span>
+        <p class="m-line">為「中一 · 記敘文閱讀延伸」配對到 3 項經審核資源。</p>
+        <ul class="m-match">
+          <li><span>中文橋樑書單（中一至中二）</span><span class="need">閱讀延伸</span></li>
+          <li><span>親子共讀 20 分鐘指南</span><span class="need">家庭參與</span></li>
+          <li><span>公共圖書館 · 少年章節書專架</span><span class="need">社區資源</span></li>
+        </ul>
+        <div class="m-rail"><i class="on"></i><i class="now"></i><i></i></div>
+      </div>
+      <div class="features">
+        <div class="f" data-r><b>教學應用程式</b><span>課堂互動與延伸學習工具。</span></div>
+        <div class="f" data-r><b>智能助手</b><span>為特定學習需要而設的助理。</span></div>
+        <div class="f" data-r><b>資源配對</b><span>按課程情境推薦合適資源。</span></div>
+        <div class="f" data-r><b>安全審核</b><span>資料、私隱與保護兒童的把關。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="compare">
+    <div class="wrap">
+      <p class="eyebrow" data-r>為何不同</p>
+      <h2 class="big" data-r>智能不是附加功能，<br>而是這個平台的核心</h2>
+      <div class="cmp" data-r>
+        <div class="row head">
+          <div class="h">範疇</div><div class="h">傳統教育平台</div><div class="h new">EdCity</div>
+        </div>
+        <div class="row">
+          <div class="k">學習管理</div>
+          <div class="old">課程與紀錄分開管理，人手追蹤進度。</div>
+          <div class="new">進度、需要與下一步，整合在同一視圖。</div>
+        </div>
+        <div class="row">
+          <div class="k">技能與素養</div>
+          <div class="old">以完成率衡量學習。</div>
+          <div class="new">以素養發展的軌跡呈現學習。</div>
+        </div>
+        <div class="row">
+          <div class="k">內容生成</div>
+          <div class="old">教材逐份人手製作。</div>
+          <div class="new">由課堂數據生成草稿，教師定稿。</div>
+        </div>
+        <div class="row">
+          <div class="k">適時學習</div>
+          <div class="old">學生自行搜尋資源。</div>
+          <div class="new">合適資源在需要的一刻出現。</div>
+        </div>
+        <div class="row">
+          <div class="k">學習分析</div>
+          <div class="old">匯出報表，事後檢視。</div>
+          <div class="new">即時洞察，指向具體行動。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk updates panel" id="about">
+    <div class="wrap">
+      <h2 class="big" data-r style="font-size:clamp(1.5rem,3.4vw,2rem)">最新動向</h2>
+      <div class="grid">
+        <div class="card" data-r>
+          <span class="k">教師工作坊</span>
+          <p>AI 與讀寫教學 &mdash; 實作坊</p>
+          <span class="meta">2026 年秋季 · 示意內容</span>
+        </div>
+        <div class="card" data-r>
+          <span class="k">產品更新</span>
+          <p>學習洞察面板 &mdash; 新增班別比較</p>
+          <span class="meta">更新記錄 · 示意內容</span>
+        </div>
+        <div class="card" data-r>
+          <span class="k">活動</span>
+          <p>EdCity AI 教育峰會 &mdash; 香港</p>
+          <span class="meta">日期待定 · 示意內容</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="book">
+    <div class="wrap">
+      <h2 data-r>由一個清晰的下一步開始</h2>
+      <p data-r>為你的學校預約一次導覽。</p>
+      <div class="cta-row center" data-r><a class="pill pill-ink" href="#top">預約導覽</a></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="brand" href="#top" aria-label="EdCity"><svg viewBox="0 0 179 54" role="img" aria-label="EdCity"><use href="#edcity-logo"/></svg></a>
+        <p style="margin:14px 0 0;max-width:30ch;opacity:.8">教與學的智能夥伴，把複雜的教育生態整理成清晰的下一步。</p>
+      </div>
+      <div>
+        <h4>產品</h4>
+        <ul><li><a href="#edcity-ai">EdCity.ai</a></li><li><a href="#meet">教學工具箱</a></li><li><a href="#meet">校本教材庫</a></li><li><a href="#meet">學習洞察</a></li></ul>
+      </div>
+      <div>
+        <h4>生態系統</h4>
+        <ul><li><a href="#ecosystem">教學應用程式</a></li><li><a href="#ecosystem">智能助手</a></li><li><a href="#ecosystem">資源配對</a></li><li><a href="#ecosystem">供應商專區</a></li></ul>
+      </div>
+      <div>
+        <h4>關於</h4>
+        <ul><li><a href="#about">願景</a></li><li><a href="#about">私隱與保安</a></li><li><a href="#compare">比較</a></li><li><a href="#book">聯絡</a></li></ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 香港教育城 2026 · 本頁為品牌設計研究，內容為示意 · 統一版 / Unified</span>
+      <span id="pName">方案 B · Clear Field, Bright Signal</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ---------- palette switch ---------- */
+  (function(){
+    var root = document.documentElement;
+    var btns = [].slice.call(document.querySelectorAll('.switch button'));
+    var pName = document.getElementById('pName');
+    var NAMES = {
+      a:'方案 A · Slate, Earth & First Light',
+      b:'方案 B · Clear Field, Bright Signal',
+      c:'方案 C · Bright Field, Two Points'
+    };
+    var KEY = 'edcity-unified-palette';
+    function apply(p, replay){
+      root.setAttribute('data-p', p);
+      btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === p)); });
+      pName.textContent = NAMES[p];
+      try{ localStorage.setItem(KEY, p); }catch(e){}
+      if(replay) runIn(p);
+    }
+    btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set, true); }); });
+    var saved;
+    try{ saved = localStorage.getItem(KEY); }catch(e){}
+    if(saved && NAMES[saved] && saved !== 'b') apply(saved, false);
+    else pName.textContent = NAMES[root.getAttribute('data-p') || 'b'];
+
+    window.__applyPalette = apply;
+  })();
+
+  /* ---------- content load-in ---------- */
+  var runIn;
+  (function(){
+    var STAGGER = { a:90, b:55, c:115 };
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var els = [].slice.call(document.querySelectorAll('[data-r]'));
+    var io = new IntersectionObserver(function(en){
+      en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
+    }, { rootMargin: '0px 0px -12% 0px' });
+
+    runIn = function(p){
+      if(reduce){ els.forEach(function(e){ e.classList.add('in'); }); return; }
+      var st = STAGGER[p] || 60, vh = window.innerHeight, seq = 0;
+      els.forEach(function(e){
+        var above = e.getBoundingClientRect().top < vh * 0.92;
+        if(above){
+          e.classList.remove('in');
+          e.style.transitionDelay = (seq++ * st) + 'ms';
+          requestAnimationFrame(function(){ requestAnimationFrame(function(){ e.classList.add('in'); }); });
+        } else {
+          e.style.transitionDelay = '0ms';
+          io.observe(e);
+        }
+      });
+    };
+    runIn(document.documentElement.getAttribute('data-p') || 'b');
+  })();
+
+  /* ---------- colour-cycling menu ---------- */
+  (function(){
+    var nav = document.getElementById('siteNav');
+    var toggle = document.getElementById('navToggle');
+    var closeB = document.getElementById('navClose');
+    var SETS = {
+      a:{ fills:[['#34415C','#F5F0E5'],['#5E6A50','#F5F0E5'],['#B26A44','#F5F0E5'],['#1C1712','#F5F0E5'],['#BA3D04','#F5F0E5']],
+          slashes:['#BA3D04','#B26A44','#5E6A50','#CBC2B2','#34415C'] },
+      b:{ fills:[['#2450E6','#FBFCFE'],['#12307A','#FBFCFE'],['#FF6A3D','#FBFCFE'],['#0E1626','#FBFCFE'],['#6E8BF5','#0E1626']],
+          slashes:['#FF6A3D','#6E8BF5','#2450E6','#FF9E7A','#12307A'] },
+      c:{ fills:[['#3B78F0','#F7F9FF'],['#0A0E1A','#F7F9FF'],['#F35BEC','#0A0E1A'],['#12E27E','#04321E'],['#5692FF','#0A0E1A']],
+          slashes:['#F35BEC','#12E27E','#3B78F0','#8CE7F2','#FCDCC6'] }
+    };
+    var turn = 0, sl = [].slice.call(nav.querySelectorAll('.sl'));
+    function openNav(){
+      var set = SETS[document.documentElement.getAttribute('data-p')] || SETS.b;
+      var f = set.fills[turn % set.fills.length]; turn++;
+      nav.style.setProperty('--nav-c', f[0]);
+      nav.style.setProperty('--nav-ink', f[1]);
+      sl.forEach(function(s,k){
+        var c = set.slashes[(turn+k) % set.slashes.length];
+        if(c === f[0]) c = set.slashes[(turn+k+2) % set.slashes.length];
+        s.style.color = c;
+      });
+      nav.hidden = false; void nav.offsetWidth;
+      nav.classList.add('open');
+      document.documentElement.classList.add('nav-open');
+      document.body.style.overflow = 'hidden';
+      toggle.setAttribute('aria-expanded','true'); closeB.focus();
+    }
+    function closeNav(){
+      nav.classList.remove('open');
+      document.documentElement.classList.remove('nav-open');
+      document.body.style.overflow = '';
+      toggle.setAttribute('aria-expanded','false');
+      setTimeout(function(){ if(!nav.classList.contains('open')) nav.hidden = true; }, 560);
+      toggle.focus();
+    }
+    toggle.addEventListener('click', function(){ nav.classList.contains('open') ? closeNav() : openNav(); });
+    closeB.addEventListener('click', closeNav);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && nav.classList.contains('open')) closeNav(); });
+    nav.addEventListener('click', function(e){ if(e.target.closest('a')) closeNav(); });
+  })();
+</script>
+</body>
+</html>
