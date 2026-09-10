@@ -6,7 +6,7 @@
 <title>EdCity Studio Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <style>
   :root{
     --paper:#F5F0E5;
@@ -14,6 +14,8 @@
     --ink:#1C1712;
     --ink-2:#5B5348;
     --ink-3:#8B8172;
+    --line:rgba(28,23,18,.16);
+    --line-2:rgba(28,23,18,.28);
     --slate:#6E7C99;
     --slate-deep:#34415C;
     --sage:#9AA486;
@@ -37,28 +39,20 @@
   a{color:inherit;text-decoration:none}
 
   /* left rail */
-  .rail{
-    position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:40;
-    background:var(--sage);color:var(--sage-deep);
-  }
+  .rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:40;background:var(--sage);color:var(--sage-deep)}
   .nav-toggle{
-    all:unset;box-sizing:border-box;cursor:pointer;
-    width:100%;height:100%;padding:18px 0;
-    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
-    color:inherit;
+    all:unset;box-sizing:border-box;cursor:pointer;width:100%;height:100%;padding:18px 0;
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;color:inherit;
   }
   .nav-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:-4px}
   .rail .dots{display:grid;grid-template-columns:1fr 1fr;gap:5px}
   .rail .dots i{width:6px;height:6px;border-radius:50%;background:currentColor;transition:transform .3s}
   .nav-open .rail .dots i:nth-child(1){transform:translate(3px,3px)}
   .nav-open .rail .dots i:nth-child(4){transform:translate(-3px,-3px)}
-  .rail .menu{
-    writing-mode:vertical-rl;font-family:var(--sans);font-weight:600;font-size:.66rem;
-    letter-spacing:.28em;text-transform:uppercase;
-  }
+  .rail .menu{writing-mode:vertical-rl;font-family:var(--sans);font-weight:600;font-size:.66rem;letter-spacing:.28em;text-transform:uppercase}
   .rail .tick{width:1px;height:34px;background:currentColor;opacity:.5}
 
-  /* full-screen menu — takes a rotating brand colour each time it opens */
+  /* full-screen menu */
   .site-nav{
     position:fixed;left:var(--rail);top:0;right:0;bottom:0;z-index:35;
     background:var(--nav-c,var(--sage));color:var(--nav-ink,var(--ink));
@@ -69,32 +63,18 @@
   }
   .site-nav.open{transform:none}
   .site-nav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.06em}
-  .site-nav a{
-    font-family:var(--sans);font-weight:700;letter-spacing:-.025em;
-    font-size:clamp(2rem,7vw,4.6rem);line-height:1.08;
-    display:inline-flex;align-items:baseline;gap:.28em;
-  }
-  .site-nav a .u{
-    background-image:linear-gradient(currentColor,currentColor);
-    background-size:0 3px;background-repeat:no-repeat;background-position:0 92%;
-    transition:background-size .28s ease;
-  }
+  .site-nav a{font-family:var(--sans);font-weight:700;letter-spacing:-.025em;font-size:clamp(2rem,7vw,4.6rem);line-height:1.08;display:inline-flex;align-items:baseline;gap:.28em}
+  .site-nav a .u{background-image:linear-gradient(currentColor,currentColor);background-size:0 3px;background-repeat:no-repeat;background-position:0 92%;transition:background-size .28s ease}
   .site-nav a:hover .u,.site-nav a:focus-visible .u{background-size:100% 3px}
   .site-nav a .sl{font-weight:400;color:var(--sl,currentColor)}
-  .site-nav .meta{
-    position:absolute;left:clamp(28px,7vw,84px);bottom:clamp(24px,5vh,52px);
-    font-family:var(--mono);font-size:.78rem;opacity:.75;letter-spacing:.02em;
-  }
+  .site-nav .meta{position:absolute;left:clamp(28px,7vw,84px);bottom:clamp(24px,5vh,52px);font-family:var(--mono);font-size:.78rem;opacity:.75;letter-spacing:.02em}
   .site-nav .close{
     all:unset;box-sizing:border-box;cursor:pointer;
     position:absolute;top:clamp(20px,4vw,40px);right:clamp(20px,4vw,40px);
     font-family:var(--mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
     padding:8px 12px;border:1px solid currentColor;border-radius:999px;
   }
-  @media (prefers-reduced-motion:reduce){
-    .site-nav{transition:background-color .2s ease}
-    .site-nav a .u{transition:none}
-  }
+  @media (prefers-reduced-motion:reduce){ .site-nav{transition:background-color .2s ease} .site-nav a .u{transition:none} }
 
   .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
 
@@ -110,81 +90,134 @@
   .badge .mk path{fill:var(--ink)}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* hero */
-  .hero{padding:clamp(40px,9vh,110px) 0 clamp(48px,9vh,110px)}
-  .hero h1{
-    font-size:clamp(2.8rem,9vw,7rem);line-height:.98;margin:0;
-    text-wrap:balance;
-  }
-  .hero .stand{
-    max-width:52ch;margin:30px 0 0;color:var(--ink-2);font-size:clamp(1.05rem,1.7vw,1.25rem);
-  }
+  /* shared editorial primitives */
+  .eyebrow{font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;color:var(--ink-3);margin:0 0 18px}
+  .rule{border:0;border-top:1px solid var(--line);margin:0}
+  section{border-top:1px solid var(--line)}
+  section:first-of-type{border-top:0}
+  .sec{padding:clamp(44px,8vh,88px) 0}
+  .lead{max-width:56ch;margin:22px 0 0;color:var(--ink-2)}
+  .lead .spark{color:var(--spark);font-family:var(--sans);font-weight:600}
 
-  /* statement sections */
-  .stmt{border-top:1px solid rgba(28,23,18,.16);padding:clamp(44px,8vh,88px) 0}
-  .stmt.light{
-    background:
-      radial-gradient(70% 90% at 88% 100%, rgba(186,61,4,.09), transparent 60%),
-      radial-gradient(60% 80% at 6% 0%, rgba(110,124,153,.08), transparent 60%);
-  }
-  .stmt .eyebrow{
-    font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;color:var(--ink-3);margin:0 0 18px;
-  }
-  .stmt h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:1.08;margin:0;max-width:16ch}
-  .stmt .body{max-width:56ch;margin:22px 0 0;color:var(--ink-2)}
-  .stmt .body .spark{color:var(--spark);font-family:var(--sans);font-weight:600}
-
-  /* work list */
-  .work{border-top:1px solid rgba(28,23,18,.16);padding:clamp(44px,8vh,80px) 0}
-  .work > .wrap > .lbl{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin:0 0 8px}
-  .work ul{list-style:none;margin:18px 0 0;padding:0}
-  .work li{border-top:1px solid rgba(28,23,18,.14)}
-  .work li:last-child{border-bottom:1px solid rgba(28,23,18,.14)}
-  .work a{
-    display:flex;align-items:baseline;gap:20px;padding:22px 4px;
-    transition:padding-left .16s ease, color .16s ease;
-  }
-  .work a:hover{padding-left:16px;color:var(--slate-deep)}
-  .work a .n{font-family:var(--mono);font-size:.82rem;color:var(--ink-3);flex-shrink:0}
-  .work a .t{font-family:var(--sans);font-weight:700;font-size:clamp(1.2rem,2.6vw,1.9rem);flex:1}
-  .work a .k{font-size:.9rem;color:var(--ink-2)}
-  .work a .go{font-family:var(--mono);font-size:1rem;color:var(--spark)}
-
-  /* cta */
-  .cta{border-top:1px solid rgba(28,23,18,.16);padding:clamp(56px,11vh,120px) 0}
-  .cta h2{font-size:clamp(2.2rem,6vw,4.6rem);line-height:1;margin:0}
   .pill{
-    display:inline-flex;align-items:center;gap:9px;margin-top:28px;
+    display:inline-flex;align-items:center;gap:9px;
     font-family:var(--sans);font-weight:600;font-size:.95rem;
-    background:var(--ink);color:var(--paper);border-radius:999px;padding:14px 26px;
+    border-radius:999px;padding:13px 24px;border:1px solid var(--ink);cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  .pill.solid{background:var(--ink);color:var(--paper)}
+  .pill.ghost{background:transparent;color:var(--ink)}
+  .pill.ghost:hover{background:var(--ink);color:var(--paper)}
+  .pill.spark{background:var(--spark);border-color:var(--spark);color:var(--paper)}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+
+  /* hero */
+  .hero{padding:clamp(40px,9vh,104px) 0 clamp(44px,8vh,96px)}
+  .hero h1{font-size:clamp(2.8rem,9vw,7rem);line-height:.98;margin:0;text-wrap:balance}
+  .hero .stand{max-width:52ch;margin:30px 0 0;color:var(--ink-2);font-size:clamp(1.05rem,1.7vw,1.25rem)}
+  .hero .marg{margin:34px 0 0;font-family:var(--mono);font-size:.82rem;color:var(--ink-3);display:flex;gap:14px;align-items:baseline}
+  .hero .marg b{font-family:var(--sans);font-size:2rem;font-weight:700;color:var(--ink);letter-spacing:-.03em}
+
+  /* partners */
+  .partners .lbl{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin:0 0 14px}
+  .partners ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 28px;font-family:var(--sans);font-weight:700;font-size:1.05rem;color:var(--ink-3)}
+
+  /* section head (shared) */
+  .sec h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:1.08;margin:0;max-width:18ch}
+  .sec.light{background:radial-gradient(70% 90% at 88% 100%, rgba(186,61,4,.09), transparent 60%),radial-gradient(60% 80% at 6% 0%, rgba(110,124,153,.08), transparent 60%)}
+
+  /* numbered editorial list (認識 EdCity) */
+  .enum{list-style:none;margin:34px 0 0;padding:0}
+  .enum li{border-top:1px solid var(--line);padding:20px 4px;display:flex;gap:20px;align-items:baseline}
+  .enum li:last-child{border-bottom:1px solid var(--line)}
+  .enum .n{font-family:var(--mono);font-size:.82rem;color:var(--ink-3);flex-shrink:0}
+  .enum .t{font-family:var(--sans);font-weight:700;font-size:clamp(1.1rem,2.3vw,1.5rem);flex:0 0 auto;min-width:9ch}
+  .enum .d{color:var(--ink-2);font-size:.98rem}
+  @media (max-width:640px){ .enum li{flex-direction:column;gap:6px} }
+
+  /* inset mock card */
+  .mock{
+    margin:34px 0 0;max-width:460px;
+    border:1px solid var(--line-2);background:var(--paper-2);
+    padding:20px 20px 22px;
+  }
+  .mock .m-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+  .mock .m-line{font-size:.98rem;line-height:1.55;margin:12px 0 14px}
+  .mock .m-row{display:flex;gap:8px;align-items:center}
+  .mock .m-btn{font-family:var(--sans);font-weight:600;font-size:.8rem;padding:8px 14px;border:1px solid var(--line-2)}
+  .mock .m-btn.solid{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .mock .m-btn.solid.spark{background:var(--spark);border-color:var(--spark)}
+  .mock .m-rail{display:flex;gap:5px;margin-top:16px}
+  .mock .m-rail i{height:3px;flex:1;background:var(--line-2)}
+  .mock .m-rail i.on{background:var(--slate-deep)}
+  .mock .m-rail i.now{background:var(--spark);flex:0 0 10px;height:10px;border-radius:50%;margin-top:-3.5px}
+  .mock ul.m-match{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+  .mock ul.m-match li{display:flex;justify-content:space-between;gap:12px;font-size:.9rem;border-top:1px solid var(--line);padding-top:9px}
+  .mock ul.m-match li:first-child{border-top:0;padding-top:0}
+  .mock ul.m-match .need{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--spark);align-self:center;white-space:nowrap}
+
+  /* feature hairline grid */
+  .feats{margin:40px 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .feats .f{border-top:2px solid var(--ink);padding-top:14px}
+  .feats.spark .f{border-top-color:var(--spark)}
+  .feats .f b{font-family:var(--sans);font-size:1rem;display:block;margin-bottom:5px}
+  .feats .f span{font-size:.9rem;color:var(--ink-2);line-height:1.5}
+  @media (max-width:820px){ .feats{grid-template-columns:1fr 1fr} }
+  @media (max-width:480px){ .feats{grid-template-columns:1fr} }
+
+  /* quote */
+  .quote blockquote{font-family:var(--sans);font-weight:700;font-size:clamp(1.7rem,4.4vw,3rem);line-height:1.2;letter-spacing:-.02em;margin:0;max-width:20ch;text-wrap:balance}
+  .quote .who{margin-top:22px;font-family:var(--mono);font-size:.82rem;color:var(--ink-3)}
+
+  /* comparison */
+  .cmp{margin:36px 0 0;border-top:1px solid var(--line-2)}
+  .cmp .row{display:grid;grid-template-columns:1fr 1.3fr 1.3fr;gap:0;border-bottom:1px solid var(--line)}
+  .cmp .row > div{padding:16px 16px 16px 0}
+  .cmp .row .k{font-family:var(--sans);font-weight:700;font-size:.95rem}
+  .cmp .row .old{color:var(--ink-3);font-size:.94rem}
+  .cmp .row .new{color:var(--ink-2);font-size:.94rem;border-left:2px solid var(--spark);padding-left:16px}
+  .cmp .head > div{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+  .cmp .head .new{color:var(--spark)}
+  @media (max-width:680px){
+    .cmp .row{grid-template-columns:1fr}
+    .cmp .row > div{padding:10px 0}
+    .cmp .row .new{padding-left:14px}
+    .cmp .head{display:none}
   }
 
-  footer{border-top:1px solid rgba(28,23,18,.16);padding:26px 0 40px;font-family:var(--mono);font-size:.76rem;color:var(--ink-3)}
-  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  /* updates */
+  .ups{margin:30px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .ups .u{border-top:1px solid var(--line);padding:20px 20px 0 0}
+  .ups .u .k{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--slate-deep);display:block;margin-bottom:8px}
+  .ups .u p{margin:0;font-family:var(--sans);font-weight:600;font-size:1rem}
+  .ups .u .meta{display:block;margin-top:8px;font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
+  @media (max-width:720px){ .ups{grid-template-columns:1fr} }
 
-  @media (max-width:720px){
-    :root{--rail:40px}
-    .rail .menu{font-size:.58rem}
-    .badge{width:74px;height:74px}
-  }
-  @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    .badge .ring{animation:none}
-  }
+  /* closing cta */
+  .close-cta{padding:clamp(56px,11vh,120px) 0}
+  .close-cta h2{font-size:clamp(2.2rem,6vw,4.6rem);line-height:1;margin:0;max-width:none}
+  .close-cta p{margin:18px 0 0;color:var(--ink-2)}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:40px 0 40px;font-family:var(--mono);font-size:.8rem;color:var(--ink-3)}
+  footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:26px;margin-bottom:32px}
+  footer h4{font-family:var(--sans);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:0 0 12px;font-weight:700}
+  footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+  footer .brand{font-family:var(--sans);font-size:1.05rem}
+  footer .legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;border-top:1px solid var(--line);padding-top:18px}
+  @media (max-width:720px){ footer .cols{grid-template-columns:1fr 1fr} }
+
+  @media (max-width:720px){ :root{--rail:40px} .rail .menu{font-size:.58rem} .badge{width:74px;height:74px} }
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .badge .ring{animation:none} }
 
   /* content load-in — Quarterre: a firm, generous rise that settles */
-  html.r [data-r]{
-    opacity:0;transform:translateY(30px);
-    transition:opacity .8s cubic-bezier(.15,.85,.45,1), transform .8s cubic-bezier(.15,.85,.45,1);
-  }
+  html.r [data-r]{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.15,.85,.45,1), transform .8s cubic-bezier(.15,.85,.45,1)}
   html.r [data-r].in{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){
-    html.r [data-r]{opacity:1;transform:none;transition:none}
-  }
+  @media (prefers-reduced-motion:reduce){ html.r [data-r]{opacity:1;transform:none;transition:none} }
 </style>
 <script>document.documentElement.className += " r";</script>
 </head>
-<body>
+<body id="top">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="mk" viewBox="0 0 57 54">
@@ -209,17 +242,17 @@
   <button class="close" id="navClose">關閉 · Close</button>
   <ol>
     <li><a href="#top"><span class="u">首頁</span><span class="sl">/</span></a></li>
-    <li><a href="#"><span class="u">產品</span><span class="sl">/</span></a></li>
-    <li><a href="#"><span class="u">生態系統</span><span class="sl">/</span></a></li>
-    <li><a href="#"><span class="u">關於</span><span class="sl">/</span></a></li>
-    <li><a href="#"><span class="u">聯絡</span><span class="sl">/</span></a></li>
+    <li><a href="#meet"><span class="u">產品</span><span class="sl">/</span></a></li>
+    <li><a href="#ecosystem"><span class="u">生態系統</span><span class="sl">/</span></a></li>
+    <li><a href="#compare"><span class="u">比較</span><span class="sl">/</span></a></li>
+    <li><a href="#book"><span class="u">聯絡</span><span class="sl">/</span></a></li>
   </ol>
   <p class="meta">香港教育城 · 教與學的智能夥伴</p>
 </div>
 
 <header>
   <div class="wrap">
-    <a class="brand" href="#"><svg viewBox="0 0 57 54"><use href="#mk"/></svg>EdCity</a>
+    <a class="brand" href="#top"><svg viewBox="0 0 57 54"><use href="#mk"/></svg>EdCity</a>
     <svg class="badge" viewBox="0 0 100 100" aria-label="EdCity">
       <defs><path id="bc" d="M50 50 m -37 0 a 37 37 0 1 1 74 0 a 37 37 0 1 1 -74 0"/></defs>
       <g class="ring"><text><textPath href="#bc" startOffset="0%">教與學的智能夥伴 · 育人為本 · 素養為先 · </textPath></text></g>
@@ -233,50 +266,134 @@
   <section class="hero">
     <div class="wrap">
       <h1 data-r>知道你在哪裡，<br>為你打開下一步。</h1>
-      <p class="stand" data-r>一個以人為本的教育生態系統。把複雜的服務、工具與資源，整理成清晰、可行的下一步 &mdash; 為教師，為學生，也為每一個參與學習的人。</p>
+      <p class="stand" data-r>一個以人為本、以 AI 為核心的教育平台。把複雜的服務、工具與資源，整理成清晰、可行的下一步 &mdash; 為教師，為學生，也為每一個參與學習的人。</p>
+      <div class="cta-row" data-r>
+        <a class="pill solid" href="#meet">認識 EdCity</a>
+        <a class="pill ghost" href="#book">預約導覽</a>
+      </div>
+      <p class="marg" data-r><b>01</b> 每一次登入 · 一個清晰的下一步 &nbsp;/&nbsp; The right support, the right moment</p>
     </div>
   </section>
 
-  <section class="stmt" data-r>
+  <section class="sec partners" data-r>
     <div class="wrap">
-      <p class="eyebrow">01 &mdash; 結構</p>
-      <h2>先把路走清楚。</h2>
-      <p class="body">許多服務在背後運作，教師面前只有一個平靜的下一步。導覽像地圖，不像市集：你永遠知道自己在哪裡，下一步往哪走。</p>
-    </div>
-  </section>
-
-  <section class="stmt light" data-r>
-    <div class="wrap">
-      <p class="eyebrow">02 &mdash; 手感</p>
-      <h2>由人做，也為人而做。</h2>
-      <p class="body">溫度來自文字、相片、圓角與語氣，而不是靠色彩堆砌。系統友善，判斷仍然由你作主 &mdash; 參與比表現重要。</p>
-    </div>
-  </section>
-
-  <section class="stmt" data-r>
-    <div class="wrap">
-      <p class="eyebrow">03 &mdash; 智能</p>
-      <h2>在合適的時候，<br>打開一道門。</h2>
-      <p class="body">系統呈現有用的關係、訊號與機會，而不替你做主。每一次，一個清晰的下一步 &mdash; <span class="spark">一點光，落在剛剛出現的機會上</span>。</p>
-    </div>
-  </section>
-
-  <section class="work" data-r>
-    <div class="wrap">
-      <p class="lbl">產品</p>
+      <p class="lbl">與全港中小學、大專院校及夥伴機構協作</p>
       <ul>
-        <li><a href="#"><span class="n">01</span><span class="t">EdCity.ai 助理</span><span class="k">備課 · 生成 · 批改</span><span class="go">→</span></a></li>
-        <li><a href="#"><span class="n">02</span><span class="t">教育生態系統</span><span class="k">應用程式 · 智能助手 · 資源配對</span><span class="go">→</span></a></li>
-        <li><a href="#"><span class="n">03</span><span class="t">學習洞察</span><span class="k">班別比較 · 成長歷程</span><span class="go">→</span></a></li>
-        <li><a href="#"><span class="n">04</span><span class="t">校本教材庫</span><span class="k">整理 · 共享 · 版本</span><span class="go">→</span></a></li>
+        <li>官立中學</li><li>資助小學</li><li>特殊學校</li><li>大專院校</li><li>出版夥伴</li><li>服務機構</li>
       </ul>
     </div>
   </section>
 
-  <section class="cta" data-r>
+  <section class="sec" id="meet">
     <div class="wrap">
-      <h2>由一個清晰的<br>下一步開始。</h2>
-      <a class="pill" href="#">為你的學校預約導覽 →</a>
+      <p class="eyebrow" data-r>認識 EdCity</p>
+      <h2 data-r>把教與學的每個時刻，整合到一個平台。</h2>
+      <p class="lead" data-r>EdCity 將學習管理、教學工具、智能助手與經審核的資源生態，收攏成一個以 AI 為核心的平台 &mdash; 環繞課堂、學生與家庭真正發生的時刻。</p>
+      <ol class="enum">
+        <li data-r><span class="n">01</span><span class="t">一對一學習支援</span><span class="d">按每名學生的進度與需要，給出下一步。</span></li>
+        <li data-r><span class="n">02</span><span class="t">智能助手</span><span class="d">為特定學習情境而設的助理，教師定稿。</span></li>
+        <li data-r><span class="n">03</span><span class="t">適時學習</span><span class="d">合適的資源，在需要的一刻出現。</span></li>
+        <li data-r><span class="n">04</span><span class="t">協作備課</span><span class="d">共同編寫教材、共用校本資源庫。</span></li>
+        <li data-r><span class="n">05</span><span class="t">學習管理</span><span class="d">課程、紀錄與進度，同一個視圖。</span></li>
+        <li data-r><span class="n">06</span><span class="t">學習洞察</span><span class="d">把課堂數據整理成清晰的行動。</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" id="edcity-ai">
+    <div class="wrap">
+      <p class="eyebrow" data-r>EdCity.ai</p>
+      <h2 data-r>教師的 AI 助理與工具箱。</h2>
+      <p class="lead" data-r>由備課到批改，一個懂你課堂的助手。生成教材、整理學習需要、給出有理據的建議 &mdash; 每一個決定仍然由你作主。</p>
+      <div class="cta-row" data-r>
+        <a class="pill solid" href="#book">了解 EdCity.ai</a>
+        <a class="pill ghost" href="#book">觀看示範</a>
+      </div>
+      <div class="mock" data-r>
+        <span class="m-tag">EdCity.ai · 備課建議</span>
+        <p class="m-line">建議：先重溫《岳陽樓記》的借景抒情，四名學生未掌握前置概念。</p>
+        <div class="m-row">
+          <span class="m-btn solid">採用</span>
+          <span class="m-btn">調整</span>
+          <span class="m-btn">略過</span>
+        </div>
+        <div class="m-rail"><i class="on"></i><i class="on"></i><i class="now"></i><i></i><i></i></div>
+      </div>
+      <div class="feats">
+        <div class="f" data-r><b>生成教材</b><span>工作紙、簡報、評估，數分鐘完成。</span></div>
+        <div class="f" data-r><b>備課建議</b><span>按班別學習數據，指出當堂重點。</span></div>
+        <div class="f" data-r><b>AI 批改</b><span>中文作文回饋，教師可逐項調整。</span></div>
+        <div class="f" data-r><b>學習洞察</b><span>把課堂數據整理成清晰的下一步。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec quote" data-r>
+    <div class="wrap">
+      <blockquote>「它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
+      <p class="who">中學中文科教師 · 教師訪談摘錄（示意內容）</p>
+    </div>
+  </section>
+
+  <section class="sec light" id="ecosystem">
+    <div class="wrap">
+      <p class="eyebrow" data-r>教育生態系統</p>
+      <h2 data-r>讓合適的支援，在合適的時候出現。</h2>
+      <p class="lead" data-r>連結教學應用程式、智能助手與經審核的資源。系統呈現有用的關係與機會，而不會替你做主 &mdash; <span class="spark">一點光，落在剛剛出現的機會上</span>。</p>
+      <div class="cta-row" data-r>
+        <a class="pill spark" href="#book">探索生態系統</a>
+        <a class="pill ghost" href="#book">供應商專區</a>
+      </div>
+      <div class="mock" data-r>
+        <span class="m-tag">資源配對 · 按學習需要</span>
+        <p class="m-line">為「中一 · 記敘文閱讀延伸」配對到 3 項經審核資源。</p>
+        <ul class="m-match">
+          <li><span>中文橋樑書單（中一至中二）</span><span class="need">閱讀延伸</span></li>
+          <li><span>親子共讀 20 分鐘指南</span><span class="need">家庭參與</span></li>
+          <li><span>公共圖書館 · 少年章節書專架</span><span class="need">社區資源</span></li>
+        </ul>
+        <div class="m-rail"><i class="on"></i><i class="now"></i><i></i></div>
+      </div>
+      <div class="feats spark">
+        <div class="f" data-r><b>教學應用程式</b><span>課堂互動與延伸學習工具。</span></div>
+        <div class="f" data-r><b>智能助手</b><span>為特定學習需要而設的助理。</span></div>
+        <div class="f" data-r><b>資源配對</b><span>按課程情境推薦合適資源。</span></div>
+        <div class="f" data-r><b>安全審核</b><span>資料、私隱與保護兒童的把關。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="compare">
+    <div class="wrap">
+      <p class="eyebrow" data-r>為何不同</p>
+      <h2 data-r>智能不是附加功能，而是這個平台的核心。</h2>
+      <div class="cmp" data-r>
+        <div class="row head"><div>範疇</div><div>傳統教育平台</div><div class="new">EdCity</div></div>
+        <div class="row"><div class="k">學習管理</div><div class="old">課程與紀錄分開管理，人手追蹤進度。</div><div class="new">進度、需要與下一步，整合在同一視圖。</div></div>
+        <div class="row"><div class="k">技能與素養</div><div class="old">以完成率衡量學習。</div><div class="new">以素養發展的軌跡呈現學習。</div></div>
+        <div class="row"><div class="k">內容生成</div><div class="old">教材逐份人手製作。</div><div class="new">由課堂數據生成草稿，教師定稿。</div></div>
+        <div class="row"><div class="k">適時學習</div><div class="old">學生自行搜尋資源。</div><div class="new">合適資源在需要的一刻出現。</div></div>
+        <div class="row"><div class="k">學習分析</div><div class="old">匯出報表，事後檢視。</div><div class="new">即時洞察，指向具體行動。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="about">
+    <div class="wrap">
+      <p class="eyebrow" data-r>最新動向</p>
+      <div class="ups">
+        <div class="u" data-r><span class="k">教師工作坊</span><p>AI 與讀寫教學 &mdash; 實作坊</p><span class="meta">2026 年秋季 · 示意內容</span></div>
+        <div class="u" data-r><span class="k">產品更新</span><p>學習洞察面板 &mdash; 新增班別比較</p><span class="meta">更新記錄 · 示意內容</span></div>
+        <div class="u" data-r><span class="k">活動</span><p>EdCity AI 教育峰會 &mdash; 香港</p><span class="meta">日期待定 · 示意內容</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="close-cta" id="book">
+    <div class="wrap">
+      <h2 data-r>由一個清晰的<br>下一步開始。</h2>
+      <p data-r>為你的學校預約一次導覽。</p>
+      <div class="cta-row" data-r><a class="pill solid" href="#top">為你的學校預約導覽 →</a></div>
     </div>
   </section>
 
@@ -284,8 +401,19 @@
 
 <footer>
   <div class="wrap">
-    <span>© 香港教育城 2026</span>
-    <span>本頁為品牌設計研究 · 內容為示意 · 方案 A / Option A</span>
+    <div class="cols">
+      <div>
+        <span class="brand">EdCity · 香港教育城</span>
+        <p style="margin:12px 0 0;max-width:30ch">教與學的智能夥伴，把複雜的教育生態整理成清晰的下一步。</p>
+      </div>
+      <div><h4>產品</h4><ul><li><a href="#edcity-ai">EdCity.ai</a></li><li><a href="#meet">教學工具箱</a></li><li><a href="#meet">校本教材庫</a></li><li><a href="#meet">學習洞察</a></li></ul></div>
+      <div><h4>生態系統</h4><ul><li><a href="#ecosystem">教學應用程式</a></li><li><a href="#ecosystem">智能助手</a></li><li><a href="#ecosystem">資源配對</a></li><li><a href="#ecosystem">供應商專區</a></li></ul></div>
+      <div><h4>關於</h4><ul><li><a href="#about">願景</a></li><li><a href="#about">私隱與保安</a></li><li><a href="#compare">比較</a></li><li><a href="#book">聯絡</a></li></ul></div>
+    </div>
+    <div class="legal">
+      <span>© 香港教育城 2026</span>
+      <span>本頁為品牌設計研究 · 內容為示意 · 方案 A / Option A</span>
+    </div>
   </div>
 </footer>
 
@@ -295,22 +423,15 @@
     var toggle = document.getElementById('navToggle');
     var closeB = document.getElementById('navClose');
     var label  = document.getElementById('navLabel');
-
-    /* Option A palette — each open takes the next fill; text flips light/dark to suit */
     var FILLS = [
-      ['#6E7C99','#F5F0E5'],   /* slate  */
-      ['#9AA486','#1C1712'],   /* sage   */
-      ['#B26A44','#F5F0E5'],   /* clay   */
-      ['#CBC2B2','#1C1712'],   /* greige */
-      ['#BA3D04','#F5F0E5']    /* spark  */
+      ['#6E7C99','#F5F0E5'], ['#9AA486','#1C1712'], ['#B26A44','#F5F0E5'],
+      ['#CBC2B2','#1C1712'], ['#BA3D04','#F5F0E5']
     ];
     var SLASHES = ['#BA3D04','#6E7C99','#9AA486','#B26A44','#CBC2B2'];
     var turn = 0;
     var slashSpans = [].slice.call(nav.querySelectorAll('.sl'));
-
     function open(){
-      var f = FILLS[turn % FILLS.length];
-      turn++;
+      var f = FILLS[turn % FILLS.length]; turn++;
       nav.style.setProperty('--nav-c', f[0]);
       nav.style.setProperty('--nav-ink', f[1]);
       slashSpans.forEach(function(s, k){
@@ -318,9 +439,7 @@
         if(c === f[0]) c = SLASHES[(turn + k + 2) % SLASHES.length];
         s.style.color = c;
       });
-      nav.hidden = false;
-      /* reflow so the transform transition runs from the hidden state */
-      void nav.offsetWidth;
+      nav.hidden = false; void nav.offsetWidth;
       nav.classList.add('open');
       document.documentElement.classList.add('nav-open');
       document.body.style.overflow = 'hidden';
@@ -337,17 +456,10 @@
       setTimeout(function(){ if(!nav.classList.contains('open')) nav.hidden = true; }, 560);
       toggle.focus();
     }
-
-    toggle.addEventListener('click', function(){
-      nav.classList.contains('open') ? close() : open();
-    });
+    toggle.addEventListener('click', function(){ nav.classList.contains('open') ? close() : open(); });
     closeB.addEventListener('click', close);
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape' && nav.classList.contains('open')) close();
-    });
-    nav.addEventListener('click', function(e){
-      if(e.target.tagName === 'A') close();
-    });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && nav.classList.contains('open')) close(); });
+    nav.addEventListener('click', function(e){ if(e.target.closest('a')) close(); });
   })();
 
   /* content load-in — 90ms stagger, firm rise */

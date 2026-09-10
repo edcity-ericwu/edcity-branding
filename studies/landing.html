@@ -264,6 +264,44 @@
   @media (max-width:860px){ .features{grid-template-columns:1fr 1fr} }
   @media (max-width:520px){ .features{grid-template-columns:1fr} }
 
+  /* meet — six capability cards */
+  .cards6{
+    max-width:var(--wrap);margin:48px auto 0;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:left;
+  }
+  .cards6 .c{
+    background:var(--paper);border:1px solid var(--line);border-radius:16px;
+    padding:22px;display:flex;flex-direction:column;gap:8px;
+  }
+  .cards6 .c i{width:22px;height:22px;border-radius:6px;background:var(--blue);display:block}
+  .cards6 .c:nth-child(3n-1) i{background:var(--coral)}
+  .cards6 .c:nth-child(3n) i{background:var(--blue-deep)}
+  .cards6 .c .n{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;color:var(--ink-3)}
+  .cards6 .c b{font-family:var(--sans);font-size:1.04rem}
+  .cards6 .c span{font-size:.9rem;color:var(--ink-2);line-height:1.5}
+  @media (max-width:860px){ .cards6{grid-template-columns:1fr 1fr} }
+  @media (max-width:520px){ .cards6{grid-template-columns:1fr} }
+
+  /* comparison table */
+  .cmp{
+    max-width:var(--wrap);margin:44px auto 0;text-align:left;
+    border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  }
+  .cmp .row{display:grid;grid-template-columns:1fr 1.2fr 1.2fr;border-top:1px solid var(--line)}
+  .cmp .row:first-child{border-top:0}
+  .cmp .row > div{padding:16px 18px;font-size:.92rem;line-height:1.5}
+  .cmp .row .k{font-family:var(--sans);font-weight:600;color:var(--ink)}
+  .cmp .row .old{color:var(--ink-2);background:var(--paper)}
+  .cmp .row .new{color:var(--ink);background:color-mix(in srgb,var(--blue) 8%,var(--paper))}
+  .cmp .head > div{font-family:var(--sans);font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .cmp .head .new{background:color-mix(in srgb,var(--blue) 16%,var(--paper));color:var(--blue-deep)}
+  @media (max-width:640px){
+    .cmp .row{grid-template-columns:1fr}
+    .cmp .row > div{border-top:1px solid var(--line)}
+    .cmp .row .k{border-top:0;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+    .cmp .head{display:none}
+  }
+
   /* ---------- testimonial ---------- */
   .quote{padding:clamp(60px,10vw,110px) 0;text-align:center}
   .quote blockquote{
@@ -429,8 +467,9 @@
   <div class="wrap">
     <a class="brand" href="#top" aria-label="EdCity"><svg viewBox="0 0 179 54" role="img" aria-label="EdCity"><use href="#edcity-logo"/></svg></a>
     <nav>
-      <a href="#edcity-ai">產品</a>
+      <a href="#meet">產品</a>
       <a href="#ecosystem">生態系統</a>
+      <a href="#compare">比較</a>
       <a href="#about">關於</a>
     </nav>
     <span class="spacer"></span>
@@ -445,8 +484,9 @@
   <button class="close" id="navClose">關閉 · Close</button>
   <ol>
     <li><a href="#top"><span class="u">首頁</span><span class="sl">/</span></a></li>
-    <li><a href="#edcity-ai"><span class="u">產品</span><span class="sl">/</span></a></li>
+    <li><a href="#meet"><span class="u">產品</span><span class="sl">/</span></a></li>
     <li><a href="#ecosystem"><span class="u">生態系統</span><span class="sl">/</span></a></li>
+    <li><a href="#compare"><span class="u">比較</span><span class="sl">/</span></a></li>
     <li><a href="#about"><span class="u">關於</span><span class="sl">/</span></a></li>
     <li><a href="#book"><span class="u">聯絡</span><span class="sl">/</span></a></li>
   </ol>
@@ -487,6 +527,22 @@
       <ul>
         <li>官立中學</li><li>資助小學</li><li>特殊學校</li><li>大專院校</li><li>出版夥伴</li><li>服務機構</li>
       </ul>
+    </div>
+  </section>
+
+  <section class="product" id="meet" data-r>
+    <div class="wrap">
+      <p class="eyebrow" style="color:var(--blue)">認識 EdCity</p>
+      <h2>把教與學的每個時刻，<br>整合到一個平台</h2>
+      <p class="lead">EdCity 將學習管理、教學工具、智能助手與經審核的資源生態，收攏成一個以 AI 為核心的平台 &mdash; 環繞課堂、學生與家庭真正發生的時刻。</p>
+      <div class="cards6">
+        <div class="c"><i></i><span class="n">01</span><b>一對一學習支援</b><span>按每名學生的進度與需要，給出下一步。</span></div>
+        <div class="c"><i></i><span class="n">02</span><b>智能助手</b><span>為特定學習情境而設的助理，教師定稿。</span></div>
+        <div class="c"><i></i><span class="n">03</span><b>適時學習</b><span>合適的資源，在需要的一刻出現。</span></div>
+        <div class="c"><i></i><span class="n">04</span><b>協作備課</b><span>共同編寫教材、共用校本資源庫。</span></div>
+        <div class="c"><i></i><span class="n">05</span><b>學習管理</b><span>課程、紀錄與進度，同一個視圖。</span></div>
+        <div class="c"><i></i><span class="n">06</span><b>學習洞察</b><span>把課堂數據整理成清晰的行動。</span></div>
+      </div>
     </div>
   </section>
 
@@ -554,6 +610,21 @@
         <div class="f"><b>智能助手</b><span>為特定學習需要而設的助理。</span></div>
         <div class="f"><b>資源配對</b><span>按課程情境推薦合適資源。</span></div>
         <div class="f"><b>安全審核</b><span>資料、私隱與保護兒童的把關。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product" id="compare" data-r>
+    <div class="wrap">
+      <p class="eyebrow" style="color:var(--blue)">為何不同</p>
+      <h2>智能不是附加功能，<br>而是這個平台的核心</h2>
+      <div class="cmp">
+        <div class="row head"><div>範疇</div><div>傳統教育平台</div><div class="new">EdCity</div></div>
+        <div class="row"><div class="k">學習管理</div><div class="old">課程與紀錄分開管理，人手追蹤進度。</div><div class="new">進度、需要與下一步，整合在同一視圖。</div></div>
+        <div class="row"><div class="k">技能與素養</div><div class="old">以完成率衡量學習。</div><div class="new">以素養發展的軌跡呈現學習。</div></div>
+        <div class="row"><div class="k">內容生成</div><div class="old">教材逐份人手製作。</div><div class="new">由課堂數據生成草稿，教師定稿。</div></div>
+        <div class="row"><div class="k">適時學習</div><div class="old">學生自行搜尋資源。</div><div class="new">合適資源在需要的一刻出現。</div></div>
+        <div class="row"><div class="k">學習分析</div><div class="old">匯出報表，事後檢視。</div><div class="new">即時洞察，指向具體行動。</div></div>
       </div>
     </div>
   </section>
