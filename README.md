@@ -13,12 +13,12 @@ The direction combines three propositions into one system with a layered job spl
 | Option | Palette | Layout | Reference |
 | --- | --- | --- | --- |
 | A · Slate, Earth & First Light | `palette-study.html` | `studio-study.html` | quarterre.com |
-| B · Clear Field, Bright Signal | `palette-study-cool.html` | `landing.html` | sanalabs.com |
+| B · Clear Field, Bright Signal | `palette-study-cool.html` | `unified.html` (palette B) | sanalabs.com |
 | C · Bright Field, Two Points | `palette-study-vivid.html` | `home-study.html` | amita-oshiete.jp |
 
-**All three layout studies now share one section skeleton and one set of copy** (hero → partners → 認識 EdCity six cards → EdCity.ai + mock → quote → ecosystem + mock → comparison table → updates → CTA), each rendered fully in its reference's idiom. A comparison then isolates the direction, not the content.
+**Every layout study shares one section skeleton and one set of copy** (hero → partners → 認識 EdCity six cards → EdCity.ai + mock → quote → ecosystem + mock → comparison table → updates → CTA), each rendered fully in its reference's idiom. A comparison then isolates the direction, not the content.
 
-**For the strictest side-by-side:** `unified.html` puts the three on one page with a palette switch (A/B/C) that swaps only colour, corner-radius, body type and load-in motion — everything else held constant. Section structure follows sanalabs.com/products/sana-learn.
+**`unified.html`** carries all three on one page: a WebGL dawn opening, then a palette switch (A/B/C) that swaps only colour, corner-radius, body type and load-in motion — everything else held constant. It doubles as the Option B layout study (its default skin is the Sana structure). Section structure follows sanalabs.com/products/sana-learn.
 
 ## studies/
 
@@ -34,8 +34,7 @@ The direction combines three propositions into one system with a layered job spl
 | `parent-update-three-ways.html` | Structural comparison of one product moment (a parent progress update) built three ways, to test whether the directions are distinguishable beyond a palette swap. |
 | `opening-screen.html` | Animated opening screen — a grainy blue-to-coral gradient mesh (CSS radial blobs) that rises like a sunrise on load, carrying the wordmark and tagline. Built on the Option B scale. |
 | `opening-screen-v2.html` | The same idea with a WebGL fragment shader — domain-warped fractal noise across the palette, in-shader film grain, pointer parallax, a `progress` uniform driving the sunrise reveal. CSS-gradient + reduced-motion fallbacks. |
-| `landing.html` | The shared skeleton in Sana style (grainy mesh hero, partner strip, six-card grid, two product sections with mocks, testimonial, comparison table, updates, CTA) in the Option B palette, prefaced by the dawn opening screen. |
-| `unified.html` | The three options on **one** page — identical structure and copy, a bottom-right switch (A/B/C) swapping only palette, corner-radius, body type and load-in motion. Adds a "Meet EdCity" six-card section and an AI-comparison table over `landing.html`. Built as a controlled side-by-side; structure after sanalabs.com/products/sana-learn. |
+| `unified.html` | The three options on **one** page — a WebGL dawn opening (the `opening-screen-v2` shader), then identical structure and copy with a bottom-right switch (A/B/C) swapping only palette, corner-radius, body type and load-in motion. Doubles as the Option B layout study. Controlled side-by-side; structure after sanalabs.com/products/sana-learn. |
 
 `imagery-notes.md` — mood-board links (Pinterest, per direction), the no-lifting-reference-images rule, and a "hero space" reference for later.
 
