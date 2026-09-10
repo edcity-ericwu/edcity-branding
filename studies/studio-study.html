@@ -211,22 +211,8 @@
   @media (max-width:720px){ :root{--rail:40px} .rail .menu{font-size:.58rem} .badge{width:74px;height:74px} }
 
   /* ============ supportive threads ============ */
-  /* one governed line down the page, drawn as you scroll, with a node at each section */
-  main{position:relative}
-  .thread{
-    position:absolute;left:calc(clamp(8px,2.4vw,30px));top:0;
-    width:24px;height:100%;z-index:1;pointer-events:none;overflow:visible;
-  }
-  .thread path{
-    fill:none;stroke:var(--clay);stroke-width:1.4;stroke-linecap:round;
-    stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--t,0));vector-effect:non-scaling-stroke;
-  }
-  .thread ellipse{fill:var(--paper);stroke:var(--clay);stroke-width:1.4;vector-effect:non-scaling-stroke;transition:fill .3s}
-  .thread ellipse.on{fill:var(--clay)}
-  @media (max-width:1000px){ .thread{display:none} }
-  @media (prefers-reduced-motion:reduce){ .thread path{stroke-dashoffset:0} }
-
-  /* the thread passes through the mock: AI proposes → teacher decides → next step */
+  /* the thread lives in the content, not the margin: it runs through the mock —
+     AI proposes → teacher decides → next step */
   .mock{position:relative;padding-left:34px}
   .mock .spine{position:absolute;left:15px;top:22px;bottom:22px;width:1.4px;background:var(--clay);opacity:.5}
   .mock .spine i{
@@ -332,10 +318,6 @@
 </header>
 
 <main>
-
-  <svg class="thread" id="thread" viewBox="0 0 24 1000" preserveAspectRatio="none" aria-hidden="true">
-    <path id="threadPath" pathLength="1" d="M12 0 C 6 90, 18 150, 12 240 S 4 340, 12 430 S 20 540, 12 640 S 5 740, 12 840 S 16 930, 12 1000"/>
-  </svg>
 
   <section class="hero">
     <div class="wrap">
@@ -561,47 +543,6 @@
         requestAnimationFrame(function(){ requestAnimationFrame(function(){ e.classList.add('in'); }); });
       } else { io.observe(e); }
     });
-  })();
-
-  /* supportive thread — draws down the page with scroll; nodes anchor to each section */
-  (function(){
-    var thread = document.getElementById('thread');
-    if(!thread) return;
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var secs = [].slice.call(document.querySelectorAll('main .sec, main .close-cta'));
-    var vb = 1000, aspect = 1;
-    function nodeR(){ var r = thread.getBoundingClientRect(); aspect = (r.height/vb) / (r.width/24) || 1; }
-    var nodes = secs.map(function(){
-      var c = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-      c.setAttribute('cx','12'); c.setAttribute('rx','3.2'); c.setAttribute('ry','3.2');
-      thread.appendChild(c); return c;
-    });
-    var main = document.querySelector('main');
-    var raf = 0;
-    function layout(){
-      var mTop = main.offsetTop, mH = main.offsetHeight || 1;
-      nodeR();
-      secs.forEach(function(s, i){
-        var y = (s.getBoundingClientRect().top + window.scrollY - mTop) / mH * 1000;
-        nodes[i].setAttribute('cy', Math.max(0, Math.min(1000, y)).toFixed(1));
-        nodes[i].setAttribute('ry', (3.2 / aspect).toFixed(2));
-      });
-    }
-    function update(){
-      raf = 0;
-      var mTop = main.offsetTop, mH = main.offsetHeight || 1;
-      var t = Math.max(0, Math.min(1, (window.scrollY + window.innerHeight * 0.5 - mTop) / mH));
-      if(!reduce) thread.style.setProperty('--t', t.toFixed(4));
-      var seen = window.scrollY + window.innerHeight * 0.5;
-      secs.forEach(function(s, i){
-        nodes[i].classList.toggle('on', s.getBoundingClientRect().top + window.scrollY <= seen);
-      });
-    }
-    function onScroll(){ if(!raf) raf = requestAnimationFrame(update); }
-    window.addEventListener('scroll', onScroll, { passive:true });
-    window.addEventListener('resize', function(){ layout(); update(); });
-    window.addEventListener('load', function(){ layout(); update(); });
-    layout(); update();
   })();
 </script>
 

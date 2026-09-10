@@ -378,26 +378,6 @@
   :focus-visible{outline:2px solid var(--brand);outline-offset:3px}
 
   /* ============ guided thresholds ============ */
-  /* progress rail — a quiet orientation cue down the left edge (desktop) */
-  .rail{
-    position:fixed;left:max(14px,2vw);top:0;bottom:0;width:1px;z-index:15;
-    background:var(--line);display:none;
-  }
-  @media (min-width:1180px){ .rail{display:block} body{--rail-pad:26px} }
-  .rail .fill{position:absolute;left:0;top:0;width:1px;height:0;background:var(--ink);transition:height .15s linear}
-  .rail .tick{
-    position:absolute;left:-3px;width:7px;height:7px;border:1px solid var(--ink-3);
-    background:var(--paper);border-radius:50%;transform:translateY(-50%);transition:background .3s,border-color .3s;
-  }
-  .rail .tick.done{background:var(--ink);border-color:var(--ink)}
-  .rail .tick.here{background:var(--brand);border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent)}
-  .rail .now{
-    position:absolute;left:16px;transform:translateY(-50%);white-space:nowrap;
-    font:600 .64rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
-    opacity:0;transition:opacity .3s, top .25s ease;
-  }
-  .rail.awake .now{opacity:1}
-
   /* threshold — the doorway between two sections */
   .threshold{
     position:relative;height:1px;background:var(--line);
@@ -419,16 +399,7 @@
   html.r .threshold:not(.in)::before{width:0}
   html.r .threshold:not(.in) .mark{opacity:0}
 
-  /* nested frame — each block quietly framed; top+left draw in on entry */
   .blk{position:relative}
-  .blk > .wrap{position:relative}
-  .blk > .wrap::before{
-    content:"";position:absolute;left:-14px;right:-14px;top:-22px;bottom:-22px;
-    border:1px solid var(--line);border-right:0;border-bottom:0;pointer-events:none;
-    transition:clip-path .7s cubic-bezier(.2,.7,.2,1);
-  }
-  html.r .blk:not(.in) > .wrap::before{clip-path:inset(0 100% 100% 0)}
-  @media (max-width:760px){ .blk > .wrap::before{display:none} }
 
   /* plain-language governance note — a warmth / reassurance point */
   .governance{
@@ -451,9 +422,8 @@
     html{scroll-behavior:auto}
     *{animation:none!important;transition:none!important}
     html.r [data-r]{opacity:1;transform:none}
-    html.r .threshold::before{width:64px}
+    html.r .threshold::before{width:150px}
     html.r .threshold .mark{opacity:1}
-    html.r .blk > .wrap::before{clip-path:inset(0 0 0 0)}
   }
 
   /* ============ WebGL opening ============ */
@@ -726,8 +696,6 @@ void main(){
   </ol>
   <p class="meta">香港教育城 · 教與學的智能夥伴</p>
 </div>
-
-<nav class="rail" id="rail" aria-hidden="true"><span class="fill" id="railFill"></span><span class="now" id="railNow"></span></nav>
 
 <main id="top">
 
@@ -1155,53 +1123,6 @@ void main(){
         else io.observe(e);
       });
     }
-  })();
-
-  /* ---------- progress rail: quiet orientation down the left edge ---------- */
-  (function(){
-    var rail = document.getElementById('rail');
-    var fill = document.getElementById('railFill');
-    var now  = document.getElementById('railNow');
-    if(!rail) return;
-    var STOPS = [
-      ['top','首頁'], ['meet','認識 EdCity'], ['edcity-ai','EdCity.ai'],
-      ['ecosystem','生態系統'], ['compare','為何不同'], ['about','最新動向'], ['book','下一步']
-    ];
-    var nodes = STOPS.map(function(s){ return { el: document.getElementById(s[0]), label: s[1] }; })
-                     .filter(function(n){ return n.el; });
-    var ticks = nodes.map(function(n){
-      var t = document.createElement('span'); t.className = 'tick'; rail.appendChild(t); return t;
-    });
-    var raf = 0;
-    function place(){
-      var docH = document.documentElement.scrollHeight - window.innerHeight;
-      nodes.forEach(function(n, i){
-        var y = n.el.getBoundingClientRect().top + window.scrollY;
-        n.pct = Math.max(0, Math.min(1, y / docH));
-        ticks[i].style.top = (n.pct * 100) + '%';
-      });
-    }
-    function update(){
-      raf = 0;
-      var docH = document.documentElement.scrollHeight - window.innerHeight;
-      var p = docH > 0 ? window.scrollY / docH : 0;
-      fill.style.height = (p * 100) + '%';
-      var cur = 0;
-      nodes.forEach(function(n, i){
-        var passed = window.scrollY + window.innerHeight * 0.32 >= n.el.getBoundingClientRect().top + window.scrollY;
-        ticks[i].classList.toggle('done', passed && i < nodes.length);
-        if(passed) cur = i;
-      });
-      ticks.forEach(function(t, i){ t.classList.toggle('here', i === cur); ticks[i].classList.toggle('done', i < cur); });
-      now.textContent = nodes[cur].label;
-      now.style.top = ticks[cur].style.top;
-      rail.classList.toggle('awake', window.scrollY > 40);
-    }
-    function onScroll(){ if(!raf) raf = requestAnimationFrame(update); }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', function(){ place(); update(); });
-    window.addEventListener('load', function(){ place(); update(); });
-    place(); update();
   })();
 
   /* ---------- colour-cycling menu ---------- */
