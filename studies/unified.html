@@ -240,6 +240,21 @@
   .qphoto{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:18px}
   .qphoto .head{width:44px;height:44px;border-radius:50%;border:1px dashed var(--ink-3);flex-shrink:0}
 
+  /* FAQ accordion */
+  .faq{max-width:78ch;margin-top:28px;border-top:1px solid var(--line)}
+  .faq details{border-bottom:1px solid var(--line)}
+  .faq summary{
+    list-style:none;cursor:pointer;padding:18px 28px 18px 0;position:relative;
+    font-family:var(--sans);font-weight:600;font-size:.98rem;
+  }
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{
+    content:"+";position:absolute;right:2px;top:16px;font-family:var(--sans);font-weight:400;
+    font-size:1.3rem;color:var(--ink-3);transition:transform .2s;
+  }
+  .faq details[open] summary::after{content:"–"}
+  .faq p{margin:0 0 20px;color:var(--ink-2);font-size:.92rem;max-width:66ch}
+
   /* ============ generic section ============ */
   section.blk{padding:clamp(60px,10vw,120px) 0}
   section.blk.panel{background:var(--panel)}
@@ -908,6 +923,31 @@ void main(){
         <div><div class="media" data-ar="16:9"><span class="cap">活動主視覺</span></div><p style="margin:8px 0 0;font-size:.9rem">EdCity AI 教育峰會 — 香港 <span style="color:var(--ink-3)">· 日期待定</span></p></div>
         <div><div class="media" data-ar="16:9"><span class="cap">個案研究照片</span></div><p style="margin:8px 0 0;font-size:.9rem">學校個案 — 中文科組 <span style="color:var(--ink-3)">· 示意</span></p></div>
         <div><div class="media" data-ar="16:9"><span class="cap">教師分享短片</span></div><p style="margin:8px 0 0;font-size:.9rem">三位老師談 AI 與判斷 <span style="color:var(--ink-3)">· 待製作</span></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="faq">
+    <div class="wrap">
+      <p class="eyebrow" data-r>常見問題</p>
+      <h2 class="big" data-r style="font-size:clamp(1.6rem,3.6vw,2.2rem)">在導入之前，學校常問</h2>
+      <div class="faq" data-r>
+        <details open>
+          <summary>學生與家長的資料會如何處理？</summary>
+          <p>資料留在學校帳戶之下，不作模型訓練；家長可查看給孩子的每一項建議，教師可隨時關閉 AI 建議（詳見上方「教育生態系統」的私隱與保安）。</p>
+        </details>
+        <details>
+          <summary>需要多久才能導入現有的教學流程？</summary>
+          <p>EdCity.ai 設計為疊加在現行流程之上 &mdash; 教師由第一天起就能採用、調整或略過建議，不需要重新設計課程或評估方式。</p>
+        </details>
+        <details>
+          <summary>與現有系統（如 SIS、Google Classroom）相容嗎？</summary>
+          <p>相容。EdCity 與常用教學工具整合，詳見「EdCity.ai」一節的整合列表；校本資源庫亦可個別匯入。</p>
+        </details>
+        <details>
+          <summary>學校可以只使用部分功能嗎？</summary>
+          <p>可以。六項能力（學習支援、智能助手、適時學習、協作備課、學習管理、學習洞察）可個別啟用，學校可按步伐擴展。</p>
+        </details>
       </div>
     </div>
   </section>
