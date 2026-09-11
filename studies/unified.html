@@ -25,7 +25,7 @@
     --h2-size:clamp(1.8rem,3.8vw,2.6rem); --h2-weight:600; --h2-lh:1.18; --h2-ls:-.005em;
     --eyebrow-size:.82rem; --eyebrow-ls:.16em; --eyebrow-weight:600;
     --sec-pad-min:100px; --sec-pad-vw:12vw; --sec-pad-max:190px;
-    --lead-size:.94rem; --pill-radius:10px; --btn-dark:#3D4451;
+    --lead-size:.94rem; --pill-radius:10px; --btn-dark:#3F3F3F;
   }
   /* Option B — Human Craft (Slate, Earth & First Light) */
   [data-p="b"]{
@@ -130,12 +130,12 @@
 
   .menu-btn{
     all:unset;box-sizing:border-box;cursor:pointer;
-    width:56px;height:36px;border-radius:14px;background:var(--btn-dark);
-    display:grid;place-content:center;gap:5px;flex-shrink:0;
+    width:60px;height:30px;border-radius:10px;background:var(--btn-dark);
+    display:grid;place-content:center;gap:3px;flex-shrink:0;
   }
-  .menu-btn span{display:block;width:18px;height:1.5px;background:var(--paper);transition:transform .25s,opacity .2s}
-  .nav-open .menu-btn span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
-  .nav-open .menu-btn span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
+  .menu-btn span{display:block;width:20px;height:1px;background:var(--paper);transition:transform .25s,opacity .2s}
+  .nav-open .menu-btn span:nth-child(1){transform:translateY(2px) rotate(45deg)}
+  .nav-open .menu-btn span:nth-child(2){transform:translateY(-2px) rotate(-45deg)}
 
   /* ============ grain ============ */
   .grain{
