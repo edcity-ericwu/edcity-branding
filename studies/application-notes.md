@@ -10,6 +10,11 @@ Where a study needs something that cannot be produced confidently here (real pho
 
 Palettes are not fixed. Expect them to shift as the visual languages pull apart.
 
+**Palette revisions (deeper pass):**
+- **B — Clear Field, Bright Signal:** blue was covering every surface. Added **Stone** (`#5C6570`, grounded grey from the moodboard's architecture/sea photography) to carry structure and navigation, and **Teal** (`#1F7A72`, the moodboard's ocean horizon) for wayfinding/orientation marks. Bright blue is now held to decisions and action only — buttons, links, focus. `unified.html`'s guided-threshold chevrons and governance dots use the wayfinding tone, not decision-blue.
+- **C — Bright Field, Two Points:** was a blue backbone with accent points — read as generic bright SaaS. Reframed as a **refraction field**: blue demoted to one plane among several (cyan, lavender, peach, pink), each standing in for an angle of light through glass; Lavender promoted from a gradient-only bridge tone to a full field colour. Added an explicit rule: colour is never the only signal — every pink/green mark carries a label or icon too.
+- **A — Slate, Earth & First Light:** held as-is; already the best-aligned. The "sober, high-contrast mode for dense data" from the feedback is expressed in `studio-study.html`'s comparison table rather than a palette change.
+
 ## Concept ↔ study ↔ signature device
 
 The moodboard "OPTION A/B/C" labels are the moodboard's own numbering. Map by **concept name**:
