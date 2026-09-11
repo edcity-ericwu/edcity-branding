@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EdCity — Compare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    color-scheme:light;
+    --paper:#0E1116; --card:#171B22; --ink:#F2F4F8; --ink-2:#A7AFBD; --ink-3:#6E7686; --line:#262C36;
+    --a:#B26A44; --b:#2450E6; --c:#F35BEC;
+    --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --han:"Noto Sans TC",var(--sans); --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{background:var(--paper);color:var(--ink);font-family:var(--han);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* ---------- the board: 3 columns (options) x 3 rows (stages), 2D scroll-snap ---------- */
+  #board{
+    position:absolute;inset:0;
+    display:grid;grid-template-columns:repeat(3,100vw);grid-template-rows:repeat(3,100vh);
+    overflow:auto;scroll-snap-type:both mandatory;scroll-behavior:smooth;
+    -ms-overflow-style:none;scrollbar-width:none;
+  }
+  #board::-webkit-scrollbar{display:none}
+  .cell{
+    scroll-snap-align:start;scroll-snap-stop:always;position:relative;
+    display:flex;flex-direction:column;padding:clamp(70px,9vh,96px) clamp(18px,3vw,40px) clamp(18px,3vw,32px);
+  }
+  .cell[data-col="a"]{--oc:var(--a)} .cell[data-col="b"]{--oc:var(--b)} .cell[data-col="c"]{--oc:var(--c)}
+
+  .cell-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;flex-shrink:0}
+  .cell-head .lbl{font-family:var(--sans);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:9px}
+  .cell-head .lbl .dot{width:9px;height:9px;border-radius:50%;background:var(--oc)}
+  .cell-head .stage{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .cell-head a.open{
+    font-family:var(--sans);font-weight:600;font-size:.78rem;color:var(--ink-2);text-decoration:none;
+    border:1px solid var(--line);border-radius:999px;padding:6px 12px;flex-shrink:0;
+  }
+  .cell-head a.open:hover{color:var(--ink);border-color:var(--ink-2)}
+
+  .frame{
+    flex:1;min-height:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--card);
+    position:relative;
+  }
+  .frame iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+  .frame .fallback{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;text-align:center;padding:24px;color:var(--ink-3);font-family:var(--mono);font-size:.8rem;
+  }
+  .frame .fallback input{
+    width:min(420px,80%);background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    color:var(--ink);font-family:var(--mono);font-size:.78rem;padding:9px 12px;
+  }
+  .frame .fallback input:focus{outline:2px solid var(--oc);outline-offset:1px}
+  .frame .fallback button{
+    font-family:var(--sans);font-weight:600;font-size:.78rem;background:var(--oc);color:#fff;
+    border:0;border-radius:999px;padding:8px 16px;cursor:pointer;
+  }
+  .frame .badge{
+    position:absolute;left:12px;top:12px;z-index:2;font-family:var(--mono);font-size:.66rem;
+    background:rgba(0,0,0,.55);color:#fff;padding:4px 9px;border-radius:999px;pointer-events:none;
+  }
+
+  /* ---------- nav overlay ---------- */
+  .nav{position:fixed;z-index:20;display:flex;gap:6px;padding:6px;border-radius:999px;
+    background:rgba(23,27,34,.86);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .nav button{
+    all:unset;box-sizing:border-box;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:.78rem;
+    color:var(--ink-2);padding:8px 14px;border-radius:999px;transition:background .15s,color .15s;
+    display:flex;align-items:center;gap:7px;
+  }
+  .nav button:hover{color:var(--ink)}
+  .nav button[aria-current="true"]{background:var(--ink);color:var(--paper)}
+
+  #rowNav{top:16px;left:50%;transform:translateX(-50%)}
+  #colNav{top:16px;right:16px}
+  #colNav button .dot{width:8px;height:8px;border-radius:50%}
+  #colNav button[data-col="a"] .dot{background:var(--a)} #colNav button[data-col="b"] .dot{background:var(--b)} #colNav button[data-col="c"] .dot{background:var(--c)}
+
+  .brand{position:fixed;top:16px;left:16px;z-index:20;display:flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:700;font-size:.9rem}
+  .brand svg{width:22px;height:22px}
+
+  .hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20;
+    font-family:var(--mono);font-size:.7rem;color:var(--ink-3);background:rgba(23,27,34,.7);
+    padding:6px 14px;border-radius:999px;border:1px solid var(--line);pointer-events:none;
+    display:flex;align-items:center;gap:8px;transition:opacity .4s}
+  .hint.gone{opacity:0}
+
+  @media (max-width:760px){
+    #rowNav .lbl-text{display:none}
+    .cell{padding-top:64px}
+  }
+</style>
+</head>
+<body>
+
+<a class="brand" href="index.html">
+  <svg viewBox="0 0 179 54" fill="currentColor" aria-hidden="true"><path d="M27.1927 1.81771C27.7177 3.67516 27.5415 6.76482 26.5247 7.04371C25.5097 7.32078 23.8377 4.87274 23.2357 3.04264C22.6135 1.14327 23.5367 0.386805 24.5553 0.111561C25.5721 -0.165506 26.6678 -0.0397325 27.1909 1.81771"/><path d="M12.5574 6.18152C13.8054 7.66165 14.925 10.5453 14.1156 11.2161C13.3007 11.8887 10.7661 10.3412 9.46112 8.91574C8.10663 7.44109 8.64072 6.37474 9.44644 5.70759C10.2595 5.04044 11.3075 4.70869 12.5592 6.18152"/><path d="M3.19317 18.9067C4.99181 19.6449 7.32088 21.6919 6.91343 22.658C6.50231 23.6241 3.53454 23.4127 1.7102 22.7528C-0.169204 22.0638 -0.196734 20.8717 0.21255 19.9074C0.623669 18.9395 1.40186 18.1703 3.19317 18.9067Z"/><path d="M43.6562 23.7716C43.6562 27.7855 40.114 31.0428 35.7403 31.0428C31.3667 31.0428 27.8245 27.7873 27.8245 23.7716C27.8245 19.756 31.3704 16.5004 35.7403 16.5004C40.1103 16.5004 43.6562 19.7578 43.6562 23.7716Z"/><path d="M19.9485 30.6364C19.9485 30.6364 19.754 30.2445 20.0843 30.0932C20.3798 29.9601 20.6019 30.3447 20.6019 30.3447C20.6019 30.3447 26.141 39.7559 40.7963 36.3017C40.7963 36.3017 52.7903 33.2193 53.128 20.7677C53.128 20.7677 53.128 20.3247 53.4235 20.2937C53.4235 20.2937 53.7961 20.1662 53.9191 20.7185C54.1063 21.5606 56.1454 36.8048 42.0333 40.5835C42.0333 40.5835 25.2729 44.5736 19.9503 30.6346"/><path d="M56.011 33.3177C55.5778 33.2429 55.4787 33.5619 55.2365 34.3403C52.7789 42.1747 44.9126 47.9074 35.5908 47.9074C24.3034 47.9074 15.1541 39.5006 15.1541 29.138C15.1541 20.62 21.5981 13.8318 29.848 11.4567C35.1008 10.1935 38.8082 10.9755 39.9314 11.1669C40.5518 11.2781 40.7445 11.2434 40.7445 11.2434C41.0602 11.1814 41.0932 10.8716 41.0492 10.7403C40.9335 10.3794 40.4123 10.2099 40.4123 10.2099C37.4298 9.1162 34.0638 8.95579 32.3936 8.95215H32.3533C31.7219 8.95215 31.3346 8.97584 31.3346 8.97584V8.98496C31.1694 8.9886 31.0043 8.98496 30.8464 8.99954C18.1623 9.73049 8.07886 19.4734 8.07886 31.3016C8.07886 43.1299 18.9368 53.58 32.3331 53.58C44.6318 53.58 54.9171 45.7985 56.3762 34.2856C56.4441 33.7661 56.2881 33.3669 56.0128 33.3195"/></svg>
+  EdCity · Compare
+</a>
+
+<div class="nav" id="rowNav" role="group" aria-label="階段 / Stage">
+  <button data-row="0"><span class="lbl-text">01 · 情緒板</span></button>
+  <button data-row="1"><span class="lbl-text">02 · 色彩</span></button>
+  <button data-row="2"><span class="lbl-text">03 · 研究</span></button>
+</div>
+
+<div class="nav" id="colNav" role="group" aria-label="方案 / Option">
+  <button data-col="a"><span class="dot"></span>A</button>
+  <button data-col="b"><span class="dot"></span>B</button>
+  <button data-col="c"><span class="dot"></span>C</button>
+</div>
+
+<p class="hint" id="hint">拖曳／滾動任意方向，或用方向鍵 &nbsp;·&nbsp; scroll any direction, or use arrow keys</p>
+
+<div id="board">
+  <!-- Row 1: Moodboard -->
+  <section class="cell" data-row="0" data-col="a">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option A · Human Craft</span>
+      <span class="stage">情緒板 · Moodboard</span>
+    </div>
+    <div class="frame" data-fig="a"></div>
+  </section>
+  <section class="cell" data-row="0" data-col="b">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option B · Calm Momentum</span>
+      <span class="stage">情緒板 · Moodboard</span>
+    </div>
+    <div class="frame" data-fig="b"></div>
+  </section>
+  <section class="cell" data-row="0" data-col="c">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option C · Curious Intelligence</span>
+      <span class="stage">情緒板 · Moodboard</span>
+    </div>
+    <div class="frame" data-fig="c"></div>
+  </section>
+
+  <!-- Row 2: Palette -->
+  <section class="cell" data-row="1" data-col="a">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option A · Slate, Earth &amp; First Light</span>
+      <span class="stage">色彩 · Palette</span>
+      <a class="open" href="palette-study.html" target="_blank" rel="noopener">開新分頁 ↗</a>
+    </div>
+    <div class="frame" data-src="palette-study.html" data-badge="palette-study.html"></div>
+  </section>
+  <section class="cell" data-row="1" data-col="b">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option B · Clear Field, Bright Signal</span>
+      <span class="stage">色彩 · Palette</span>
+      <a class="open" href="palette-study-cool.html" target="_blank" rel="noopener">開新分頁 ↗</a>
+    </div>
+    <div class="frame" data-src="palette-study-cool.html" data-badge="palette-study-cool.html"></div>
+  </section>
+  <section class="cell" data-row="1" data-col="c">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option C · Bright Field, Two Points</span>
+      <span class="stage">色彩 · Palette</span>
+      <a class="open" href="palette-study-vivid.html" target="_blank" rel="noopener">開新分頁 ↗</a>
+    </div>
+    <div class="frame" data-src="palette-study-vivid.html" data-badge="palette-study-vivid.html"></div>
+  </section>
+
+  <!-- Row 3: Study -->
+  <section class="cell" data-row="2" data-col="a">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option A · studio-study</span>
+      <span class="stage">研究 · Study</span>
+      <a class="open" href="studio-study.html" target="_blank" rel="noopener">開新分頁 ↗</a>
+    </div>
+    <div class="frame" data-src="studio-study.html" data-badge="studio-study.html"></div>
+  </section>
+  <section class="cell" data-row="2" data-col="b">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option B · unified</span>
+      <span class="stage">研究 · Study</span>
+      <a class="open" href="unified.html?p=b" target="_blank" rel="noopener">開新分頁 ↗</a>
+    </div>
+    <div class="frame" data-src="unified.html?p=b" data-badge="unified.html"></div>
+  </section>
+  <section class="cell" data-row="2" data-col="c">
+    <div class="cell-head">
+      <span class="lbl"><span class="dot"></span>Option C · home-study</span>
+      <span class="stage">研究 · Study</span>
+      <a class="open" href="home-study.html" target="_blank" rel="noopener">開新分頁 ↗</a>
+    </div>
+    <div class="frame" data-src="home-study.html" data-badge="home-study.html"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var board = document.getElementById('board');
+  var rowBtns = [].slice.call(document.querySelectorAll('#rowNav button'));
+  var colBtns = [].slice.call(document.querySelectorAll('#colNav button'));
+  var hint = document.getElementById('hint');
+  var row = 0, col = 0;
+
+  function go(r, c){
+    r = Math.max(0, Math.min(2, r));
+    c = Math.max(0, Math.min(2, c));
+    board.scrollTo({ left: c * window.innerWidth, top: r * window.innerHeight, behavior: 'smooth' });
+  }
+  rowBtns.forEach(function(b, i){ b.addEventListener('click', function(){ go(i, col); }); });
+  colBtns.forEach(function(b, i){ b.addEventListener('click', function(){ go(row, i); }); });
+
+  function sync(){
+    row = Math.round(board.scrollTop / window.innerHeight);
+    col = Math.round(board.scrollLeft / window.innerWidth);
+    rowBtns.forEach(function(b,i){ b.setAttribute('aria-current', String(i===row)); });
+    colBtns.forEach(function(b,i){ b.setAttribute('aria-current', String(i===col)); });
+  }
+  var t = 0;
+  board.addEventListener('scroll', function(){ clearTimeout(t); t = setTimeout(sync, 60); if(!hint.classList.contains('gone')){ hint.classList.add('gone'); } }, { passive:true });
+  sync();
+
+  window.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight'){ go(row, col+1); }
+    else if(e.key === 'ArrowLeft'){ go(row, col-1); }
+    else if(e.key === 'ArrowDown'){ go(row+1, col); }
+    else if(e.key === 'ArrowUp'){ go(row-1, col); }
+    else return;
+    e.preventDefault();
+  });
+
+  /* lazy-load iframes only once their cell is near view, so we never run
+     three product studies (one with a WebGL shader) all at once */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var frame = en.target;
+      mount(frame);
+      io.unobserve(frame);
+    });
+  }, { rootMargin: '60% 60%' });
+  document.querySelectorAll('.frame').forEach(function(f){ io.observe(f); });
+
+  var FIG_KEY = 'edcity-figma-';
+  function mount(frame){
+    if(frame.dataset.src){
+      var badge = document.createElement('span');
+      badge.className = 'badge'; badge.textContent = frame.dataset.badge || '';
+      var ifr = document.createElement('iframe');
+      ifr.loading = 'lazy';
+      ifr.src = frame.dataset.src;
+      ifr.title = frame.dataset.badge || 'study';
+      frame.appendChild(ifr);
+      frame.appendChild(badge);
+      return;
+    }
+    if(frame.dataset.fig){
+      renderFigCell(frame, frame.dataset.fig);
+    }
+  }
+
+  function figEmbedUrl(link){
+    return 'https://www.figma.com/embed?embed_host=share&url=' + encodeURIComponent(link);
+  }
+  function renderFigCell(frame, key){
+    var saved;
+    try{ saved = localStorage.getItem(FIG_KEY + key); }catch(e){}
+    if(saved){
+      var ifr = document.createElement('iframe');
+      ifr.loading = 'lazy';
+      ifr.allowFullscreen = true;
+      ifr.src = figEmbedUrl(saved);
+      ifr.title = 'Figma moodboard ' + key;
+      frame.innerHTML = '';
+      frame.appendChild(ifr);
+      var badge = document.createElement('span');
+      badge.className = 'badge'; badge.textContent = 'Figma';
+      frame.appendChild(badge);
+      return;
+    }
+    var wrap = document.createElement('div');
+    wrap.className = 'fallback';
+    wrap.innerHTML =
+      '<span>貼上 Figma 原型的分享連結<br>Paste the Figma prototype share link</span>' +
+      '<input type="url" placeholder="https://www.figma.com/proto/..." />' +
+      '<button type="button">儲存 · Save</button>';
+    var input = wrap.querySelector('input');
+    var btn = wrap.querySelector('button');
+    btn.addEventListener('click', function(){
+      var v = input.value.trim();
+      if(!v) return;
+      try{ localStorage.setItem(FIG_KEY + key, v); }catch(e){}
+      renderFigCell(frame, key);
+    });
+    input.addEventListener('keydown', function(e){ if(e.key === 'Enter') btn.click(); });
+    frame.innerHTML = '';
+    frame.appendChild(wrap);
+  }
+})();
+</script>
+</body>
+</html>
