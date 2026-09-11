@@ -120,7 +120,7 @@
 
   /* ============ header ============ */
   header{
-    position:sticky;top:0;z-index:20;
+    position:fixed;top:0;left:0;right:0;z-index:20;
     background:transparent;
   }
   header .wrap{display:flex;align-items:center;gap:28px;padding-top:26px;padding-bottom:10px}
@@ -131,12 +131,11 @@
   .menu-btn{
     all:unset;box-sizing:border-box;cursor:pointer;
     width:56px;height:36px;border-radius:14px;background:var(--ink);
-    display:grid;place-content:center;gap:4px;flex-shrink:0;
+    display:grid;place-content:center;gap:5px;flex-shrink:0;
   }
-  .menu-btn span{display:block;width:18px;height:2px;background:var(--paper);transition:transform .25s,opacity .2s}
-  .nav-open .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-  .nav-open .menu-btn span:nth-child(2){opacity:0}
-  .nav-open .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+  .menu-btn span{display:block;width:18px;height:1.5px;background:var(--paper);transition:transform .25s,opacity .2s}
+  .nav-open .menu-btn span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+  .nav-open .menu-btn span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
 
   /* ============ grain ============ */
   .grain{
@@ -157,11 +156,6 @@
       var(--paper);
     transition:background .35s ease;
   }
-  .corner{position:absolute;width:13px;height:13px;border:1.5px solid var(--ink-3);opacity:.55;z-index:2}
-  .corner.tl{top:clamp(78px,11vh,116px);left:clamp(20px,4.5vw,44px);border-right:0;border-bottom:0}
-  .corner.tr{top:clamp(78px,11vh,116px);right:clamp(20px,4.5vw,44px);border-left:0;border-bottom:0}
-  .corner.bl{bottom:clamp(24px,5vh,54px);left:clamp(20px,4.5vw,44px);border-right:0;border-top:0}
-  .corner.br{bottom:clamp(24px,5vh,54px);right:clamp(20px,4.5vw,44px);border-left:0;border-top:0}
 
   .hero-inner{
     position:relative;z-index:2;align-self:stretch;
@@ -170,7 +164,7 @@
   }
   .hero-lead{max-width:min(90vw,600px)}
   .hero h1{font-size:var(--h1-size);line-height:var(--h1-lh);font-weight:var(--h1-weight);letter-spacing:var(--h1-ls)}
-  .hero-lead .en{font-family:var(--sans);font-size:.9rem;color:var(--ink-2);margin:0 0 20px;max-width:34ch}
+  .hero-lead .en{font-family:var(--sans);font-size:.9rem;color:var(--ink-2);margin:26px 0 20px;max-width:34ch}
   .hero .cta-row{display:flex;flex-wrap:wrap;gap:12px}
   @media (max-width:760px){
     .hero-inner{flex-direction:column;align-items:flex-start;gap:34px}
@@ -689,7 +683,7 @@ void main(){
     <a class="brand" href="#top" aria-label="EdCity"><svg viewBox="0 0 179 54" role="img" aria-label="EdCity"><use href="#edcity-logo"/></svg></a>
     <span class="spacer"></span>
     <button class="menu-btn" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="選單">
-      <span></span><span></span><span></span>
+      <span></span><span></span>
     </button>
   </div>
 </header>
@@ -711,8 +705,6 @@ void main(){
   <section class="hero">
     <div class="hero-mesh"></div>
     <div class="grain"></div>
-    <span class="corner tl"></span><span class="corner tr"></span>
-    <span class="corner bl"></span><span class="corner br"></span>
     <div class="wrap hero-inner">
       <div class="hero-lead">
         <h1 data-r>知道你在哪裡，<br>為你打開下一步</h1>
