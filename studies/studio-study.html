@@ -30,7 +30,7 @@
     --han:"LXGW WenKai TC", var(--sans);
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;overflow-x:hidden}
   body{
     margin:0;background:var(--paper);color:var(--ink);
     font-family:var(--serif);font-size:1.05rem;line-height:1.7;
@@ -264,6 +264,25 @@
     .enum li:hover .t{color:var(--clay)}
   }
 
+  /* Quarterre-style project index — image, title, meta, full width row */
+  .index-list{margin-top:36px}
+  .index-row{
+    display:grid;grid-template-columns:1fr 2.4fr;gap:28px;align-items:center;
+    padding:26px 0;border-top:1px solid var(--line);
+  }
+  .index-row:last-child{border-bottom:1px solid var(--line)}
+  .index-row .media{aspect-ratio:4/3;margin:0}
+  .index-row .ir-body .n{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
+  .index-row .ir-body h3{font-family:var(--sans);font-weight:700;font-size:clamp(1.2rem,2.6vw,1.7rem);margin:8px 0 8px;letter-spacing:-.01em}
+  .index-row .ir-body p{color:var(--ink-2);margin:0;max-width:52ch}
+  .index-row .ir-body .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .index-row .ir-body .tags span{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);border:1px solid var(--line-2);border-radius:999px;padding:3px 10px}
+  @media (max-width:700px){ .index-row{grid-template-columns:1fr} }
+
+  /* full-bleed break — a section-length editorial photo, no container */
+  .brk{width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;margin-top:0}
+  .brk .media{border-radius:0;border-left:0;border-right:0}
+
   @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .badge .ring{animation:none} }
 
   /* content load-in — Quarterre: a firm, generous rise that settles */
@@ -427,6 +446,44 @@
       </div>
     </div>
   </section>
+
+  <section class="sec" data-r>
+    <div class="wrap">
+      <p class="eyebrow">個案</p>
+      <h2>三個學校，三種用法。</h2>
+      <div class="index-list">
+        <div class="index-row">
+          <div class="media" data-ar="4:3"><span class="cap">個案照片：官立中學</span></div>
+          <div class="ir-body">
+            <span class="n">01</span>
+            <h3>官立中學 &mdash; 中文科組</h3>
+            <p>用 EdCity.ai 分擔重溫教材的準備，科組把省下的時間放在課後跟進。</p>
+            <div class="tags"><span>備課建議</span><span>AI 批改</span></div>
+          </div>
+        </div>
+        <div class="index-row">
+          <div class="media" data-ar="4:3"><span class="cap">個案照片：資助小學</span></div>
+          <div class="ir-body">
+            <span class="n">02</span>
+            <h3>資助小學 &mdash; 全校閱讀計劃</h3>
+            <p>資源配對把合適的橋樑書單直接送到有需要的班別，圖書館老師省去逐班核對。</p>
+            <div class="tags"><span>資源配對</span><span>學習洞察</span></div>
+          </div>
+        </div>
+        <div class="index-row">
+          <div class="media" data-ar="4:3"><span class="cap">個案照片：特殊學校</span></div>
+          <div class="ir-body">
+            <span class="n">03</span>
+            <h3>特殊學校 &mdash; 個別學習計劃</h3>
+            <p>學習管理把每名學生的計劃、進度與家長溝通放在同一個視圖，跨科組不再各自為政。</p>
+            <div class="tags"><span>學習管理</span><span>一對一學習支援</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="brk"><div class="media" data-ar="21:9" data-r><span class="cap">全幅編輯攝影：香港校園日常 · 待拍攝</span></div></div>
 
   <section class="sec" id="compare">
     <div class="wrap">
