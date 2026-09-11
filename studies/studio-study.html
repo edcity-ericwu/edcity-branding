@@ -249,6 +249,18 @@
   .mgrid{margin:40px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line-2)}
   .mgrid .media{aspect-ratio:3/2;border:0}
   .mgrid figcaption{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);padding:8px 2px 0;background:var(--paper)}
+
+  /* editorial portrait + pull-quote, faculty-style */
+  .portrait-quote{margin:40px 0 0;display:grid;grid-template-columns:1fr 1.6fr;gap:32px;align-items:center}
+  .portrait-quote .media{margin:0}
+  .pq-role{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);margin:0 0 14px}
+  .portrait-quote blockquote{
+    font-family:var(--serif);font-style:italic;font-weight:600;
+    font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.35;margin:0;color:var(--ink);
+  }
+  .pq-name{font-family:var(--sans);font-weight:700;font-size:.88rem;margin:18px 0 0}
+  .pq-name span{font-family:var(--serif);font-weight:400;color:var(--ink-3)}
+  @media (max-width:640px){ .portrait-quote{grid-template-columns:1fr} }
   @media (max-width:760px){ .mgrid{grid-template-columns:1fr} }
 
   /* Quarterre-style index: the thread's node opens a thumbnail on hover */
@@ -416,6 +428,14 @@
         <div><div class="media" data-ar="3:2"><span class="cap">課堂</span></div><figcaption>課堂上的即時支援</figcaption></div>
         <div><div class="media" data-ar="3:2"><span class="cap">家校</span></div><figcaption>一句可以行動的話，給家長</figcaption></div>
       </figure>
+      <div class="portrait-quote">
+        <div class="media" data-ar="3:4"><span class="cap">人像攝影 · 待拍攝</span></div>
+        <div class="pq-body">
+          <p class="pq-role">FACULTY</p>
+          <blockquote>「工具應該讓判斷更容易，不是替判斷做決定。」</blockquote>
+          <p class="pq-name">陳老師 <span>· 中學中文科主任</span></p>
+        </div>
+      </div>
     </div>
   </section>
 
