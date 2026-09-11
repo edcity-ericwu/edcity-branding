@@ -66,6 +66,7 @@
     position:absolute;left:12px;top:12px;z-index:2;font-family:var(--mono);font-size:.66rem;
     background:rgba(0,0,0,.55);color:#fff;padding:4px 9px;border-radius:999px;pointer-events:none;
   }
+  .frame[data-fig] .badge{pointer-events:auto}
 
   /* ---------- nav overlay ---------- */
   .nav{position:fixed;z-index:20;display:flex;gap:6px;padding:6px;border-radius:999px;
@@ -282,10 +283,23 @@
   function figEmbedUrl(link){
     return 'https://www.figma.com/embed?embed_host=share&url=' + encodeURIComponent(link);
   }
+  function figOpenLink(cellHead, url){
+    if(!cellHead) return;
+    var a = cellHead.querySelector('a.open');
+    if(!a){
+      a = document.createElement('a');
+      a.className = 'open'; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = '開新分頁 ↗';
+      cellHead.appendChild(a);
+    }
+    a.href = url;
+  }
   function renderFigCell(frame, key){
     var saved;
     try{ saved = localStorage.getItem(FIG_KEY + key); }catch(e){}
+    var cellHead = frame.parentElement && frame.parentElement.querySelector('.cell-head');
     if(saved){
+      figOpenLink(cellHead, saved);
       var ifr = document.createElement('iframe');
       ifr.loading = 'lazy';
       ifr.allowFullscreen = true;
@@ -294,7 +308,12 @@
       frame.innerHTML = '';
       frame.appendChild(ifr);
       var badge = document.createElement('span');
-      badge.className = 'badge'; badge.textContent = 'Figma';
+      badge.className = 'badge'; badge.title = '清除並重新貼上連結 · click to replace the link'; badge.style.cursor = 'pointer';
+      badge.textContent = 'Figma ✎';
+      badge.addEventListener('click', function(){
+        try{ localStorage.removeItem(FIG_KEY + key); }catch(e){}
+        renderFigCell(frame, key);
+      });
       frame.appendChild(badge);
       return;
     }
