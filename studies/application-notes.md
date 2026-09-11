@@ -17,13 +17,13 @@ Palettes are not fixed. Expect them to shift as the visual languages pull apart.
 
 ## Concept ↔ study ↔ signature device
 
-The moodboard "OPTION A/B/C" labels are the moodboard's own numbering. Map by **concept name**:
+**Option letters now match the moodboard's own A/B/C exactly** — no separate numbering to remember:
 
-| Concept | Study file | Palette | Signature device | THIS IS NOT |
-| --- | --- | --- | --- | --- |
-| Calm Momentum | `unified.html` | B (Clear Field) | **Guided thresholds** — calm, structured spaces; nested/handoff frames; doorway and progression between sections; orientation cues. Disciplined type, information-led grid, restrained motion. | bright "innovation" gradients, neon data networks, urgency-led dashboards, bureaucratic, rigid, performative |
-| Human Craft | `studio-study.html` | A (Slate, Earth) | **Supportive threads** — one governed line/thread that connects people, information, and next steps without taking control. Line-based illustration and motion; editorial photography. | decorative line texture, childish, sentimental, messy, over-familiar |
-| Curious Intelligence | `home-study.html` | C (Bright Field) | **Refracted possibilities** — an optical system of transparency, overlap, and refraction; complexity becomes clearer viewed from more than one angle. Colour is never the only carrier of meaning; motion optional, purposeful, low-stimulation. | neon gradients, cosmic data fields, black-box "magic", opaque, automated, gimmicky |
+| Option | Concept | Study file | Palette | Signature device | THIS IS NOT |
+| --- | --- | --- | --- | --- | --- |
+| A | Calm Momentum | `unified.html` (default palette) | Clear Field, Bright Signal | **Guided thresholds** — calm, structured spaces; doorway dividers and progression between sections; orientation cues (Stone for structure, Teal for wayfinding). Disciplined type, information-led grid, restrained motion. | bright "innovation" gradients, neon data networks, urgency-led dashboards, bureaucratic, rigid, performative |
+| B | Human Craft | `studio-study.html` | Slate, Earth & First Light | **Supportive threads** — one governed line/thread that connects people, information, and next steps without taking control. Line-based illustration and motion; editorial photography. | decorative line texture, childish, sentimental, messy, over-familiar |
+| C | Curious Intelligence | `home-study.html` | Bright Field, Two Points | **Refracted possibilities** — an optical system of transparency, overlap, and refraction; complexity becomes clearer viewed from more than one angle. Colour is never the only carrier of meaning; motion optional, purposeful, low-stimulation. | neon gradients, cosmic data fields, black-box "magic", opaque, automated, gimmicky |
 
 Imagery cues from the WIP moodboards (inspiration only — do not lift):
 - **Calm Momentum:** architectural thresholds and vaulted naves (a doorway of light), a calm sea horizon, disciplined Chinese editorial poster typography, warm real collaboration.
@@ -32,7 +32,7 @@ Imagery cues from the WIP moodboards (inspiration only — do not lift):
 
 ---
 
-## Option A — Human Craft (`studio-study.html`)
+## Option B — Human Craft (`studio-study.html`)
 
 **Board comment:** A respectful, considered platform where AI supports professional judgement. Editorial warmth and visible care make complex education work feel manageable — not impersonal.
 
@@ -69,7 +69,7 @@ The clearest AI-native expression, but currently risks reading as a modern SaaS 
 
 ---
 
-## Option B — Calm Momentum (`unified.html`, palette B)
+## Option A — Calm Momentum (`unified.html`, default palette)
 
 **Board comment:** A calm, navigable platform that turns a complex education ecosystem into clear, trustworthy next actions — without pressure or AI spectacle.
 

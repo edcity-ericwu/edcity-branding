@@ -10,31 +10,36 @@ The direction combines three propositions into one system with a layered job spl
 
 **The three options pair up:** each palette take has a layout study that expresses it and a load-in motion modelled on a reference site.
 
-| Option | Palette | Layout | Reference |
-| --- | --- | --- | --- |
-| A · Slate, Earth & First Light | `palette-study.html` | `studio-study.html` | quarterre.com |
-| B · Clear Field, Bright Signal | `palette-study-cool.html` | `unified.html` (palette B) | sanalabs.com |
-| C · Bright Field, Two Points | `palette-study-vivid.html` | `home-study.html` | amita-oshiete.jp |
+**Option letters match the moodboard exactly** — A, B, C mean the same thing everywhere (this README, `index.html`, `present.html`, every study's footer badge):
+
+| Option | Concept | Palette | Layout | Reference |
+| --- | --- | --- | --- | --- |
+| A | Calm Momentum | `palette-study-cool.html` | `unified.html` (default palette) | sanalabs.com |
+| B | Human Craft | `palette-study.html` | `studio-study.html` | quarterre.com |
+| C | Curious Intelligence | `palette-study-vivid.html` | `home-study.html` | amita-oshiete.jp |
 
 **Every layout study shares one section skeleton and one set of copy** (hero → partners → 認識 EdCity six cards → EdCity.ai + mock → quote → ecosystem + mock → comparison table → updates → CTA), each rendered fully in its reference's idiom. A comparison then isolates the direction, not the content.
 
-**`unified.html`** carries all three on one page: a WebGL dawn opening, then a palette switch (A/B/C) that swaps only colour, corner-radius, body type and load-in motion — everything else held constant. It doubles as the Option B layout study (its default skin is the Sana structure). Section structure follows sanalabs.com/products/sana-learn.
+**`unified.html`** carries all three on one page: a WebGL dawn opening, then a palette switch (A/B/C) that swaps only colour, corner-radius, body type and load-in motion — everything else held constant. It doubles as the Option A layout study (its default skin is the Sana structure). Section structure follows sanalabs.com/products/sana-learn.
+
+**`present.html`** is the compare board — a 3×3 grid (moodboard → palette → study, for each option), 2D scroll-snap, moodboard cells taking a pasted Figma prototype link.
 
 ## studies/
 
 | File | What it is |
 | --- | --- |
-| `palette-study.html` | **Option A — "Slate, Earth & First Light."** Warm take: slate-blue structure, greyed earth fabric, burnt-orange spark. Includes the Spark & Light gradient rules. |
-| `palette-study-cool.html` | **Option B — "Clear Field, Bright Signal."** Cooler take after Sana Labs: bright-blue backbone on near-white, cool neutrals, a coral signal, light gradients mixed from the scale. |
-| `palette-study-vivid.html` | **Option C — "Bright Field, Two Points."** A vivid electric palette adapted down: sky-blue backbone, pale cyan/peach/pink field, two small signal points (pink = opportunity, green = done). Higher energy, less grounded, front-of-house. |
+| `palette-study-cool.html` | **Option A — Calm Momentum, "Clear Field, Bright Signal."** Bright-blue backbone on near-white, held to decisions only; Stone for structure, Teal for wayfinding, one coral signal. |
+| `palette-study.html` | **Option B — Human Craft, "Slate, Earth & First Light."** Warm take: slate-blue structure, greyed earth fabric, burnt-orange spark. Includes the Spark & Light gradient rules. |
+| `palette-study-vivid.html` | **Option C — Curious Intelligence, "Bright Field, Two Points."** A refraction field: blue as one plane among cyan/lavender/peach/pink, two small signal points (pink = opportunity, green = done), colour never the only signal. |
 | `spark-vasarely.html` | Cheap Canvas-2D spark exploration — a Vasarely dot grid; a warm core radiates outward through a cool blue field on load. |
 | `spark-orbs.html` | Cheap Canvas-2D spark exploration — translucent blue orbs lit from behind by a warm core that grows in. |
-| `studio-study.html` | The shared skeleton in the Quarterre editorial language (warm cream, huge grotesque headline, serif body, sage side rail, rotating circular badge, hairline rules) on the Option A earthy palette. |
-| `home-study.html` | The shared skeleton in the amita-oshiete.jp container language — asymmetric rounded panels, folder tabs, blueprint overlays, grain — on the Option C palette. |
+| `studio-study.html` | **Option B.** The shared skeleton in the Quarterre editorial language (warm cream, huge grotesque headline, serif body, sage side rail, rotating circular badge) — a supportive thread running through the mock, a project index, a full-bleed break photo. |
+| `home-study.html` | **Option C.** The shared skeleton in the amita-oshiete.jp container language — asymmetric rounded panels, folder tabs, blueprint overlays, a refracted "multiple angles" photo grid. |
 | `parent-update-three-ways.html` | Structural comparison of one product moment (a parent progress update) built three ways, to test whether the directions are distinguishable beyond a palette swap. |
-| `opening-screen.html` | Animated opening screen — a grainy blue-to-coral gradient mesh (CSS radial blobs) that rises like a sunrise on load, carrying the wordmark and tagline. Built on the Option B scale. |
+| `opening-screen.html` | Animated opening screen — a grainy blue-to-coral gradient mesh (CSS radial blobs) that rises like a sunrise on load, carrying the wordmark and tagline. Built on the Option A scale. |
 | `opening-screen-v2.html` | The same idea with a WebGL fragment shader — domain-warped fractal noise across the palette, in-shader film grain, pointer parallax, a `progress` uniform driving the sunrise reveal. CSS-gradient + reduced-motion fallbacks. |
-| `unified.html` | The three options on **one** page — a WebGL dawn opening (the `opening-screen-v2` shader), then identical structure and copy with a bottom-right switch (A/B/C) swapping only palette, corner-radius, body type and load-in motion. Doubles as the Option B layout study. Controlled side-by-side; structure after sanalabs.com/products/sana-learn. |
+| `unified.html` | **Option A.** The three options on **one** page — a WebGL dawn opening (the `opening-screen-v2` shader), then identical structure and copy with a bottom-right switch (A/B/C) swapping only palette, corner-radius, body type and load-in motion. Doubles as the Option A layout study. |
+| `present.html` | The compare board — a 3×3 grid (情緒板 Moodboard → 色彩 Palette → 研究 Study, for each option), 2D scroll-snap navigation, Figma prototype embeds. |
 
 `imagery-notes.md` — mood-board links (Pinterest, per direction), the no-lifting-reference-images rule, and a "hero space" reference for later.
 
