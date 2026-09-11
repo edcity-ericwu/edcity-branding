@@ -10,19 +10,19 @@
 <style>
   @font-face{font-family:'Aspekta Variable';font-weight:100 900;font-display:swap;font-style:normal;src:url('assets/AspektaVF.woff2') format('woff2')}
   :root{
-    --paper:#F5F0E5;
-    --paper-2:#EFE9DB;
-    --ink:#1C1712;
-    --ink-2:#5B5348;
-    --ink-3:#756A5C;
-    --line:rgba(28,23,18,.16);
-    --line-2:rgba(28,23,18,.28);
-    --slate:#6E7C99;
-    --slate-deep:#34415C;
-    --sage:#9AA486;
-    --sage-deep:#5E6A50;
-    --clay:#B26A44;
-    --spark:#BA3D04;
+    --paper:#FBFCFE;
+    --paper-2:#EEF0F2;
+    --ink:#0E1626;
+    --ink-2:#48526A;
+    --ink-3:#5E6980;
+    --line:rgba(14,22,38,.12);
+    --line-2:rgba(14,22,38,.22);
+    --slate:#2450E6;
+    --slate-deep:#12307A;
+    --sage:#5C6570;
+    --sage-deep:#3E4550;
+    --clay:#1F7A72;
+    --spark:#FF6A3D;
     --rail:56px;
     --sans:"Aspekta Variable", "LXGW WenKai TC", system-ui, -apple-system, "Segoe UI", sans-serif;
     --serif:"LXGW WenKai TC", Georgia, "Songti TC", serif;
@@ -125,7 +125,7 @@
 
   /* section head (shared) */
   .sec h2{font-size:clamp(1.9rem,4.4vw,3.4rem);line-height:1.08;margin:0;max-width:18ch}
-  .sec.light{background:radial-gradient(70% 90% at 88% 100%, rgba(186,61,4,.09), transparent 60%),radial-gradient(60% 80% at 6% 0%, rgba(110,124,153,.08), transparent 60%)}
+  .sec.light{background:radial-gradient(70% 90% at 88% 100%, rgba(255,106,61,.09), transparent 60%),radial-gradient(60% 80% at 6% 0%, rgba(36,80,230,.08), transparent 60%)}
 
   /* numbered editorial list (認識 EdCity) */
   .enum{list-style:none;margin:34px 0 0;padding:0}
@@ -607,10 +607,10 @@
     var closeB = document.getElementById('navClose');
     var label  = document.getElementById('navLabel');
     var FILLS = [
-      ['#6E7C99','#F5F0E5'], ['#9AA486','#1C1712'], ['#B26A44','#F5F0E5'],
-      ['#CBC2B2','#1C1712'], ['#BA3D04','#F5F0E5']
+      ['#2450E6','#FBFCFE'], ['#5C6570','#0E1626'], ['#1F7A72','#FBFCFE'],
+      ['#E4E7EA','#0E1626'], ['#FF6A3D','#FBFCFE']
     ];
-    var SLASHES = ['#BA3D04','#6E7C99','#9AA486','#B26A44','#CBC2B2'];
+    var SLASHES = ['#FF6A3D','#2450E6','#5C6570','#1F7A72','#E4E7EA'];
     var turn = 0;
     var slashSpans = [].slice.call(nav.querySelectorAll('.sl'));
     function open(){

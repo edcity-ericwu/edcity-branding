@@ -10,25 +10,8 @@
 <style>
   @font-face{font-family:'Aspekta Variable';font-weight:100 900;font-display:swap;font-style:normal;src:url('assets/AspektaVF.woff2') format('woff2')}
   /* ============ palette / style tokens ============ */
-  /* Option A — Calm Momentum (Clear Field, Bright Signal) */
+  /* Option A — Calm Momentum (Slate, Earth & First Light) */
   :root, [data-p="a"]{
-    --paper:#FBFCFE; --panel:#EEF0F2; --panel-2:#E4E7EA;
-    --ink:#0E1626; --ink-2:#48526A; --ink-3:#5E6980; --line:#E3E6E8;
-    --brand:#2450E6; --brand-deep:#12307A; --spark:#FF6A3D; --spark-deep:#DC490F;
-    --ok:#1F7A72; --stone:#5C6570; --wayfind:#1F7A72;
-    --mesh-1:rgba(110,139,245,.60); --mesh-2:rgba(255,106,61,.62); --mesh-3:rgba(169,155,224,.5);
-    --radius:12px; --radius-lg:18px;
-    --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
-    --r-y:11px; --r-scale:1; --r-dur:.42s; --r-ease:cubic-bezier(.2,.6,.2,1);
-    --grain-op:.34;
-    --h1-size:clamp(1.9rem,4vw,3.1rem); --h1-weight:600; --h1-ls:.002em; --h1-lh:1.25;
-    --h2-size:clamp(1.8rem,3.8vw,2.6rem); --h2-weight:600; --h2-lh:1.18; --h2-ls:-.005em;
-    --eyebrow-size:.82rem; --eyebrow-ls:.16em; --eyebrow-weight:600;
-    --sec-pad-min:100px; --sec-pad-vw:12vw; --sec-pad-max:190px;
-    --lead-size:.94rem; --pill-radius:10px; --btn-dark:#3F3F3F;
-  }
-  /* Option B — Human Craft (Slate, Earth & First Light) */
-  [data-p="b"]{
     --paper:#F5F0E5; --panel:#EBE4D5; --panel-2:#E4DAC6;
     --ink:#1C1712; --ink-2:#5A5147; --ink-3:#756A5C; --line:#DBD1BE;
     --brand:#34415C; --brand-deep:#232D42; --spark:#BA3D04; --spark-deep:#8F2E03;
@@ -38,6 +21,23 @@
     --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
     --r-y:30px; --r-scale:1; --r-dur:.8s; --r-ease:cubic-bezier(.15,.85,.45,1);
     --grain-op:.28;
+    --h1-size:clamp(1.9rem,4vw,3.1rem); --h1-weight:600; --h1-ls:.002em; --h1-lh:1.25;
+    --h2-size:clamp(1.8rem,3.8vw,2.6rem); --h2-weight:600; --h2-lh:1.18; --h2-ls:-.005em;
+    --eyebrow-size:.82rem; --eyebrow-ls:.16em; --eyebrow-weight:600;
+    --sec-pad-min:100px; --sec-pad-vw:12vw; --sec-pad-max:190px;
+    --lead-size:.94rem; --pill-radius:10px; --btn-dark:#3F3F3F;
+  }
+  /* Option B — Human Craft (Clear Field, Bright Signal) */
+  [data-p="b"]{
+    --paper:#FBFCFE; --panel:#EEF0F2; --panel-2:#E4E7EA;
+    --ink:#0E1626; --ink-2:#48526A; --ink-3:#5E6980; --line:#E3E6E8;
+    --brand:#2450E6; --brand-deep:#12307A; --spark:#FF6A3D; --spark-deep:#DC490F;
+    --ok:#1F7A72; --stone:#5C6570; --wayfind:#1F7A72;
+    --mesh-1:rgba(110,139,245,.60); --mesh-2:rgba(255,106,61,.62); --mesh-3:rgba(169,155,224,.5);
+    --radius:12px; --radius-lg:18px;
+    --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
+    --r-y:11px; --r-scale:1; --r-dur:.42s; --r-ease:cubic-bezier(.2,.6,.2,1);
+    --grain-op:.34;
     --h1-size:clamp(2.4rem,6.4vw,4.9rem); --h1-weight:700; --h1-ls:-.02em; --h1-lh:1.05;
     --h2-size:clamp(2rem,5vw,3.3rem); --h2-weight:700; --h2-lh:1.08; --h2-ls:-.02em;
     --eyebrow-size:.8rem; --eyebrow-ls:.14em; --eyebrow-weight:700;
@@ -96,8 +96,8 @@
     display:flex;align-items:center;gap:7px;transition:background .18s,color .18s;
   }
   .switch button .dot{width:9px;height:9px;border-radius:50%;background:var(--sw);box-shadow:0 0 0 2px color-mix(in srgb,var(--sw) 30%,transparent)}
-  .switch button[data-set="a"]{--sw:#2450E6}
-  .switch button[data-set="b"]{--sw:#B26A44}
+  .switch button[data-set="a"]{--sw:#B26A44}
+  .switch button[data-set="b"]{--sw:#2450E6}
   .switch button[data-set="c"]{--sw:#F35BEC}
   .switch button:hover{color:var(--ink)}
   .switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
@@ -987,7 +987,7 @@ void main(){
     </div>
     <div class="legal">
       <span>© 香港教育城 2026 · 本頁為品牌設計研究，內容為示意 · 統一版 / Unified</span>
-      <span id="pName">方案 A · Clear Field, Bright Signal</span>
+      <span id="pName">方案 A · Slate, Earth & First Light</span>
     </div>
   </div>
 </footer>
@@ -1112,8 +1112,8 @@ void main(){
     var btns = [].slice.call(document.querySelectorAll('.switch button'));
     var pName = document.getElementById('pName');
     var NAMES = {
-      a:'方案 A · Clear Field, Bright Signal',
-      b:'方案 B · Slate, Earth & First Light',
+      a:'方案 A · Slate, Earth & First Light',
+      b:'方案 B · Clear Field, Bright Signal',
       c:'方案 C · Bright Field, Two Points'
     };
     var KEY = 'edcity-unified-palette';
@@ -1139,7 +1139,7 @@ void main(){
   /* ---------- content load-in ---------- */
   var runIn;
   (function(){
-    var STAGGER = { a:55, b:90, c:115 };
+    var STAGGER = { a:90, b:55, c:115 };
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var els = [].slice.call(document.querySelectorAll('[data-r]'));
     var io = new IntersectionObserver(function(en){
@@ -1170,10 +1170,10 @@ void main(){
     var toggle = document.getElementById('navToggle');
     var closeB = document.getElementById('navClose');
     var SETS = {
-      a:{ fills:[['#2450E6','#FBFCFE'],['#12307A','#FBFCFE'],['#FF6A3D','#FBFCFE'],['#0E1626','#FBFCFE'],['#6E8BF5','#0E1626']],
-          slashes:['#FF6A3D','#6E8BF5','#2450E6','#FF9E7A','#12307A'] },
-      b:{ fills:[['#34415C','#F5F0E5'],['#5E6A50','#F5F0E5'],['#B26A44','#F5F0E5'],['#1C1712','#F5F0E5'],['#BA3D04','#F5F0E5']],
+      a:{ fills:[['#34415C','#F5F0E5'],['#5E6A50','#F5F0E5'],['#B26A44','#F5F0E5'],['#1C1712','#F5F0E5'],['#BA3D04','#F5F0E5']],
           slashes:['#BA3D04','#B26A44','#5E6A50','#CBC2B2','#34415C'] },
+      b:{ fills:[['#2450E6','#FBFCFE'],['#12307A','#FBFCFE'],['#FF6A3D','#FBFCFE'],['#0E1626','#FBFCFE'],['#6E8BF5','#0E1626']],
+          slashes:['#FF6A3D','#6E8BF5','#2450E6','#FF9E7A','#12307A'] },
       c:{ fills:[['#3B78F0','#F7F9FF'],['#0A0E1A','#F7F9FF'],['#F35BEC','#0A0E1A'],['#12E27E','#04321E'],['#5692FF','#0A0E1A']],
           slashes:['#F35BEC','#12E27E','#3B78F0','#8CE7F2','#FCDCC6'] }
     };
