@@ -21,10 +21,11 @@
     --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
     --r-y:11px; --r-scale:1; --r-dur:.42s; --r-ease:cubic-bezier(.2,.6,.2,1);
     --grain-op:.34;
-    --h1-size:clamp(2.1rem,4.8vw,3.7rem); --h1-weight:600; --h1-ls:-.005em; --h1-lh:1.2;
+    --h1-size:clamp(1.9rem,4vw,3.1rem); --h1-weight:600; --h1-ls:.002em; --h1-lh:1.25;
     --h2-size:clamp(1.8rem,3.8vw,2.6rem); --h2-weight:600; --h2-lh:1.18; --h2-ls:-.005em;
     --eyebrow-size:.82rem; --eyebrow-ls:.16em; --eyebrow-weight:600;
-    --sec-pad-min:90px; --sec-pad-vw:11vw; --sec-pad-max:170px;
+    --sec-pad-min:100px; --sec-pad-vw:12vw; --sec-pad-max:190px;
+    --lead-size:.94rem; --pill-radius:10px;
   }
   /* Option B — Human Craft (Slate, Earth & First Light) */
   [data-p="b"]{
@@ -41,6 +42,7 @@
     --h2-size:clamp(2rem,5vw,3.3rem); --h2-weight:700; --h2-lh:1.08; --h2-ls:-.02em;
     --eyebrow-size:.8rem; --eyebrow-ls:.14em; --eyebrow-weight:700;
     --sec-pad-min:60px; --sec-pad-vw:10vw; --sec-pad-max:120px;
+    --lead-size:1.06rem; --pill-radius:999px;
   }
   /* Option C — Curious Intelligence (Bright Field, Two Points) */
   [data-p="c"]{
@@ -57,6 +59,7 @@
     --h2-size:clamp(2rem,5vw,3.3rem); --h2-weight:700; --h2-lh:1.08; --h2-ls:-.02em;
     --eyebrow-size:.8rem; --eyebrow-ls:.14em; --eyebrow-weight:700;
     --sec-pad-min:60px; --sec-pad-vw:10vw; --sec-pad-max:120px;
+    --lead-size:1.06rem; --pill-radius:999px;
   }
   :root{
     color-scheme:light;
@@ -105,7 +108,7 @@
   .pill{
     display:inline-flex;align-items:center;gap:8px;
     font-family:var(--sans);font-weight:600;font-size:.9rem;
-    padding:11px 20px;border-radius:999px;cursor:pointer;border:1px solid transparent;
+    padding:11px 20px;border-radius:var(--pill-radius);cursor:pointer;border:1px solid transparent;
     transition:transform .14s ease, background .14s ease, border-color .14s ease;
   }
   .pill:hover{transform:translateY(-1px)}
@@ -118,24 +121,19 @@
   /* ============ header ============ */
   header{
     position:sticky;top:0;z-index:20;
-    background:color-mix(in srgb, var(--paper) 86%, transparent);
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
+    background:transparent;
   }
-  header .wrap{display:flex;align-items:center;gap:28px;height:66px}
+  header .wrap{display:flex;align-items:center;gap:28px;padding-top:26px;padding-bottom:10px}
   .brand{display:flex;align-items:center;color:var(--ink)}
   .brand svg{width:104px;height:auto;display:block}
-  header nav{display:flex;gap:22px;font-size:.9rem;color:var(--ink-2);font-weight:500;font-family:var(--sans)}
-  header nav a:hover{color:var(--ink)}
   header .spacer{flex:1}
-  @media (max-width:680px){ header nav{display:none} }
 
   .menu-btn{
     all:unset;box-sizing:border-box;cursor:pointer;
-    width:44px;height:44px;border-radius:calc(var(--radius) * .8);border:1px solid var(--line);
+    width:56px;height:36px;border-radius:14px;background:var(--ink);
     display:grid;place-content:center;gap:4px;flex-shrink:0;
   }
-  .menu-btn span{display:block;width:18px;height:2px;background:var(--ink);transition:transform .25s,opacity .2s}
+  .menu-btn span{display:block;width:18px;height:2px;background:var(--paper);transition:transform .25s,opacity .2s}
   .nav-open .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg)}
   .nav-open .menu-btn span:nth-child(2){opacity:0}
   .nav-open .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
@@ -174,16 +172,8 @@
   .hero h1{font-size:var(--h1-size);line-height:var(--h1-lh);font-weight:var(--h1-weight);letter-spacing:var(--h1-ls)}
   .hero-lead .en{font-family:var(--sans);font-size:.9rem;color:var(--ink-2);margin:0 0 20px;max-width:34ch}
   .hero .cta-row{display:flex;flex-wrap:wrap;gap:12px}
-  .hero-stat{flex-shrink:0;display:flex;align-items:flex-end;gap:14px}
-  .hero-stat .num{font-family:var(--sans);font-weight:700;letter-spacing:-.03em;color:var(--ink);font-size:clamp(3rem,8vw,6rem);line-height:.78}
-  .hero-stat .vert{
-    writing-mode:vertical-rl;
-    font-family:var(--sans);font-size:.6rem;font-weight:600;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--ink-2);max-height:210px;
-  }
   @media (max-width:760px){
     .hero-inner{flex-direction:column;align-items:flex-start;gap:34px}
-    .hero-stat .vert{max-height:150px}
   }
 
   /* ============ content load-in ============ */
@@ -243,7 +233,7 @@
   .trust .t i{width:34px;height:34px;border:1px dashed var(--ink-3);border-radius:9px;display:block}
   @media (max-width:760px){ .trust{grid-template-columns:repeat(3,1fr)} }
 
-  .catalogue{max-width:var(--wrap);margin:40px auto 0;text-align:left}
+  .catalogue{max-width:var(--wrap);margin:56px auto 0;text-align:left}
   .catalogue .cat-head{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 4px;text-align:left}
   .cat-row{
     display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;
@@ -283,14 +273,14 @@
   .eyebrow{font-family:var(--sans);font-weight:var(--eyebrow-weight);font-size:var(--eyebrow-size);letter-spacing:var(--eyebrow-ls);text-transform:uppercase;margin:0 0 16px;color:var(--ink-3)}
   .blk.spark .eyebrow{color:var(--ink-3)}
   h2.big{font-size:var(--h2-size);line-height:var(--h2-lh);font-weight:var(--h2-weight);letter-spacing:var(--h2-ls)}
-  .lead{max-width:54ch;color:var(--ink-2);font-size:1.06rem;margin:18px 0 0}
+  .lead{max-width:54ch;color:var(--ink-2);font-size:var(--lead-size);margin:18px 0 0}
   .center{text-align:center}
   .center .lead{margin-left:auto;margin-right:auto}
   .cta-row{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
   .center .cta-row{justify-content:center}
 
   /* meet — 6 cards */
-  .cards6{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+  .cards6{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:72px}
   .cards6 .c{
     background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);
     padding:22px;display:flex;flex-direction:column;gap:8px;
@@ -305,7 +295,7 @@
 
   /* product mock */
   .mock{
-    margin:44px auto 0;max-width:430px;text-align:left;
+    margin:64px auto 0;max-width:430px;text-align:left;
     background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-lg);
     box-shadow:0 18px 50px -24px rgba(14,22,38,.28);padding:18px 18px 20px;
   }
@@ -335,7 +325,7 @@
   .mock ul.m-match .need{font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--spark-deep);align-self:center;white-space:nowrap}
 
   /* feature row */
-  .features{max-width:var(--wrap);margin:52px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;text-align:left}
+  .features{max-width:var(--wrap);margin:76px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;text-align:left}
   .features .f{border-top:1px solid var(--ink);padding-top:14px}
   .blk.spark .features .f{border-top-color:var(--ink)}
   .features .f b{font-family:var(--sans);font-size:.98rem;display:block;margin-bottom:5px}
@@ -352,7 +342,7 @@
   .quote .who b{font-family:var(--sans)}
 
   /* comparison table */
-  .cmp{margin-top:44px;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+  .cmp{margin-top:64px;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
   .cmp .row{display:grid;grid-template-columns:1.1fr 1fr 1fr;border-top:1px solid var(--line)}
   .cmp .row:first-child{border-top:0}
   .cmp .row > div{padding:16px 18px;font-size:.92rem;line-height:1.5}
@@ -427,28 +417,6 @@
 
   :focus-visible{outline:2px solid var(--brand);outline-offset:3px}
 
-  /* ============ guided thresholds ============ */
-  /* threshold — the doorway between two sections */
-  .threshold{
-    position:relative;height:1px;background:var(--line);
-    max-width:var(--wrap);margin:0 auto;
-  }
-  .threshold::before{
-    content:"";position:absolute;left:50%;top:50%;width:150px;height:9px;
-    background:var(--paper);transform:translate(-50%,-50%);
-    transition:width .5s cubic-bezier(.2,.7,.2,1);
-  }
-  .blk.panel + .threshold::before,.threshold.on-panel::before{background:var(--panel)}
-  .threshold .mark{
-    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    display:flex;flex-direction:column;align-items:center;gap:3px;
-    font:600 .6rem/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
-    transition:opacity .5s .1s;
-  }
-  .threshold .mark svg{width:11px;height:7px;color:var(--wayfind)}
-  html.r .threshold:not(.in)::before{width:0}
-  html.r .threshold:not(.in) .mark{opacity:0}
-
   .blk{position:relative}
 
   /* plain-language governance note — a warmth / reassurance point */
@@ -472,8 +440,6 @@
     html{scroll-behavior:auto}
     *{animation:none!important;transition:none!important}
     html.r [data-r]{opacity:1;transform:none}
-    html.r .threshold::before{width:150px}
-    html.r .threshold .mark{opacity:1}
   }
 
   /* ============ WebGL opening ============ */
@@ -721,14 +687,7 @@ void main(){
 <header>
   <div class="wrap">
     <a class="brand" href="#top" aria-label="EdCity"><svg viewBox="0 0 179 54" role="img" aria-label="EdCity"><use href="#edcity-logo"/></svg></a>
-    <nav>
-      <a href="#meet">產品</a>
-      <a href="#ecosystem">生態系統</a>
-      <a href="#compare">比較</a>
-      <a href="#about">關於</a>
-    </nav>
     <span class="spacer"></span>
-    <a class="pill pill-ink" href="#book">預約導覽</a>
     <button class="menu-btn" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="選單">
       <span></span><span></span><span></span>
     </button>
@@ -757,16 +716,12 @@ void main(){
     <div class="wrap hero-inner">
       <div class="hero-lead">
         <h1 data-r>知道你在哪裡，<br>為你打開下一步</h1>
-        <p class="en" data-r>An AI-native platform for teaching and learning — the right support, at the right moment, for teachers, students, and families.</p>
+        <p class="en" data-r>以 AI 為核心的教與學平台 — 在合適的時候，給出合適的支援，服務教師、學生與家庭。</p>
         <div class="cta-row" data-r>
           <a class="pill pill-brand" href="#meet">認識 EdCity</a>
           <a class="pill pill-ghost" href="#book">預約導覽</a>
         </div>
       </div>
-      <aside class="hero-stat" data-r aria-hidden="true">
-        <div class="num">01</div>
-        <div class="vert">每一次登入 · 一個清晰的下一步</div>
-      </aside>
     </div>
   </section>
 
@@ -781,8 +736,6 @@ void main(){
       </ul>
     </div>
   </section>
-
-  <div class="threshold"><span class="mark"><svg viewBox="0 0 11 7" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>認識 EdCity</span></div>
 
   <section class="blk center" id="meet">
     <div class="wrap">
@@ -837,7 +790,7 @@ void main(){
         <div class="f" data-r><b>AI 批改</b><span>中文作文回饋，教師可逐項調整。</span></div>
         <div class="f" data-r><b>學習洞察</b><span>把課堂數據整理成清晰的下一步。</span></div>
       </div>
-      <div class="partners" data-r style="margin-top:40px;border:0;border-top:1px solid var(--line);background:transparent">
+      <div class="partners" data-r style="margin-top:60px;border:0;border-top:1px solid var(--line);background:transparent">
         <p>與常用教學工具整合</p>
         <ul>
           <li>Google Classroom</li><li>Microsoft 365</li><li>Zoom</li>
@@ -860,8 +813,6 @@ void main(){
       <div class="cta-row center" data-r><a class="pill pill-ghost" href="#book">觀看訪談影片</a></div>
     </div>
   </section>
-
-  <div class="threshold on-panel"><span class="mark"><svg viewBox="0 0 11 7" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>教育生態系統</span></div>
 
   <section class="blk center spark" id="ecosystem">
     <div class="wrap">
@@ -932,8 +883,6 @@ void main(){
       </div>
     </div>
   </section>
-
-  <div class="threshold"><span class="mark"><svg viewBox="0 0 11 7" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>為何不同</span></div>
 
   <section class="blk" id="compare">
     <div class="wrap">
@@ -1012,8 +961,6 @@ void main(){
       </div>
     </div>
   </section>
-
-  <div class="threshold"><span class="mark"><svg viewBox="0 0 11 7" aria-hidden="true"><path d="M1 1l4.5 4.5L10 1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>下一步</span></div>
 
   <section class="band" id="book">
     <div class="wrap">
@@ -1224,22 +1171,6 @@ void main(){
       });
     };
     runIn(document.documentElement.getAttribute('data-p') || 'a');
-  })();
-
-  /* ---------- guided thresholds: section frames + doorway dividers ---------- */
-  (function(){
-    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var marked = [].slice.call(document.querySelectorAll('.threshold, .blk'));
-    if(reduce){ marked.forEach(function(e){ e.classList.add('in'); }); }
-    else {
-      var io = new IntersectionObserver(function(en){
-        en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } });
-      }, { rootMargin: '0px 0px -8% 0px' });
-      marked.forEach(function(e){
-        if(e.getBoundingClientRect().top < window.innerHeight) e.classList.add('in');
-        else io.observe(e);
-      });
-    }
   })();
 
   /* ---------- colour-cycling menu ---------- */
