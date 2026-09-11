@@ -243,25 +243,6 @@
     e.preventDefault();
   });
 
-  /* lazy-load iframes only once their cell is near view, so we never run
-     three product studies (one with a WebGL shader) all at once.
-     Percentage rootMargin is unreliable across browsers, so check initial
-     visibility directly (same pattern the studies use for content load-in)
-     and only fall back to the observer for cells that start off-screen. */
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if(!en.isIntersecting) return;
-      var frame = en.target;
-      mount(frame);
-      io.unobserve(frame);
-    });
-  }, { rootMargin: '400px' });
-  document.querySelectorAll('.frame').forEach(function(f){
-    var r = f.getBoundingClientRect();
-    if(r.width > 0 && r.top < window.innerHeight && r.top > -window.innerHeight && r.left < window.innerWidth && r.left > -window.innerWidth){ mount(f); }
-    else { io.observe(f); }
-  });
-
   var FIG_KEY = 'edcity-figma-';
   function mount(frame){
     if(frame.dataset.src){
@@ -335,6 +316,28 @@
     frame.innerHTML = '';
     frame.appendChild(wrap);
   }
+
+  /* lazy-load iframes only once their cell is near view, so we never run
+     three product studies (one with a WebGL shader) all at once.
+     Percentage rootMargin is unreliable across browsers, so check initial
+     visibility directly (same pattern the studies use for content load-in)
+     and only fall back to the observer for cells that start off-screen.
+     This must run after FIG_KEY/mount/renderFigCell above are defined —
+     mount() used to fire before FIG_KEY was assigned, so the first visible
+     moodboard cell always looked up "undefined-a" and never found its link. */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var frame = en.target;
+      mount(frame);
+      io.unobserve(frame);
+    });
+  }, { rootMargin: '400px' });
+  document.querySelectorAll('.frame').forEach(function(f){
+    var r = f.getBoundingClientRect();
+    if(r.width > 0 && r.top < window.innerHeight && r.top > -window.innerHeight && r.left < window.innerWidth && r.left > -window.innerWidth){ mount(f); }
+    else { io.observe(f); }
+  });
 })();
 </script>
 </body>
