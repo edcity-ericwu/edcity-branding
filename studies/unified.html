@@ -231,6 +231,22 @@
   .trust .t i{width:34px;height:34px;border:1px dashed var(--ink-3);border-radius:9px;display:block}
   @media (max-width:760px){ .trust{grid-template-columns:repeat(3,1fr)} }
 
+  .catalogue{max-width:var(--wrap);margin:40px auto 0;text-align:left}
+  .catalogue .cat-head{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 4px;text-align:left}
+  .cat-row{
+    display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;
+    padding:14px 4px;border-top:1px solid var(--line);
+  }
+  .cat-row:last-child{border-bottom:1px solid var(--line)}
+  .cat-t{font-family:var(--font-body);font-size:.92rem;color:var(--ink)}
+  .cat-tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;color:var(--stone);border:1px solid var(--stone);border-radius:999px;padding:4px 10px;white-space:nowrap}
+  .cat-status{font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;display:flex;align-items:center;gap:6px;white-space:nowrap;color:var(--ink-2)}
+  .cat-status i{width:6px;height:6px;border-radius:50%;background:var(--ink-3);flex-shrink:0}
+  .cat-status.ok i{background:var(--ok)}
+  @media (max-width:640px){
+    .cat-row{grid-template-columns:1fr;gap:6px;justify-items:start}
+  }
+
   .qphoto{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:18px}
   .qphoto .head{width:44px;height:44px;border-radius:50%;border:1px dashed var(--ink-3);flex-shrink:0}
 
@@ -878,6 +894,29 @@ void main(){
         <span class="t"><i></i>可攜出資料</span>
         <span class="t"><i></i>合規報告</span>
         <span class="t"><i></i>教育局標準</span>
+      </div>
+      <div class="catalogue" data-r>
+        <p class="cat-head">資源目錄 · 精選示例</p>
+        <div class="cat-row">
+          <span class="cat-t">中文橋樑書單（中一至中二）</span>
+          <span class="cat-tag">閱讀延伸</span>
+          <span class="cat-status ok"><i></i>已審核</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-t">親子共讀 20 分鐘指南</span>
+          <span class="cat-tag">家庭參與</span>
+          <span class="cat-status ok"><i></i>已審核</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-t">STEM 動手實驗包（小四至小六）</span>
+          <span class="cat-tag">探究學習</span>
+          <span class="cat-status"><i></i>待審核</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-t">朗讀輔助工具 · 特殊教育需要適配</span>
+          <span class="cat-tag">無障礙學習</span>
+          <span class="cat-status ok"><i></i>已審核</span>
+        </div>
       </div>
     </div>
   </section>
