@@ -160,12 +160,6 @@
   }
   .hero-lead{max-width:min(90vw,600px)}
   .hero h1{font-size:clamp(2.4rem,6.4vw,4.9rem);line-height:1.05}
-  .squiggle{display:block;width:clamp(150px,20vw,240px);height:auto;color:var(--spark);margin:16px 0 20px;overflow:visible}
-  .squiggle path{
-    fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;
-    stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.3s ease-out .45s forwards;
-  }
-  @keyframes draw{ to{ stroke-dashoffset:0 } }
   .hero-lead .en{font-family:var(--sans);font-size:.9rem;color:var(--ink-2);margin:0 0 20px;max-width:34ch}
   .hero .cta-row{display:flex;flex-wrap:wrap;gap:12px}
   .hero-stat{flex-shrink:0;display:flex;align-items:flex-end;gap:14px}
@@ -725,9 +719,6 @@ void main(){
     <div class="wrap hero-inner">
       <div class="hero-lead">
         <h1 data-r>知道你在哪裡，<br>為你打開下一步</h1>
-        <svg class="squiggle" data-r viewBox="0 0 240 56" aria-hidden="true">
-          <path pathLength="1" d="M3 30 C 26 2, 46 50, 78 26 S 128 2, 152 34 S 196 54, 214 20 S 232 6, 238 26"/>
-        </svg>
         <p class="en" data-r>An AI-native platform for teaching and learning — the right support, at the right moment, for teachers, students, and families.</p>
         <div class="cta-row" data-r>
           <a class="pill pill-brand" href="#meet">認識 EdCity</a>
