@@ -14,8 +14,8 @@ The direction combines three propositions into one system with a layered job spl
 
 | Option | Concept | Palette | Layout | Reference |
 | --- | --- | --- | --- | --- |
-| A | Calm Momentum | `palette-study-cool.html` | `unified.html` (default palette) | sanalabs.com |
-| B | Human Craft | `palette-study.html` | `studio-study.html` | quarterre.com |
+| A | Calm Momentum | `palette-study.html` | `unified.html` (default palette) | sanalabs.com |
+| B | Human Craft | `palette-study-cool.html` | `studio-study.html` | quarterre.com |
 | C | Curious Intelligence | `palette-study-vivid.html` | `home-study.html` | amita-oshiete.jp |
 
 **Every layout study shares one section skeleton and one set of copy** (hero → partners → 認識 EdCity six cards → EdCity.ai + mock → quote → ecosystem + mock → comparison table → updates → CTA), each rendered fully in its reference's idiom. A comparison then isolates the direction, not the content.
@@ -28,8 +28,8 @@ The direction combines three propositions into one system with a layered job spl
 
 | File | What it is |
 | --- | --- |
-| `palette-study-cool.html` | **Option A — Calm Momentum, "Clear Field, Bright Signal."** Bright-blue backbone on near-white, held to decisions only; Stone for structure, Teal for wayfinding, one coral signal. |
-| `palette-study.html` | **Option B — Human Craft, "Slate, Earth & First Light."** Warm take: slate-blue structure, greyed earth fabric, burnt-orange spark. Includes the Spark & Light gradient rules. |
+| `palette-study-cool.html` | **Option B — Human Craft, "Clear Field, Bright Signal."** Bright-blue backbone on near-white, held to decisions only; Stone for structure, Teal for wayfinding, one coral signal. |
+| `palette-study.html` | **Option A — Calm Momentum, "Slate, Earth & First Light."** Warm take: slate-blue structure, greyed earth fabric, burnt-orange spark. Includes the Spark & Light gradient rules. |
 | `palette-study-vivid.html` | **Option C — Curious Intelligence, "Bright Field, Two Points."** A refraction field: blue as one plane among cyan/lavender/peach/pink, two small signal points (pink = opportunity, green = done), colour never the only signal. |
 | `studio-study.html` | **Option B.** The shared skeleton in the Quarterre editorial language (warm cream, huge grotesque headline, serif body, sage side rail, rotating circular badge) — a supportive thread running through the mock, a project index, a full-bleed break photo. |
 | `home-study.html` | **Option C.** The shared skeleton in the amita-oshiete.jp container language — asymmetric rounded panels, folder tabs, blueprint overlays, a refracted "multiple angles" photo grid. |
