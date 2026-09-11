@@ -40,6 +40,8 @@ The direction combines three propositions into one system with a layered job spl
 
 `imagery-notes.md` — mood-board links (Pinterest, per direction), the no-lifting-reference-images rule, and a "hero space" reference for later.
 
+`brand-strategy.md` — the client's Brand Personality / Brand Attributes / Visual Anchors strategy (transcribed from their Figma prototype), plus a cross-reference of which existing study device already answers which strategy point, and which gaps (bridge/crossing-stages device, provenance/evidence UI, library-catalogue framing) are still open.
+
 `spark-concepts.md` — collected visual references for "the spark" (warm light emerging from a cool structured field) and two buildable directions: an orb cluster and a Vasarely-style dot grid. Concepts only, not built.
 
 `assets/edcity-logo-white.svg` — the EdCity wordmark + mark, white fill. Recolour via CSS `fill` when placing on light grounds.
