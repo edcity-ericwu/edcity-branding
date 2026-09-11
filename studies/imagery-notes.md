@@ -30,6 +30,7 @@ A dark editorial site (SPOT / an art festival) — the hero is a single large
 bleeding through a dark blue mass, with minimal type: a small circular geometric
 logo mark, a date stamp set vertically in the lower right, thin side labels.
 
-This overlaps the `spark-orbs.html` exploration and the Option B / C gradient
-meshes. If pursued: one big soft orb as the hero focal point, content set small
-and to the side, the orb carrying all the colour and atmosphere.
+This overlaps the Option A / C gradient meshes (the spark-orbs Canvas-2D
+sketch that explored this was retired). If pursued: one big soft orb as the
+hero focal point, content set small and to the side, the orb carrying all
+the colour and atmosphere.
