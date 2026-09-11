@@ -21,11 +21,7 @@
     --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
     --r-y:30px; --r-scale:1; --r-dur:.8s; --r-ease:cubic-bezier(.15,.85,.45,1);
     --grain-op:.28;
-    --h1-size:clamp(1.9rem,4vw,3.1rem); --h1-weight:600; --h1-ls:.002em; --h1-lh:1.25;
-    --h2-size:clamp(1.8rem,3.8vw,2.6rem); --h2-weight:600; --h2-lh:1.18; --h2-ls:-.005em;
-    --eyebrow-size:.82rem; --eyebrow-ls:.16em; --eyebrow-weight:600;
-    --sec-pad-min:100px; --sec-pad-vw:12vw; --sec-pad-max:190px;
-    --lead-size:.94rem; --pill-radius:10px; --btn-dark:#3F3F3F;
+    --btn-dark:color-mix(in srgb, var(--ink) 78%, var(--paper));
   }
   /* Option B — Human Craft (Clear Field, Bright Signal) */
   [data-p="b"]{
@@ -38,11 +34,7 @@
     --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
     --r-y:11px; --r-scale:1; --r-dur:.42s; --r-ease:cubic-bezier(.2,.6,.2,1);
     --grain-op:.34;
-    --h1-size:clamp(2.4rem,6.4vw,4.9rem); --h1-weight:700; --h1-ls:-.02em; --h1-lh:1.05;
-    --h2-size:clamp(2rem,5vw,3.3rem); --h2-weight:700; --h2-lh:1.08; --h2-ls:-.02em;
-    --eyebrow-size:.8rem; --eyebrow-ls:.14em; --eyebrow-weight:700;
-    --sec-pad-min:60px; --sec-pad-vw:10vw; --sec-pad-max:120px;
-    --lead-size:1.06rem; --pill-radius:999px; --btn-dark:var(--ink);
+    --btn-dark:color-mix(in srgb, var(--ink) 78%, var(--paper));
   }
   /* Option C — Curious Intelligence (Bright Field, Two Points) */
   [data-p="c"]{
@@ -55,11 +47,15 @@
     --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
     --r-y:22px; --r-scale:.965; --r-dur:.6s; --r-ease:cubic-bezier(.2,.9,.3,1.06);
     --grain-op:.4;
-    --h1-size:clamp(2.4rem,6.4vw,4.9rem); --h1-weight:700; --h1-ls:-.02em; --h1-lh:1.05;
-    --h2-size:clamp(2rem,5vw,3.3rem); --h2-weight:700; --h2-lh:1.08; --h2-ls:-.02em;
-    --eyebrow-size:.8rem; --eyebrow-ls:.14em; --eyebrow-weight:700;
-    --sec-pad-min:60px; --sec-pad-vw:10vw; --sec-pad-max:120px;
-    --lead-size:1.06rem; --pill-radius:999px; --btn-dark:var(--ink);
+    --btn-dark:color-mix(in srgb, var(--ink) 78%, var(--paper));
+  }
+  /* ============ shared type scale & spacing — same across A/B/C, only colour/radius/motion differ ============ */
+  :root{
+    --h1-size:clamp(1.9rem,4vw,3.1rem); --h1-weight:600; --h1-ls:.002em; --h1-lh:1.25;
+    --h2-size:clamp(1.8rem,3.8vw,2.6rem); --h2-weight:600; --h2-lh:1.18; --h2-ls:-.005em;
+    --eyebrow-size:.82rem; --eyebrow-ls:.16em; --eyebrow-weight:600;
+    --sec-pad-min:100px; --sec-pad-vw:12vw; --sec-pad-max:190px;
+    --lead-size:.94rem; --pill-radius:10px;
   }
   :root{
     color-scheme:light;
