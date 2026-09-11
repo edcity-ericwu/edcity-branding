@@ -24,7 +24,7 @@
   #board{
     position:absolute;inset:0;
     display:grid;grid-template-columns:repeat(3,100vw);grid-template-rows:repeat(3,100vh);
-    overflow:auto;scroll-snap-type:both mandatory;scroll-behavior:smooth;
+    overflow:auto;scroll-snap-type:both mandatory;
     -ms-overflow-style:none;scrollbar-width:none;
   }
   #board::-webkit-scrollbar{display:none}
@@ -207,14 +207,25 @@
   function go(r, c){
     r = Math.max(0, Math.min(2, r));
     c = Math.max(0, Math.min(2, c));
-    board.scrollTo({ left: c * window.innerWidth, top: r * window.innerHeight, behavior: 'smooth' });
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var left = c * board.clientWidth, top = r * board.clientHeight;
+    try{ board.scrollTo({ left: left, top: top, behavior: reduce ? 'auto' : 'smooth' }); }
+    catch(e){ board.scrollLeft = left; board.scrollTop = top; }
+    /* belt-and-braces: some browsers/contexts never progress a smooth
+       programmatic scroll (e.g. a backgrounded tab pauses rAF) — if we
+       haven't arrived after a beat, just land there instantly */
+    setTimeout(function(){
+      if(Math.abs(board.scrollLeft - left) > 4 || Math.abs(board.scrollTop - top) > 4){
+        board.scrollLeft = left; board.scrollTop = top;
+      }
+    }, 500);
   }
   rowBtns.forEach(function(b, i){ b.addEventListener('click', function(){ go(i, col); }); });
   colBtns.forEach(function(b, i){ b.addEventListener('click', function(){ go(row, i); }); });
 
   function sync(){
-    row = Math.round(board.scrollTop / window.innerHeight);
-    col = Math.round(board.scrollLeft / window.innerWidth);
+    row = Math.round(board.scrollTop / board.clientHeight);
+    col = Math.round(board.scrollLeft / board.clientWidth);
     rowBtns.forEach(function(b,i){ b.setAttribute('aria-current', String(i===row)); });
     colBtns.forEach(function(b,i){ b.setAttribute('aria-current', String(i===col)); });
   }
