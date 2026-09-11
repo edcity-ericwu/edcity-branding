@@ -243,7 +243,10 @@
   });
 
   /* lazy-load iframes only once their cell is near view, so we never run
-     three product studies (one with a WebGL shader) all at once */
+     three product studies (one with a WebGL shader) all at once.
+     Percentage rootMargin is unreliable across browsers, so check initial
+     visibility directly (same pattern the studies use for content load-in)
+     and only fall back to the observer for cells that start off-screen. */
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(en){
       if(!en.isIntersecting) return;
@@ -251,8 +254,12 @@
       mount(frame);
       io.unobserve(frame);
     });
-  }, { rootMargin: '60% 60%' });
-  document.querySelectorAll('.frame').forEach(function(f){ io.observe(f); });
+  }, { rootMargin: '400px' });
+  document.querySelectorAll('.frame').forEach(function(f){
+    var r = f.getBoundingClientRect();
+    if(r.width > 0 && r.top < window.innerHeight && r.top > -window.innerHeight && r.left < window.innerWidth && r.left > -window.innerWidth){ mount(f); }
+    else { io.observe(f); }
+  });
 
   var FIG_KEY = 'edcity-figma-';
   function mount(frame){
