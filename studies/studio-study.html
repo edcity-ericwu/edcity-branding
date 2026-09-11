@@ -152,6 +152,16 @@
   .mock .m-rail i{height:3px;flex:1;background:var(--line-2)}
   .mock .m-rail i.on{background:var(--slate-deep)}
   .mock .m-rail i.now{background:var(--spark);flex:0 0 10px;height:10px;border-radius:50%;margin-top:-3.5px}
+  .mock .why{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+  .mock .why summary{font-family:var(--sans);font-weight:600;font-size:.8rem;color:var(--slate-deep);cursor:pointer;list-style:none;display:flex;align-items:center;gap:7px}
+  .mock .why summary::-webkit-details-marker{display:none}
+  .mock .why summary::before{content:"?";display:grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1px solid currentColor;font-size:.66rem;flex-shrink:0}
+  .mock .why[open] summary::before{content:"–"}
+  .mock .why ol{margin:10px 0 0;padding:0 0 0 2px;list-style:none;display:flex;flex-direction:column;gap:7px}
+  .mock .why li{position:relative;padding-left:20px;font-size:.82rem;color:var(--ink-2);line-height:1.5}
+  .mock .why li::before{content:"";position:absolute;left:5px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--slate-deep)}
+  .mock .why li:not(:last-child)::after{content:"";position:absolute;left:7px;top:13px;bottom:-7px;width:1px;background:var(--line)}
+  .mock .why-meta{margin:10px 0 0;font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:6px 10px}
   .mock ul.m-match{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
   .mock ul.m-match li{display:flex;justify-content:space-between;gap:12px;font-size:.9rem;border-top:1px solid var(--line);padding-top:9px}
   .mock ul.m-match li:first-child{border-top:0;padding-top:0}
@@ -429,6 +439,15 @@
           <span class="m-btn">調整</span>
           <span class="m-btn">略過</span>
         </div>
+        <details class="why">
+          <summary>為何推薦？</summary>
+          <ol>
+            <li>4 名學生上週隨堂測「借景抒情」一題未達標</li>
+            <li>本課文依賴此前置概念</li>
+            <li>關聯到校本資源：《岳陽樓記》複習包（10 分鐘）</li>
+          </ol>
+          <p class="why-meta"><span>依據：中四級隨堂測</span><span>信心：高</span><span>更新於 3 分鐘前</span></p>
+        </details>
         <p class="m-out">→ 下一步：把重溫環節排進明天第一節</p>
       </div>
       <div class="feats">
