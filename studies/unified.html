@@ -365,6 +365,9 @@
     font-family:var(--sans);font-weight:600;font-size:clamp(1.5rem,3.6vw,2.4rem);line-height:1.3;
     letter-spacing:-.015em;max-width:22ch;margin:0 auto;text-wrap:balance;
   }
+  /* full-width CJK quote marks carry built-in padding in their glyph cell —
+     pull the leading one back so the quote doesn't look indented */
+  blockquote .cjk-open{margin-left:-.5em;unicode-bidi:isolate}
   .quote .who{margin-top:22px;font-size:.9rem;color:var(--ink-2)}
   .quote .who b{font-family:var(--sans)}
 
@@ -845,7 +848,7 @@ void main(){
 
   <section class="blk center quote panel">
     <div class="wrap">
-      <blockquote data-r>&ldquo;它沒有取代我的判斷，而是讓我更快看到全班的需要。&rdquo;</blockquote>
+      <blockquote data-r><span class="cjk-open">「</span>它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
       <div class="qphoto" data-r><span class="head"></span><p class="who"><b>陳老師</b> · 中學中文科 · 教師訪談摘錄（示意）</p></div>
       <div class="stories" data-r>
         <div class="st"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"/></svg><span class="sr-only">學校標誌</span></span><b>−30%</b><span>備課時間（示意數字）</span></div>
