@@ -72,11 +72,17 @@
   .nav-open .navbtn .line:nth-child(2){opacity:0}
   .nav-open .navbtn .line:nth-child(3){transform:translateY(-6px) rotate(-45deg);width:33px}
 
-  /* ---- hero: refracted possibilities, not a bright gradient ---- */
+  /* ---- hero: message first, then a pure-graphic panel (amita-oshiete.jp's hero device) ---- */
   main#top{padding-top:100px}
-  .hero{display:grid;grid-template-columns:1.7fr 1fr;gap:18px;margin-top:8px}
+  .hero-copy{padding-top:0}
+  .hero-copy .kick{font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;color:var(--ink-3)}
+  .hero-copy h1{font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.25;margin-top:14px}
+  .hero-copy .lede{font-family:var(--sans);font-weight:500;margin-top:16px;max-width:52ch;color:var(--ink-2)}
+  .hero-copy .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+
+  .hero-visual{display:grid;grid-template-columns:1.7fr 1fr;gap:18px;margin-top:32px}
   .hero-main{
-    /* translucent colour planes over a legible base + fine fluting, like light through ribbed glass */
+    /* pure texture + shape — no text stacked inside, like amita's origami-red panel */
     background:
       repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 22px),
       radial-gradient(130% 80% at 16% 12%, rgba(140,231,242,.5), transparent 58%),
@@ -84,27 +90,27 @@
       radial-gradient(90% 70% at 72% 46%, rgba(252,220,198,.32), transparent 60%),
       #2E44A6;
     color:#fff;border-radius:34px 34px 10px 34px;overflow:visible;
-    min-height:clamp(440px,66vh,640px);padding:clamp(26px,4vw,44px) clamp(26px,4vw,44px) clamp(96px,12vh,120px);
-    display:flex;flex-direction:column;
+    min-height:clamp(360px,48vh,480px);padding:clamp(22px,3.4vw,32px);
+    display:flex;flex-direction:column;justify-content:space-between;
   }
   .hero-main .clip::after{
     content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.5;
     background:linear-gradient(115deg, transparent 38%, rgba(120,220,255,.35) 46%, rgba(255,180,230,.28) 52%, transparent 60%);
   }
-  .hero-main .kick{font-family:var(--mono);font-size:.8rem;letter-spacing:.12em;opacity:.85}
-  .hero-main h1{font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.25;margin-top:auto}
-  .hero-main .lede{font-family:var(--sans);font-weight:500;margin-top:16px;max-width:34ch;opacity:.95}
-  .hero-main .en{font-size:.86rem;margin-top:10px;max-width:40ch;opacity:.8}
-  .dock{
-    position:absolute;left:0;bottom:0;z-index:3;
+  .hero-date{position:relative;z-index:2;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;line-height:1.6;opacity:.8}
+  .hero-date b{font-family:var(--sans);font-weight:600;font-size:.92rem;letter-spacing:0;display:block;opacity:1}
+  .mark{
+    position:relative;z-index:3;align-self:flex-start;
     background:var(--card);color:var(--ink);border-radius:0 26px 0 34px;
-    padding:16px 22px 16px 20px;
-    display:flex;align-items:center;gap:12px;box-shadow:0 -10px 30px -16px rgba(10,14,26,.28);
+    padding:14px 20px 14px 18px;margin:0 0 -22px -22px;
+    display:flex;align-items:center;gap:10px;box-shadow:0 -10px 30px -16px rgba(10,14,26,.28);
+    font-family:var(--sans);font-weight:600;font-size:.86rem;
   }
-  .dock .badge{width:40px;height:40px;border-radius:50%;background:var(--blue);display:grid;place-items:center;flex-shrink:0}
-  .dock .badge svg{width:24px;height:auto}
-  .dock .badge svg path{fill:#fff}
-  .dock .pill{padding:9px 16px;font-size:.82rem}
+  .mark .badge{width:34px;height:34px;border-radius:50%;background:var(--blue);display:grid;place-items:center;flex-shrink:0}
+  .mark .badge svg{width:20px;height:auto}
+  .mark .badge svg path{fill:#fff}
+
+  .hero-photo{margin-top:18px}
 
   .hero-side{
     background:var(--ink);color:#EAECF7;border-radius:34px;padding:24px;display:flex;flex-direction:column;gap:16px;
@@ -329,7 +335,7 @@
   footer .legal{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);font-size:.78rem;color:#8A94AE}
 
   @media (max-width:900px){
-    .hero{grid-template-columns:1fr}
+    .hero-visual{grid-template-columns:1fr}
     .hero-side{margin-left:0}
     footer .cols{grid-template-columns:1fr 1fr}
   }
@@ -418,35 +424,45 @@
 <main class="wrap" id="top">
 
   <section class="hero">
-    <div class="hero-main panel">
-      <div class="clip">
-        <div class="grain"></div>
-        <div class="bp"><svg><use href="#bp"/></svg></div>
-      </div>
-      <div class="kick">香港教育城 · 教與學的智能夥伴</div>
+    <div class="hero-copy">
+      <p class="kick" data-r>香港教育城 · 教與學的智能夥伴</p>
       <h1 data-r>因應每個需要，<br>成就每一步學習</h1>
       <p class="lede" data-r>以 AI 為核心的教與學平台，連結教師、學生與家庭；在合適的時機提供適切支援，讓教學更有效、學習更有方向、家校協作更順暢。</p>
-      <div class="media hero-photo" data-ar="16:9" data-r><span class="cap">主視覺照片：香港課堂的探索時刻 · 待拍攝</span></div>
-      <div class="dock">
-        <span class="badge"><svg viewBox="-3 -3 62 60"><use href="#edcity-logo"/></svg></span>
+      <div class="cta-row" data-r>
         <a class="pill pill-blue" href="#meet">認識 EdCity</a>
         <a class="pill pill-ghost" href="#book">預約導覽</a>
       </div>
     </div>
 
-    <aside class="hero-side" data-r>
-      <div class="h"><b>熱門主題</b><span class="plus">+</span></div>
-      <div class="stat">01<span>每一次登入 · 一個清晰的下一步</span></div>
-      <div class="tags">
-        <span class="chip">#生成教材</span>
-        <span class="chip">#AI 批改</span>
-        <span class="chip peach">#學習洞察</span>
-        <span class="chip">#備課建議</span>
-        <span class="chip pink">#知識圖譜</span>
-        <span class="chip lavender">#學習關係</span>
-        <span class="chip">#資源配對</span>
+    <div class="hero-visual">
+      <div class="hero-main panel">
+        <div class="clip">
+          <div class="grain"></div>
+          <div class="bp"><svg><use href="#bp"/></svg></div>
+        </div>
+        <span class="hero-date">香港教育城<br><b>2026 · 學年</b></span>
+        <div class="mark">
+          <span class="badge"><svg viewBox="-3 -3 62 60"><use href="#edcity-logo"/></svg></span>
+          <span>教與學的智能夥伴</span>
+        </div>
       </div>
-    </aside>
+
+      <aside class="hero-side" data-r>
+        <div class="h"><b>熱門主題</b><span class="plus">+</span></div>
+        <div class="stat">01<span>每一次登入 · 一個清晰的下一步</span></div>
+        <div class="tags">
+          <span class="chip">#生成教材</span>
+          <span class="chip">#AI 批改</span>
+          <span class="chip peach">#學習洞察</span>
+          <span class="chip">#備課建議</span>
+          <span class="chip pink">#知識圖譜</span>
+          <span class="chip lavender">#學習關係</span>
+          <span class="chip">#資源配對</span>
+        </div>
+      </aside>
+    </div>
+
+    <div class="media hero-photo" data-ar="21:9" data-r><span class="cap">主視覺照片：香港課堂的探索時刻 · 待拍攝</span></div>
   </section>
 
   <section class="partners" data-r>
