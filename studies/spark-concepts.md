@@ -1,6 +1,6 @@
 # Finding the spark — concept notes
 
-Reference concepts collected 2026-09-09. **Not yet built.**
+Reference concepts collected 2026-09-09. **Not built** — and superseded for the opening screen specifically: `opening-screen-v2.html` / `unified.html`'s `#intro` were built and heavily refined this session (2026-09-14) around the moodboard's actual sunrise-over-mountains photo, a different concept from either direction below. The "recommendation on order" at the bottom is moot for the opening screen. Orb cluster and Vasarely grid remain unbuilt, unused explorations — kept here only in case either motif is wanted elsewhere (a section marker, loading state, favicon-scale device, per Vasarely's own reusability note below).
 
 The through-line across all four: *warm light emerging from within or behind a
 cool, structured field.* The spark is illumination breaking through — a light
