@@ -103,8 +103,8 @@
 
   .pill{
     display:inline-flex;align-items:center;gap:9px;
-    font-family:var(--sans);font-weight:600;font-size:.95rem;
-    border-radius:999px;padding:13px 24px;border:1px solid var(--ink);cursor:pointer;
+    font-family:var(--sans);font-weight:600;font-size:.85rem;
+    border-radius:8px;padding:11px 20px;border:1px solid var(--ink);cursor:pointer;
     transition:background .15s, color .15s;
   }
   .pill.solid{background:var(--ink);color:var(--paper)}
@@ -115,7 +115,7 @@
 
   /* hero */
   .hero{padding:clamp(40px,9vh,104px) 0 clamp(44px,8vh,96px)}
-  .hero h1{font-size:clamp(2.8rem,9vw,7rem);line-height:.98;margin:0;text-wrap:balance}
+  .hero h1{font-size:clamp(2.2rem,6.5vw,5.2rem);line-height:1.02;margin:0;text-wrap:balance}
   .hero .stand{max-width:52ch;margin:30px 0 0;color:var(--ink-2);font-size:clamp(1.05rem,1.7vw,1.25rem)}
 
   /* partners */
@@ -309,7 +309,7 @@
   @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .badge .ring{animation:none} }
 
   /* content load-in — Quarterre: a firm, generous rise that settles */
-  html.r [data-r]{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.15,.85,.45,1), transform .8s cubic-bezier(.15,.85,.45,1)}
+  html.r [data-r]{opacity:0;transform:translateY(40px);transition:opacity .8s ease, transform .8s ease}
   html.r [data-r].in{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){ html.r [data-r]{opacity:1;transform:none;transition:none} }
 
@@ -557,14 +557,14 @@
     <div class="wrap">
       <blockquote>「它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
       <p class="who">中學中文科教師 · 教師訪談摘錄（示意內容）</p>
-      <div class="media video" data-ar="16:9" style="margin-top:32px"><span class="cap">教師訪談影片 · 3–4 分鐘 · 待拍攝</span></div>
+      <div class="media video" data-ar="16:9" data-r style="margin-top:32px"><span class="cap">教師訪談影片 · 3–4 分鐘 · 待拍攝</span></div>
       <figure class="mgrid">
-        <div><div class="media" data-ar="3:2"><span class="cap">備課</span></div><figcaption>與 AI 一起備課，教師定稿</figcaption></div>
-        <div><div class="media" data-ar="3:2"><span class="cap">課堂</span></div><figcaption>課堂上的即時支援</figcaption></div>
-        <div><div class="media" data-ar="3:2"><span class="cap">家校</span></div><figcaption>一句可以行動的話，給家長</figcaption></div>
+        <div><div class="media" data-ar="3:2" data-r><span class="cap">備課</span></div><figcaption>與 AI 一起備課，教師定稿</figcaption></div>
+        <div><div class="media" data-ar="3:2" data-r><span class="cap">課堂</span></div><figcaption>課堂上的即時支援</figcaption></div>
+        <div><div class="media" data-ar="3:2" data-r><span class="cap">家校</span></div><figcaption>一句可以行動的話，給家長</figcaption></div>
       </figure>
       <div class="portrait-quote">
-        <div class="media" data-ar="3:4"><span class="cap">人像攝影 · 待拍攝</span></div>
+        <div class="media" data-ar="3:4" data-r><span class="cap">人像攝影 · 待拍攝</span></div>
         <div class="pq-body">
           <p class="pq-role">FACULTY</p>
           <blockquote>「工具應該讓判斷更容易，不是替判斷做決定。」</blockquote>
@@ -604,12 +604,12 @@
 
   <section class="sec" data-r>
     <div class="wrap">
-      <p class="eyebrow">個案</p>
-      <h2>三個學校，三種用法。</h2>
+      <p class="eyebrow" data-r>個案</p>
+      <h2 data-r>三個學校，三種用法。</h2>
       <div class="index-list">
         <div class="index-row">
-          <div class="media" data-ar="4:3"><span class="cap">個案照片：官立中學</span></div>
-          <div class="ir-body">
+          <div class="media" data-ar="4:3" data-r><span class="cap">個案照片：官立中學</span></div>
+          <div class="ir-body" data-r>
             <span class="n">01</span>
             <h3>官立中學 &mdash; 中文科組</h3>
             <p>用 EdCity.ai 分擔重溫教材的準備，科組把省下的時間放在課後跟進。</p>
@@ -617,8 +617,8 @@
           </div>
         </div>
         <div class="index-row">
-          <div class="media" data-ar="4:3"><span class="cap">個案照片：資助小學</span></div>
-          <div class="ir-body">
+          <div class="media" data-ar="4:3" data-r><span class="cap">個案照片：資助小學</span></div>
+          <div class="ir-body" data-r>
             <span class="n">02</span>
             <h3>資助小學 &mdash; 全校閱讀計劃</h3>
             <p>資源配對把合適的橋樑書單直接送到有需要的班別，圖書館老師省去逐班核對。</p>
@@ -626,8 +626,8 @@
           </div>
         </div>
         <div class="index-row">
-          <div class="media" data-ar="4:3"><span class="cap">個案照片：特殊學校</span></div>
-          <div class="ir-body">
+          <div class="media" data-ar="4:3" data-r><span class="cap">個案照片：特殊學校</span></div>
+          <div class="ir-body" data-r>
             <span class="n">03</span>
             <h3>特殊學校 &mdash; 個別學習計劃</h3>
             <p>學習管理把每名學生的計劃、進度與家長溝通放在同一個視圖，跨科組不再各自為政。</p>
