@@ -127,7 +127,13 @@
   }
   .pill.ghost:not(:hover){border-color:var(--ink)}
   .pill.ghost:hover::before{opacity:1;background-position:0 0}
-  .pill.spark{background:var(--spark);border-color:var(--spark);color:var(--paper)}
+  .pill.spark{
+    background:linear-gradient(90deg, var(--clay-deep) 0%, var(--spark) 100%);
+    background-size:220% 100%;background-position:0 0;
+    border-color:transparent;color:var(--paper);
+    transition:background-position .45s ease;
+  }
+  .pill.spark:hover{background-position:100% 0}
   .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 
   /* hero */
