@@ -246,6 +246,10 @@
     display:flex;align-items:center;justify-content:center;text-align:center;
     color:var(--ink-3);font-family:var(--mono);font-size:.76rem;padding:24px;position:relative;overflow:hidden;
   }
+  /* frame opens up as it scrolls through view — pellmell.fr's own mechanic:
+     clip-path inset scrubbed by scroll position, not a one-shot reveal */
+  .media{clip-path:inset(7% round 0px);will-change:clip-path}
+  @media (prefers-reduced-motion:reduce){ .media{clip-path:none!important} }
   .ph{margin:36px 0 0;min-height:200px}
   .media[data-ar="21:9"]{aspect-ratio:21/9}
   .media[data-ar="16:9"]{aspect-ratio:16/9}
@@ -802,6 +806,32 @@
         window.addEventListener('touchmove', dismiss, { passive: true });
       });
     }
+  })();
+
+  /* ---------- media frames open up on scroll (pellmell.fr's clip-path-inset scrub) ---------- */
+  (function(){
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var els = [].slice.call(document.querySelectorAll('.media'));
+    if(!els.length) return;
+    var ticking = false;
+    function update(){
+      var vh = window.innerHeight;
+      els.forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if(r.bottom < 0 || r.top > vh) return;
+        var p = Math.min(Math.max((vh - r.top) / (vh * 0.6), 0), 1);
+        el.style.clipPath = 'inset(' + (7 * (1 - p)).toFixed(2) + '% round 0px)';
+      });
+      ticking = false;
+    }
+    function onScroll(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
   })();
 </script>
 
