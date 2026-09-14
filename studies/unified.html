@@ -180,10 +180,11 @@
   .partners p{font-size:.78rem;letter-spacing:.02em;color:var(--ink-3);margin:0 0 14px;font-family:var(--sans);font-weight:600;text-transform:uppercase}
   .partners ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
   .partners li{
-    height:40px;border:1px dashed var(--ink-3);border-radius:8px;
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--mono);font-size:.66rem;color:var(--ink-3);text-align:center;padding:4px;
+    height:40px;border:1px solid var(--line);border-radius:8px;background:var(--panel);
+    display:flex;align-items:center;justify-content:center;color:var(--ink-3);
   }
+  .partners li svg{width:20px;height:20px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
   @media (max-width:760px){ .partners ul{grid-template-columns:repeat(3,1fr)} }
 
   /* ============ media placeholders — the client supplies photos / logos / video later ============ */
@@ -248,7 +249,8 @@
 
   .stories{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
   .stories .st{border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--paper)}
-  .stories .st .logo{height:26px;border:1px dashed var(--ink-3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.6rem;color:var(--ink-3)}
+  .stories .st .logo{height:26px;border:1px solid var(--line);border-radius:6px;background:var(--panel);display:flex;align-items:center;justify-content:center;color:var(--ink-3)}
+  .stories .st .logo svg{width:16px;height:16px}
   .stories .st b{font-family:var(--sans);font-size:1.4rem;letter-spacing:-.02em}
   .stories .st span{font-size:.82rem;color:var(--ink-2)}
   @media (max-width:860px){ .stories{grid-template-columns:1fr 1fr} }
@@ -760,10 +762,18 @@ void main(){
     <div class="wrap">
       <p>與全港中小學、大專院校及夥伴機構協作</p>
       <ul>
-        <li>官立中學 標誌</li><li>資助小學 標誌</li><li>特殊學校 標誌</li>
-        <li>大專院校 標誌</li><li>出版夥伴 標誌</li><li>服務機構 標誌</li>
-        <li>學校標誌</li><li>學校標誌</li><li>學校標誌</li>
-        <li>學校標誌</li><li>學校標誌</li><li>學校標誌</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"/></svg><span class="sr-only">官立中學 標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5c2-1 4.5-1 8 0v11c-3.5-1-6-1-8 0v-11z"/><path d="M20 6.5c-2-1-4.5-1-8 0v11c3.5-1 6-1 8 0v-11z"/></svg><span class="sr-only">資助小學 標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/></svg><span class="sr-only">特殊學校 標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-4 10 4-10 4-10-4z"/><path d="M6 11v4c0 1.5 3 3 6 3s6-1.5 6-3v-4"/></svg><span class="sr-only">大專院校 標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7l8-3 8 3-8 3-8-3z"/><path d="M4 12l8 3 8-3M4 17l8 3 8-3"/></svg><span class="sr-only">出版夥伴 標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg><span class="sr-only">服務機構 標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg><span class="sr-only">學校標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20c0-9 6-15 15-15-1 9-7 15-15 15z"/><path d="M6.5 17.5c3-3 6-6 9.5-10"/></svg><span class="sr-only">學校標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"/></svg><span class="sr-only">學校標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/></svg><span class="sr-only">學校標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-4 10 4-10 4-10-4z"/><path d="M6 11v4c0 1.5 3 3 6 3s6-1.5 6-3v-4"/></svg><span class="sr-only">學校標誌</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg><span class="sr-only">學校標誌</span></li>
       </ul>
     </div>
   </section>
@@ -836,10 +846,10 @@ void main(){
       <blockquote data-r>&ldquo;它沒有取代我的判斷，而是讓我更快看到全班的需要。&rdquo;</blockquote>
       <div class="qphoto" data-r><span class="head"></span><p class="who"><b>陳老師</b> · 中學中文科 · 教師訪談摘錄（示意）</p></div>
       <div class="stories" data-r>
-        <div class="st"><span class="logo">學校標誌</span><b>−30%</b><span>備課時間（示意數字）</span></div>
-        <div class="st"><span class="logo">學校標誌</span><b>4×</b><span>更快看到全班需要</span></div>
-        <div class="st"><span class="logo">學校標誌</span><b>92%</b><span>教師保留最終決定</span></div>
-        <div class="st"><span class="logo">學校標誌</span><b>1</b><span>每次登入一個下一步</span></div>
+        <div class="st"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"/></svg><span class="sr-only">學校標誌</span></span><b>−30%</b><span>備課時間（示意數字）</span></div>
+        <div class="st"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-4 10 4-10 4-10-4z"/><path d="M6 11v4c0 1.5 3 3 6 3s6-1.5 6-3v-4"/></svg><span class="sr-only">學校標誌</span></span><b>4×</b><span>更快看到全班需要</span></div>
+        <div class="st"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg><span class="sr-only">學校標誌</span></span><b>92%</b><span>教師保留最終決定</span></div>
+        <div class="st"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5c2-1 4.5-1 8 0v11c-3.5-1-6-1-8 0v-11z"/><path d="M20 6.5c-2-1-4.5-1-8 0v11c3.5-1 6-1 8 0v-11z"/></svg><span class="sr-only">學校標誌</span></span><b>1</b><span>每次登入一個下一步</span></div>
       </div>
       <div class="cta-row center" data-r><a class="pill pill-ghost" href="#book">觀看訪談影片</a></div>
     </div>
