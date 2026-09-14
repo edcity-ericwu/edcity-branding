@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EdCity Home Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -104,10 +109,15 @@
   .hero-side .plus{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:grid;place-items:center;color:#EAECF7;font-size:1rem}
   .hero-side .stat{font-family:var(--sans);font-weight:700;font-size:2.4rem;letter-spacing:-.03em;line-height:1}
   .hero-side .stat span{display:block;font-size:.78rem;font-weight:500;opacity:.7;letter-spacing:0;margin-top:6px}
-  .hero-side .tags{display:flex;flex-wrap:wrap;gap:8px}
-  .hero-side .chip{background:rgba(140,231,242,.14);color:#BFEFF6}
+  .hero-side .tags{display:flex;flex-wrap:wrap;gap:9px}
+  .hero-side .chip{
+    background:rgba(140,231,242,.14);color:#BFEFF6;border-radius:0;
+    clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
+  }
+  .hero-side .chip:nth-child(3n+2){clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
   .hero-side .chip.pink{background:rgba(243,91,236,.16);color:#F6B8F2}
   .hero-side .chip.lavender{background:rgba(185,168,242,.18);color:#DCD3FA}
+  .hero-side .chip.peach{background:rgba(252,220,198,.16);color:#F9DEC7}
 
   /* ---- generic section ---- */
   .sec{margin-top:clamp(46px,8vw,86px)}
@@ -126,6 +136,10 @@
 
   /* ---- feature cards (認識 EdCity: 6) ---- */
   .cards{margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .cards .feat:nth-child(1){grid-column:span 2}
+  .cards .feat:nth-child(5){grid-row:span 2;display:flex;flex-direction:column;justify-content:center}
+  .cards .feat:nth-child(2n){margin-top:40px}
+  @media (max-width:900px){ .cards .feat:nth-child(1){grid-column:span 1} .cards .feat:nth-child(5){grid-row:span 1} .cards .feat:nth-child(2n){margin-top:16px} }
   .feat{position:relative;background:var(--card);border:1px solid var(--line);border-radius:10px 30px 30px 30px;padding:26px 24px 24px;margin-top:16px}
   .feat .tab{position:absolute;top:-16px;left:22px;height:32px;padding:0 16px;display:flex;align-items:center;border-radius:12px 12px 0 0;
     font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:.08em;color:#fff}
@@ -430,7 +444,7 @@
       <div class="tags">
         <span class="chip">#生成教材</span>
         <span class="chip">#AI 批改</span>
-        <span class="chip">#學習洞察</span>
+        <span class="chip peach">#學習洞察</span>
         <span class="chip">#備課建議</span>
         <span class="chip pink">#知識圖譜</span>
         <span class="chip lavender">#學習關係</span>
