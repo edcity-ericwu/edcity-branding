@@ -10,13 +10,13 @@
 <style>
   @font-face{font-family:'Aspekta Variable';font-weight:100 900;font-display:swap;font-style:normal;src:url('assets/AspektaVF.woff2') format('woff2')}
   /* ============ palette / style tokens ============ */
-  /* Option A — Calm Momentum (Slate, Earth & First Light) */
+  /* Option A — Calm Momentum (Slate, Earth & First Light — refined against the moodboard's brick-red/slate-navy/tan swatch) */
   :root, [data-p="a"]{
-    --paper:#F5F0E5; --panel:#EBE4D5; --panel-2:#E4DAC6;
-    --ink:#1C1712; --ink-2:#5A5147; --ink-3:#756A5C; --line:#DBD1BE;
-    --brand:#34415C; --brand-deep:#232D42; --spark:#BA3D04; --spark-deep:#8F2E03;
-    --ok:#5E6A50; --stone:#8A7F70; --wayfind:#B26A44;
-    --mesh-1:rgba(110,124,153,.52); --mesh-2:rgba(178,106,68,.5); --mesh-3:rgba(203,194,178,.6);
+    --paper:#F2ECE2; --panel:#EAE1D2; --panel-2:#E1D3BE;
+    --ink:#1A1512; --ink-2:#55493D; --ink-3:#756A5C; --line:#D9CBB8;
+    --brand:#3B4B59; --brand-deep:#23303A; --spark:#CC6324; --spark-deep:#AF2E1B;
+    --ok:#8A7355; --stone:#8A7F70; --wayfind:#5C6C7A;
+    --mesh-1:rgba(92,108,122,.52); --mesh-2:rgba(204,99,36,.5); --mesh-3:rgba(217,195,176,.6);
     --radius:4px; --radius-lg:6px;
     --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
     --r-y:30px; --r-scale:1; --r-dur:.8s; --r-ease:cubic-bezier(.15,.85,.45,1);
@@ -92,7 +92,7 @@
     display:flex;align-items:center;gap:7px;transition:background .18s,color .18s;
   }
   .switch button .dot{width:9px;height:9px;border-radius:50%;background:var(--sw);box-shadow:0 0 0 2px color-mix(in srgb,var(--sw) 30%,transparent)}
-  .switch button[data-set="a"]{--sw:#B26A44}
+  .switch button[data-set="a"]{--sw:#AF2E1B}
   .switch button[data-set="b"]{--sw:#2450E6}
   .switch button[data-set="c"]{--sw:#F35BEC}
   .switch button:hover{color:var(--ink)}
@@ -1166,8 +1166,8 @@ void main(){
     var toggle = document.getElementById('navToggle');
     var closeB = document.getElementById('navClose');
     var SETS = {
-      a:{ fills:[['#34415C','#F5F0E5'],['#5E6A50','#F5F0E5'],['#B26A44','#F5F0E5'],['#1C1712','#F5F0E5'],['#BA3D04','#F5F0E5']],
-          slashes:['#BA3D04','#B26A44','#5E6A50','#CBC2B2','#34415C'] },
+      a:{ fills:[['#3B4B59','#F2ECE2'],['#8A7355','#F2ECE2'],['#BFA07A','#F2ECE2'],['#1A1512','#F2ECE2'],['#AF2E1B','#F2ECE2']],
+          slashes:['#AF2E1B','#CC6324','#BFA07A','#D9C3B0','#3B4B59'] },
       b:{ fills:[['#2450E6','#FBFCFE'],['#12307A','#FBFCFE'],['#FF6A3D','#FBFCFE'],['#0E1626','#FBFCFE'],['#6E8BF5','#0E1626']],
           slashes:['#FF6A3D','#6E8BF5','#2450E6','#FF9E7A','#12307A'] },
       c:{ fills:[['#3B78F0','#F7F9FF'],['#0A0E1A','#F7F9FF'],['#F35BEC','#0A0E1A'],['#12E27E','#04321E'],['#5692FF','#0A0E1A']],
