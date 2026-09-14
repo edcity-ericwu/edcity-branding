@@ -10,13 +10,13 @@
 <style>
   @font-face{font-family:'Aspekta Variable';font-weight:100 900;font-display:swap;font-style:normal;src:url('assets/AspektaVF.woff2') format('woff2')}
   /* ============ palette / style tokens ============ */
-  /* Option A — Calm Momentum (Slate, Earth & First Light — refined against the moodboard's brick-red/slate-navy/tan swatch) */
+  /* Option A — Calm Momentum (Slate, Earth & First Light — refined against the moodboard's sunrise-over-mountains photo) */
   :root, [data-p="a"]{
-    --paper:#F2ECE2; --panel:#EAE1D2; --panel-2:#E1D3BE;
+    --paper:#F5F0E7; --panel:#EAE1D2; --panel-2:#E1D3BE;
     --ink:#1A1512; --ink-2:#55493D; --ink-3:#756A5C; --line:#D9CBB8;
-    --brand:#3B4B59; --brand-deep:#23303A; --spark:#CC6324; --spark-deep:#AF2E1B;
-    --ok:#8A7355; --stone:#8A7F70; --wayfind:#5C6C7A;
-    --mesh-1:rgba(92,108,122,.52); --mesh-2:rgba(204,99,36,.5); --mesh-3:rgba(217,195,176,.6);
+    --brand:#2E4C63; --brand-deep:#1F384A; --spark:#E8935A; --spark-deep:#C97462;
+    --ok:#8A7355; --stone:#8A7F70; --wayfind:#4C7391; --sky:#2482BE;
+    --mesh-1:rgba(76,115,145,.52); --mesh-2:rgba(232,147,90,.5); --mesh-3:rgba(217,195,176,.6);
     --radius:4px; --radius-lg:6px;
     --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
     --r-y:30px; --r-scale:1; --r-dur:.8s; --r-ease:cubic-bezier(.15,.85,.45,1);
@@ -92,7 +92,7 @@
     display:flex;align-items:center;gap:7px;transition:background .18s,color .18s;
   }
   .switch button .dot{width:9px;height:9px;border-radius:50%;background:var(--sw);box-shadow:0 0 0 2px color-mix(in srgb,var(--sw) 30%,transparent)}
-  .switch button[data-set="a"]{--sw:#AF2E1B}
+  .switch button[data-set="a"]{--sw:#C97462}
   .switch button[data-set="b"]{--sw:#2450E6}
   .switch button[data-set="c"]{--sw:#F35BEC}
   .switch button:hover{color:var(--ink)}
@@ -439,6 +439,7 @@
   }
 
   :focus-visible{outline:2px solid var(--brand);outline-offset:3px}
+  [data-p="a"] :focus-visible{outline-color:var(--sky)}
 
   .blk{position:relative}
 
@@ -471,7 +472,7 @@
   /* deliberately non-blocking: no scroll lock; skip / Esc / click / scroll all dismiss */
   #intro{
     position:fixed;inset:0;z-index:999;overflow:hidden;
-    background:#0B1024;color:#FBFCFE;cursor:pointer;
+    background:#1F384A;color:#FBFCFE;cursor:pointer;
     font-family:"Aspekta Variable",system-ui,-apple-system,"Segoe UI",sans-serif;
     transition:opacity .9s ease, transform .9s ease;
   }
@@ -489,8 +490,8 @@
   #intro .stage{
     position:absolute;inset:0;
     background:
-      radial-gradient(120% 90% at 78% 100%, rgba(255,106,61,.55), transparent 55%),
-      linear-gradient(150deg, #1F49DC 0%, #4C6BEC 34%, #9FB0EF 55%, #FF7A4E 100%);
+      radial-gradient(60% 45% at 68% 78%, rgba(242,168,104,.65), transparent 60%),
+      linear-gradient(165deg, #1F384A 0%, #5B85A8 32%, #E4B3AC 58%, #F2A868 82%, #FDEDC9 100%);
   }
   #intro #gl{position:absolute;inset:0;width:100%;height:100%;display:block}
   #intro .grain-fallback{
@@ -509,9 +510,9 @@
     text-align:center;padding:6vw;pointer-events:none;
   }
   #intro .bloom{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:min(60vw,620px);aspect-ratio:1;border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,.5), rgba(255,255,255,0) 66%);
+    position:absolute;top:66%;left:50%;transform:translate(-50%,-50%);
+    width:min(52vw,520px);aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle, rgba(253,237,201,.6), rgba(253,237,201,0) 66%);
     mix-blend-mode:soft-light;filter:blur(6px);
     animation:in-bloom 7s ease-in-out infinite alternate;
   }
@@ -672,18 +673,19 @@ void main(){
           + 0.14 * fbm(p * 1.35 + vec2(t * 0.5, -t * 0.3));
   float grad = dot(p, vec2(0.50, -0.92)) + 0.5 + w;
 
-  vec3 cDeep  = vec3(0.071, 0.188, 0.478);
-  vec3 cBlue  = vec3(0.141, 0.314, 0.902);
-  vec3 cPeri  = vec3(0.451, 0.565, 0.965);
-  vec3 cCoral = vec3(1.000, 0.416, 0.239);
-  vec3 cPeach = vec3(1.000, 0.639, 0.494);
-  vec3 cCream = vec3(0.980, 0.930, 0.820);
+  // sunrise-over-mountains moodboard photo: mountain-shadow slate through misted rose to horizon gold
+  vec3 cDeep  = vec3(0.122, 0.220, 0.290);
+  vec3 cMist  = vec3(0.357, 0.522, 0.659);
+  vec3 cRose  = vec3(0.894, 0.702, 0.675);
+  vec3 cGold  = vec3(0.949, 0.659, 0.408);
+  vec3 cPeach = vec3(0.961, 0.784, 0.604);
+  vec3 cCream = vec3(0.992, 0.929, 0.788);
 
   float warmGate = 0.35 + 0.65 * u_progress;
 
-  vec3 col = mix(cDeep, cBlue, smoothstep(-0.15, 0.45, grad));
-  col = mix(col, cPeri,  smoothstep(0.25, 0.85, grad) * 0.85);
-  col = mix(col, cCoral, smoothstep(0.60, 1.15, grad) * warmGate);
+  vec3 col = mix(cDeep, cMist, smoothstep(-0.15, 0.45, grad));
+  col = mix(col, cRose,  smoothstep(0.25, 0.85, grad) * 0.85);
+  col = mix(col, cGold, smoothstep(0.60, 1.15, grad) * warmGate);
   col = mix(col, cPeach, smoothstep(0.95, 1.45, grad) * warmGate);
   col = mix(col, cCream, smoothstep(1.20, 1.70, grad) * 0.35);
 
@@ -697,7 +699,7 @@ void main(){
   float gf = fract(sin(dot(gl_FragCoord.xy + t * 51.0, vec2(39.35, 11.14))) * 24634.63);
   col += ((gc - 0.5) * 0.075 + (gf - 0.5) * 0.05) * (1.10 - 0.45 * luma);
 
-  col = mix(vec3(0.04, 0.055, 0.12), col, clamp(u_progress * 1.12, 0.0, 1.0));
+  col = mix(vec3(0.06, 0.08, 0.11), col, clamp(u_progress * 1.12, 0.0, 1.0));
 
   gl_FragColor = vec4(col, 1.0);
 }
@@ -1219,8 +1221,8 @@ void main(){
     var toggle = document.getElementById('navToggle');
     var closeB = document.getElementById('navClose');
     var SETS = {
-      a:{ fills:[['#3B4B59','#F2ECE2'],['#8A7355','#F2ECE2'],['#BFA07A','#F2ECE2'],['#1A1512','#F2ECE2'],['#AF2E1B','#F2ECE2']],
-          slashes:['#AF2E1B','#CC6324','#BFA07A','#D9C3B0','#3B4B59'] },
+      a:{ fills:[['#2E4C63','#F5F0E7'],['#8A7355','#F5F0E7'],['#BFA07A','#F5F0E7'],['#1A1512','#F5F0E7'],['#C97462','#F5F0E7']],
+          slashes:['#C97462','#E8935A','#BFA07A','#E1C9C0','#2E4C63'] },
       b:{ fills:[['#2450E6','#FBFCFE'],['#12307A','#FBFCFE'],['#FF6A3D','#FBFCFE'],['#0E1626','#FBFCFE'],['#6E8BF5','#0E1626']],
           slashes:['#FF6A3D','#6E8BF5','#2450E6','#FF9E7A','#12307A'] },
       c:{ fills:[['#3B78F0','#F7F9FF'],['#0A0E1A','#F7F9FF'],['#F35BEC','#0A0E1A'],['#12E27E','#04321E'],['#5692FF','#0A0E1A']],
