@@ -15,6 +15,10 @@ Palettes are not fixed. Expect them to shift as the visual languages pull apart.
 - **Bright Field, Two Points** (Option C, unaffected by the A/B swap below): was a blue backbone with accent points — read as generic bright SaaS. Reframed as a **refraction field**: blue demoted to one plane among several (cyan, lavender, peach, pink), each standing in for an angle of light through glass; Lavender promoted from a gradient-only bridge tone to a full field colour. Added an explicit rule: colour is never the only signal — every pink/green mark carries a label or icon too.
 - **Slate, Earth & First Light:** held as-is; already the best-aligned. The "sober, high-contrast mode for dense data" from the feedback is expressed in `studio-study.html`'s comparison table rather than a palette change.
 
+**Open (2026-09-14):** user wants the media/photo placeholders across Option A and B (`unified.html`, `studio-study.html`) recoloured to use each option's actual moodboard/palette colours (currently generic dashed-border neutral placeholders) so the overall tone reads even in the placeholder state, rather than only in text/UI chrome. Not started.
+
+**Open (2026-09-14):** user captured sanalabs.com/products/sana-learn as a reference for future Option A layout work — specifically its full-width edge-to-edge carousel (client logo strip, cards run to both viewport edges, no side gutter) and its carousel control (a pill-shaped bar combining dot indicators + an inline progress track + a pause/play button, all in one component). Queued as a layout revision for `unified.html`, not started.
+
 **A/B palette swap (2026-09-11):** the client's revised moodboard showed Calm Momentum carrying a warm, earthy swatch (brick red / burnt orange / slate-navy / tan / cream) rather than bright blue — closer to what this repo had called "Slate, Earth & First Light." So the two palettes swapped concepts: **Calm Momentum (`unified.html`) now carries Slate, Earth & First Light**; **Human Craft (`studio-study.html`) now carries Clear Field, Bright Signal**. Colour, corner-radius, and motion timing moved together as one package. Layout, copy, and each study's own signature device (guided thresholds for A, supportive threads for B) did not change — only which palette expresses them. `unified.html`'s guided-threshold dividers were separately removed per feedback (felt decorative); its six capability cards now carry line icons instead.
 
 ## Concept ↔ study ↔ signature device
@@ -68,6 +72,8 @@ The clearest AI-native expression, but currently risks reading as a modern SaaS 
 - Colour is a **secondary discovery layer** — never the only signal for priority, category, or status.
 - "Why this recommendation?" becomes a **visible, repeatable component pattern** — not a buried trust statement.
 - Add one or two visualisations of how a **learner need → approved resource → tool → next action** connect. Articulate, explainable intelligence made concrete.
+
+**Open (2026-09-14):** user compared `home-study.html` against a live amita-oshiete.jp screenshot ("おしえて!アミタさん") and flagged that the current build doesn't capture the reference's actual layout energy — a large folded-paper/origami-red hero panel with concentric arcs, a **faceted low-poly polygon tile grid** for the trending-keywords section (not plain rounded pills), an asymmetric editorial card grid (mixed card sizes, not a uniform grid), and a saturated navy trend band. Current `home-study.html` reads calmer/flatter than this — it captures the container-panel/folder-tab language but not the faceted-polygon texture or the size-varied card rhythm that makes the reference feel "vibrate and energetic." Queued as a layout revision, not started.
 
 ---
 
