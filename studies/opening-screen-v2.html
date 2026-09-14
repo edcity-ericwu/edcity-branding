@@ -229,10 +229,10 @@ void main(){
   float warmGate = 0.35 + 0.65 * u_progress;
 
   vec3 col = mix(cDeep, cMist, smoothstep(-0.15, 0.45, grad));
-  col = mix(col, cRose,  smoothstep(0.25, 0.85, grad) * 0.85);
-  col = mix(col, cGold, smoothstep(0.60, 1.15, grad) * warmGate);
-  col = mix(col, cPeach, smoothstep(0.95, 1.45, grad) * warmGate);
-  col = mix(col, cCream, smoothstep(1.20, 1.70, grad) * 0.35);
+  col = mix(col, cRose,  smoothstep(0.55, 1.05, grad) * 0.85);
+  col = mix(col, cGold, smoothstep(1.05, 1.55, grad) * warmGate);
+  col = mix(col, cPeach, smoothstep(1.35, 1.80, grad) * warmGate);
+  col = mix(col, cCream, smoothstep(1.55, 2.00, grad) * 0.35);
 
   col = clamp((col - 0.5) * 1.05 + 0.5, 0.0, 1.0);
 
