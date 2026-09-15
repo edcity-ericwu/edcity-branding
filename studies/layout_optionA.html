@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EdCity Unified Study</title>
+<title>EdCity Option A · Calm Momentum</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chiron+Hei+HK:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -76,29 +76,6 @@
   h1,h2,h3{font-family:var(--sans);font-weight:700;letter-spacing:-.02em;text-wrap:balance;margin:0}
   .wrap{max-width:var(--wrap);margin:0 auto;padding:0 clamp(20px,5vw,44px)}
 
-  /* ============ palette switcher ============ */
-  .switch{
-    position:fixed;right:clamp(12px,3vw,26px);bottom:clamp(12px,3vw,26px);z-index:80;
-    display:flex;gap:6px;padding:6px;border-radius:999px;
-    background:color-mix(in srgb, var(--paper) 82%, transparent);
-    border:1px solid var(--line);
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    box-shadow:0 10px 34px -16px rgba(10,14,26,.4);
-  }
-  .switch button{
-    all:unset;box-sizing:border-box;cursor:pointer;
-    font:600 .74rem/1 var(--sans);letter-spacing:.02em;
-    padding:8px 12px;border-radius:999px;color:var(--ink-2);
-    display:flex;align-items:center;gap:7px;transition:background .18s,color .18s;
-  }
-  .switch button .dot{width:9px;height:9px;border-radius:50%;background:var(--sw);box-shadow:0 0 0 2px color-mix(in srgb,var(--sw) 30%,transparent)}
-  .switch button[data-set="a"]{--sw:#C97462}
-  .switch button[data-set="b"]{--sw:#2450E6}
-  .switch button[data-set="c"]{--sw:#F35BEC}
-  .switch button:hover{color:var(--ink)}
-  .switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-  .switch .lbl{display:none}
-  @media (min-width:560px){ .switch .lbl{display:inline} }
 
   /* ============ pills / buttons ============ */
   .pill{
@@ -108,12 +85,12 @@
     transition:transform .14s ease, background .14s ease, border-color .14s ease;
   }
   .pill:hover{transform:translateY(-1px)}
+  /* one primary action (booking); everything else is a quiet text link */
+  .lk{display:inline-flex;align-items:center;min-height:48px;font-family:var(--sans);font-weight:600;font-size:.95rem;color:var(--ink);
+    text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:6px;text-decoration-thickness:1.5px;transition:text-decoration-color .2s}
+  .lk:hover{text-decoration-color:var(--ink)}
+  .cta-row .lk + .lk{margin-left:14px}
   .pill-ink{background:var(--ink);color:var(--paper)}
-  .pill-brand{background:var(--brand);color:#fff}
-  [data-p="a"] .pill-brand{background:var(--sky)}
-  .pill-spark{background:var(--spark);color:#fff}
-  .pill-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
-  .pill-ghost:hover{border-color:var(--ink-3)}
 
   /* ============ header ============ */
   header{
@@ -281,7 +258,11 @@
   .qphoto .head{width:44px;height:44px;border-radius:50%;border:1px dashed var(--ink-3);flex-shrink:0}
 
   /* FAQ accordion */
-  .faq{max-width:78ch;margin-top:28px;border-top:1px solid var(--line)}
+  .faq-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:clamp(32px,6vw,96px);align-items:start}
+  .faq-head{position:sticky;top:120px}
+  .faq{border-top:1px solid var(--ink)}
+  .faq summary{font-size:1.12rem}
+  @media (max-width:900px){ .faq-wrap{grid-template-columns:1fr} .faq-head{position:static} }
   .faq details{border-bottom:1px solid var(--line)}
   .faq summary{
     list-style:none;cursor:pointer;padding:18px 28px 18px 0;position:relative;
@@ -448,6 +429,27 @@
   [data-p="a"] :focus-visible{outline-color:var(--sky)}
 
   .blk{position:relative}
+  .eyebrow .step{display:inline-block;margin-right:12px;padding-right:12px;border-right:1px solid var(--line);color:var(--ink)}
+  /* Calm Momentum carrier: the page advances as a sequence of steps. A left rail fills as you move
+     through it, and the dawn warms from slate towards first light the further you go. */
+  .momentum{position:fixed;left:clamp(16px,2.4vw,40px);top:50%;transform:translateY(-50%);z-index:30;
+    opacity:0;transition:opacity .5s ease;pointer-events:none}
+  .momentum.on{opacity:1;pointer-events:auto}
+  .momentum .track{position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--line)}
+  .momentum .fill{position:absolute;left:-1px;top:0;width:3px;height:calc(var(--prog,0) * 100%);border-radius:2px;
+    background:linear-gradient(var(--wayfind),var(--spark))}
+  .momentum ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:34px;position:relative}
+  .momentum a{display:flex;align-items:center;gap:12px;font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--ink-3)}
+  .momentum i{width:11px;height:11px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line);flex:none;transition:all .3s ease}
+  .momentum a span{opacity:0;transform:translateX(-4px);transition:opacity .3s ease, transform .3s ease;white-space:nowrap}
+  .momentum a.done i{border-color:var(--wayfind);background:var(--wayfind)}
+  .momentum a.now i{border-color:var(--spark);background:var(--paper);box-shadow:0 0 0 4px color-mix(in srgb,var(--spark) 22%,transparent)}
+  .momentum a.now span,.momentum:hover a span{opacity:1;transform:none}
+  .momentum a.now{color:var(--ink)}
+  @media (max-width:1180px){ .momentum{display:none} }
+  .dawn{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:var(--prog,0);
+    background:radial-gradient(120% 70% at 85% 110%, color-mix(in srgb,var(--spark) 22%,transparent), transparent 70%)}
+  main{position:relative;z-index:0}
 
   /* plain-language governance note — a warmth / reassurance point */
   .governance{
@@ -718,11 +720,8 @@ void main(){
 }
 </script>
 
-<div class="switch" role="group" aria-label="配色方案 / Palette">
-  <button data-set="a" aria-pressed="true"><span class="dot"></span><span class="lbl">A</span></button>
-  <button data-set="b" aria-pressed="false"><span class="dot"></span><span class="lbl">B</span></button>
-  <button data-set="c" aria-pressed="false"><span class="dot"></span><span class="lbl">C</span></button>
-</div>
+<nav class="momentum" aria-label="頁面進度"><span class="track"><span class="fill"></span></span><ol><li><a href="#meet" data-step="meet"><i></i><span>01 認識</span></a></li><li><a href="#edcity-ai" data-step="edcity-ai"><i></i><span>02 備課與教學</span></a></li><li><a href="#voice" data-step="voice"><i></i><span>03 見證</span></a></li><li><a href="#ecosystem" data-step="ecosystem"><i></i><span>04 連結資源</span></a></li><li><a href="#faq" data-step="faq"><i></i><span>05 導入</span></a></li><li><a href="#book" data-step="book"><i></i><span>06 下一步</span></a></li></ol></nav>
+<div class="dawn" aria-hidden="true"></div>
 
 <header>
   <div class="wrap">
@@ -740,7 +739,7 @@ void main(){
     <li><a href="#top"><span class="u">首頁</span><span class="sl">/</span></a></li>
     <li><a href="#meet"><span class="u">產品</span><span class="sl">/</span></a></li>
     <li><a href="#ecosystem"><span class="u">生態系統</span><span class="sl">/</span></a></li>
-    <li><a href="#compare"><span class="u">比較</span><span class="sl">/</span></a></li>
+    <li><a href="#faq"><span class="u">常見問題</span><span class="sl">/</span></a></li>
     <li><a href="#book"><span class="u">聯絡</span><span class="sl">/</span></a></li>
   </ol>
   <p class="meta">香港教育城 · 教與學的智能夥伴</p>
@@ -756,8 +755,8 @@ void main(){
         <h1 data-r>因應每個需要，<br>成就每一步學習</h1>
         <p class="en" data-r>以 AI 為核心的教與學平台，連結教師、學生與家庭；在合適的時機提供適切支援，讓教學更有效、學習更有方向、家校協作更順暢。</p>
         <div class="cta-row" data-r>
-          <a class="pill pill-brand" href="#meet">認識 EdCity</a>
-          <a class="pill pill-ghost" href="#book">預約導覽</a>
+          <a class="pill pill-ink" href="#book">預約導覽</a>
+          <a class="lk" href="#meet">認識 EdCity →</a>
         </div>
       </div>
     </div>
@@ -785,7 +784,7 @@ void main(){
 
   <section class="blk center" id="meet">
     <div class="wrap">
-      <p class="eyebrow" data-r>認識 EdCity</p>
+      <p class="eyebrow" data-r><span class="step">01</span>認識 EdCity</p>
       <h2 class="big" data-r>貫通備課、教學與評估，<br>成就一體化學習平台</h2>
       <p class="lead" data-r>EdCity 結合學習管理、教學工具、智能助手與經審核的資源，構建以 AI 為核心的一體化平台；圍繞課堂實況、學生需要與家庭參與而設計，讓每個教學時刻都有清晰依據。</p>
       <div class="cards6">
@@ -801,12 +800,12 @@ void main(){
 
   <section class="blk center" id="edcity-ai">
     <div class="wrap">
-      <p class="eyebrow" data-r>EdCity.ai</p>
+      <p class="eyebrow" data-r><span class="step">02</span>EdCity.ai</p>
       <h2 class="big" data-r>教師專屬的 AI 助理與教學工具箱</h2>
       <p class="lead" data-r>由備課到批改，EdCity.ai 全面理解你的課堂：生成教材、整理學生需要、給出有理據的建議，讓教學決定始終由你掌握。</p>
       <div class="cta-row center" data-r>
-        <a class="pill pill-brand" href="#book">了解 EdCity.ai</a>
-        <a class="pill pill-ghost" href="#book">觀看示範</a>
+        <a class="lk" href="#book">了解 EdCity.ai →</a>
+        <a class="lk" href="#book">觀看示範 →</a>
       </div>
       <div class="mock" data-r>
         <span class="m-tag">EdCity.ai · 備課建議</span>
@@ -846,7 +845,7 @@ void main(){
     </div>
   </section>
 
-  <section class="blk center quote panel">
+  <section class="blk center quote panel" id="voice">
     <div class="wrap">
       <blockquote data-r><span class="cjk-open">「</span>它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
       <div class="qphoto" data-r><span class="head"></span><p class="who"><b>陳老師</b> · 中學中文科 · 教師訪談摘錄（示意）</p></div>
@@ -856,18 +855,18 @@ void main(){
         <div class="st"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg><span class="sr-only">學校標誌</span></span><b>92%</b><span>教師保留最終決定</span></div>
         <div class="st"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5c2-1 4.5-1 8 0v11c-3.5-1-6-1-8 0v-11z"/><path d="M20 6.5c-2-1-4.5-1-8 0v11c3.5-1 6-1 8 0v-11z"/></svg><span class="sr-only">學校標誌</span></span><b>1</b><span>每次登入一個下一步</span></div>
       </div>
-      <div class="cta-row center" data-r><a class="pill pill-ghost" href="#book">觀看訪談影片</a></div>
+      <div class="cta-row center" data-r><a class="lk" href="#book">▶ 觀看訪談影片</a></div>
     </div>
   </section>
 
   <section class="blk center spark" id="ecosystem">
     <div class="wrap">
-      <p class="eyebrow" data-r>教育生態系統</p>
+      <p class="eyebrow" data-r><span class="step">04</span>教育生態系統</p>
       <h2 class="big" data-r>整合各方資源，<br>讓適切支援適時展現</h2>
       <p class="lead" data-r>連結教學應用程式、智能助手與經審核資源，構建完整的教育生態系統；呈現有用的連繫與機會，決定權始終在你手上。</p>
       <div class="cta-row center" data-r>
-        <a class="pill pill-spark" href="#book">探索生態系統</a>
-        <a class="pill pill-ghost" href="#book">供應商專區</a>
+        <a class="lk" href="#book">探索生態系統 →</a>
+        <a class="lk" href="#book">供應商專區 →</a>
       </div>
       <div class="mock" data-r>
         <span class="m-tag">資源配對 · 按學習需要</span>
@@ -930,80 +929,14 @@ void main(){
     </div>
   </section>
 
-  <section class="blk" id="compare">
-    <div class="wrap">
-      <p class="eyebrow" data-r>為何不同</p>
-      <h2 class="big" data-r>智能並非附加功能，<br>而是平台的核心設計</h2>
-      <div class="cmp" data-r>
-        <div class="row head">
-          <div class="h">範疇</div><div class="h">傳統教育平台</div><div class="h new">EdCity</div>
-        </div>
-        <div class="row">
-          <div class="k">學習管理</div>
-          <div class="old">課程與紀錄分開管理，人手追蹤進度。</div>
-          <div class="new">進度、需要與下一步，整合在同一視圖。</div>
-        </div>
-        <div class="row">
-          <div class="k">技能與素養</div>
-          <div class="old">以完成率衡量學習。</div>
-          <div class="new">以素養發展的軌跡呈現學習。</div>
-        </div>
-        <div class="row">
-          <div class="k">內容生成</div>
-          <div class="old">教材逐份人手製作。</div>
-          <div class="new">由課堂數據生成草稿，教師定稿。</div>
-        </div>
-        <div class="row">
-          <div class="k">適時學習</div>
-          <div class="old">學生自行搜尋資源。</div>
-          <div class="new">合適資源在需要的一刻出現。</div>
-        </div>
-        <div class="row">
-          <div class="k">學習分析</div>
-          <div class="old">匯出報表，事後檢視。</div>
-          <div class="new">即時洞察，指向具體行動。</div>
-        </div>
-      </div>
-      <div class="media" data-ar="21:9" data-r style="max-width:var(--wrap);margin:28px auto 0">
-        <span class="cap">產品畫面：學習洞察面板（進度 · 需要 · 下一步同一視圖）· 待提供</span>
-      </div>
-    </div>
-  </section>
 
-  <section class="blk updates panel" id="about">
-    <div class="wrap">
-      <h2 class="big" data-r style="font-size:clamp(1.5rem,3.4vw,2rem)">最新動向</h2>
-    </div>
-    <div class="carousel-full">
-      <div class="carousel car" id="updatesCar" data-r>
-        <div><div class="media" data-ar="16:9"><span class="cap">教師工作坊照片</span></div><p style="margin:8px 0 0;font-size:.9rem">AI 與讀寫教學 — 實作坊 <span style="color:var(--ink-3)">· 2026 秋</span></p></div>
-        <div><div class="media" data-ar="16:9"><span class="cap">產品更新畫面</span></div><p style="margin:8px 0 0;font-size:.9rem">學習洞察面板 — 新增班別比較 <span style="color:var(--ink-3)">· 更新記錄</span></p></div>
-        <div><div class="media" data-ar="16:9"><span class="cap">活動主視覺</span></div><p style="margin:8px 0 0;font-size:.9rem">EdCity AI 教育峰會 — 香港 <span style="color:var(--ink-3)">· 日期待定</span></p></div>
-        <div><div class="media" data-ar="16:9"><span class="cap">個案研究照片</span></div><p style="margin:8px 0 0;font-size:.9rem">學校個案 — 中文科組 <span style="color:var(--ink-3)">· 示意</span></p></div>
-        <div><div class="media" data-ar="16:9"><span class="cap">教師分享短片</span></div><p style="margin:8px 0 0;font-size:.9rem">三位老師談 AI 與判斷 <span style="color:var(--ink-3)">· 待製作</span></p></div>
-      </div>
-    </div>
-    <div class="wrap">
-      <div class="car-ctrl" id="carCtrl">
-        <div class="car-pill" id="carDots">
-          <button class="car-dot on" data-i="0" aria-label="第 1 項，共 5 項"><span class="fill"></span></button>
-          <button class="car-dot" data-i="1" aria-label="第 2 項，共 5 項"><span class="fill"></span></button>
-          <button class="car-dot" data-i="2" aria-label="第 3 項，共 5 項"><span class="fill"></span></button>
-          <button class="car-dot" data-i="3" aria-label="第 4 項，共 5 項"><span class="fill"></span></button>
-          <button class="car-dot" data-i="4" aria-label="第 5 項，共 5 項"><span class="fill"></span></button>
-        </div>
-        <button class="car-play" id="carPlay" aria-label="暫停自動播放">
-          <svg class="ic-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
-          <svg class="ic-play" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"/></svg>
-        </button>
-      </div>
-    </div>
-  </section>
 
   <section class="blk" id="faq">
-    <div class="wrap">
-      <p class="eyebrow" data-r>常見問題</p>
-      <h2 class="big" data-r style="font-size:clamp(1.6rem,3.6vw,2.2rem)">在導入之前，學校常問</h2>
+    <div class="wrap faq-wrap">
+      <div class="faq-head">
+        <p class="eyebrow" data-r><span class="step">05</span>常見問題</p>
+        <h2 class="big" data-r>在導入之前，<br>學校常問</h2>
+      </div>
       <div class="faq" data-r>
         <details open>
           <summary>學生與家長的資料會如何處理？</summary>
@@ -1030,7 +963,7 @@ void main(){
       <div class="media" data-ar="21:9" data-r style="margin-bottom:36px"><span class="cap">全幅照片：香港的課室與校園 · 待拍攝</span></div>
       <h2 class="big" data-r>為學校開啟清晰的下一步</h2>
       <p data-r>為你的學校預約一次導覽，親身了解 EdCity。</p>
-      <div class="cta-row center" data-r><a class="pill pill-ink" href="#top">預約導覽</a></div>
+      <div class="cta-row center" data-r><a class="pill pill-ink" href="#book">預約導覽</a></div>
     </div>
   </section>
 
@@ -1054,12 +987,12 @@ void main(){
       </div>
       <div>
         <h4>關於</h4>
-        <ul><li><a href="#about">願景</a></li><li><a href="#about">私隱與保安</a></li><li><a href="#compare">比較</a></li><li><a href="#book">聯絡</a></li></ul>
+        <ul><li><a href="#meet">願景</a></li><li><a href="#faq">私隱與保安</a></li><li><a href="#faq">常見問題</a></li><li><a href="#book">聯絡</a></li></ul>
       </div>
     </div>
     <div class="legal">
-      <span>© 香港教育城 2026 · 本頁為品牌設計研究，內容為示意 · 統一版 / Unified</span>
-      <span id="pName">方案 A · Slate, Earth & First Light</span>
+      <span>© 香港教育城 2026 · 本頁為品牌設計研究，內容為示意</span>
+      <span>方案 A · Calm Momentum</span>
     </div>
   </div>
 </footer>
@@ -1178,34 +1111,28 @@ void main(){
     });
   })();
 
-  /* ---------- palette switch ---------- */
-  (function(){
-    var root = document.documentElement;
-    var btns = [].slice.call(document.querySelectorAll('.switch button'));
-    var pName = document.getElementById('pName');
-    var NAMES = {
-      a:'方案 A · Slate, Earth & First Light',
-      b:'方案 B · Clear Field, Bright Signal',
-      c:'方案 C · Bright Field, Two Points'
-    };
-    var KEY = 'edcity-unified-palette';
-    function apply(p, replay){
-      root.setAttribute('data-p', p);
-      btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === p)); });
-      pName.textContent = NAMES[p];
-      try{ localStorage.setItem(KEY, p); }catch(e){}
-      if(replay) runIn(p);
-    }
-    btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set, true); }); });
-    /* ?p=a|b|c in the URL wins — lets the index link a specific option; otherwise remember the last choice */
-    var forced = (location.search.match(/[?&]p=([abc])\b/) || [])[1];
-    var saved;
-    try{ saved = localStorage.getItem(KEY); }catch(e){}
-    var pick = forced || (saved && NAMES[saved] ? saved : 'a');
-    if(pick !== 'a') apply(pick, false);
-    else { root.setAttribute('data-p','a'); pName.textContent = NAMES.a; try{ localStorage.setItem(KEY,'a'); }catch(e){} }
 
-    window.__applyPalette = apply;
+  /* ---------- momentum rail: progress, current step, warming dawn ---------- */
+  (function(){
+    var rail = document.querySelector('.momentum');
+    var links = [].slice.call(rail.querySelectorAll('a'));
+    var secs = links.map(function(a){ return document.getElementById(a.dataset.step); });
+    var root = document.documentElement, hero = document.querySelector('.hero'), ticking = false;
+    function update(){
+      ticking = false;
+      var max = root.scrollHeight - innerHeight;
+      var first = secs[0].offsetTop - innerHeight * .5;
+      var prog = Math.max(0, Math.min(1, (scrollY - first) / (max - first)));
+      root.style.setProperty('--prog', prog.toFixed(4));
+      rail.classList.toggle('on', hero.getBoundingClientRect().bottom < innerHeight * .4);
+      var mid = innerHeight * .45, cur = -1;
+      secs.forEach(function(s, i){ if(s.getBoundingClientRect().top < mid) cur = i; });
+      if(scrollY >= max - 2) cur = secs.length - 1;
+      links.forEach(function(a, i){ a.classList.toggle('now', i === cur); a.classList.toggle('done', i < cur); });
+    }
+    addEventListener('scroll', function(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }, { passive:true });
+    addEventListener('resize', update);
+    update();
   })();
 
   /* ---------- content load-in ---------- */
