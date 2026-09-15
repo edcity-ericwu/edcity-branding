@@ -89,8 +89,9 @@
   .c-b{--x:#B9A8F2;--y:#5692FF;--ang:200deg}
   .c-c{--x:#F5F7FF;--y:#8CE7F2;--ang:60deg}
   .c-d{--x:#5692FF;--y:#B9A8F2;--ang:320deg}
+  .c-peach{--x:#FCDCC6;--y:#F5B89A;--ang:135deg}
   .ring{background-image:repeating-radial-gradient(circle at 0 100%,transparent 0 22px,rgba(255,255,255,.7) 22px 23px),linear-gradient(var(--ang,135deg),var(--x),var(--y))}
-  .chip{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:-1px}
+  .chip{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:-1px;background:linear-gradient(var(--ang,135deg),var(--x),var(--y))}
   .cc.sq{aspect-ratio:1/1;width:100%}
 
   .cluster{display:grid;grid-template-columns:repeat(2,1fr);gap:0;aspect-ratio:2/3;margin-top:clamp(56px,8vw,96px);position:sticky;top:90px}
@@ -158,6 +159,7 @@
   .ang-layer .tag{position:absolute;left:var(--x);top:var(--y);max-width:52%;display:flex;flex-direction:column;gap:4px;
     background:var(--paper);color:var(--ink);padding:12px 14px;font-size:.92rem;line-height:1.45;transform:translateY(8px);transition:transform .45s ease}
   .ang-layer .tag.cell-sky{background:linear-gradient(135deg,#8CE7F2,#5692FF);color:var(--ink)}
+  .ang-layer .tag.cell-peach{background:linear-gradient(135deg,#FCDCC6,#B9A8F2);color:var(--ink)}
   .ang-layer .tag.cell-lav{background:linear-gradient(135deg,#B9A8F2,#5692FF);color:var(--ink)}
   .ang-side{grid-column:9/13}
   .ang-tabs{display:flex;gap:6px;margin-bottom:28px}
@@ -385,7 +387,7 @@
               <span class="tag cell-lav" style="--x:46%;--y:62%">建議：下課前 3 分鐘小組重溫</span>
             </div>
             <div class="ang-layer" data-for="parent">
-              <span class="tag cell-sky" style="--x:16%;--y:24%">本週學到：分數除法</span>
+              <span class="tag cell-peach" style="--x:16%;--y:24%">本週學到：分數除法</span>
               <span class="tag" style="--x:50%;--y:60%"><b class="sig green">已掌握</b>3 項中的 2 項</span>
             </div>
           </div>
@@ -424,7 +426,7 @@
       <p class="body c4-8">連結教學應用程式、智能助手與經審核資源，構建完整的教育生態系統；呈現有用的連繫與機會，決定權始終在你手上。</p>
       <p class="links c4-8"><a class="lk" href="#book">探索生態系統 →</a><a class="lk" href="#book">供應商專區 →</a></p>
 
-      <p class="meta c1-3 spec-k">[圖 08]<br>資源配對 · 按學習需要</p>
+      <p class="meta c1-3 spec-k">[圖 05]<br>資源配對 · 按學習需要</p>
       <div class="refract c1-12">
         <div class="rf-stage" role="group" aria-label="由學習需要到下一步：選一個層面查看原因">
           <button class="rf-plane on" type="button" data-i="0" aria-pressed="true"><span class="meta">01 學習需要</span><span class="rf-v">中一 · 記敘文閱讀延伸</span></button>
@@ -440,7 +442,7 @@
       <dl class="spec c4-12">
         <div class="sr"><dt>配對結果</dt><dd class="strong">為「中一 · 記敘文閱讀延伸」配對到 3 項經審核資源。</dd><dd class="aside">3 項</dd></div>
         <div class="sr"><dt>01</dt><dd>中文橋樑書單（中一至中二）</dd><dd class="aside"><i class="chip c-a"></i>閱讀延伸</dd></div>
-        <div class="sr"><dt>02</dt><dd>親子共讀 20 分鐘指南</dd><dd class="aside"><i class="chip c-b"></i>家庭參與</dd></div>
+        <div class="sr"><dt>02</dt><dd>親子共讀 20 分鐘指南</dd><dd class="aside"><i class="chip c-peach"></i>家庭參與</dd></div>
         <div class="sr"><dt>03</dt><dd>公共圖書館 · 少年章節書專架</dd><dd class="aside"><i class="chip c-c"></i>社區資源</dd></div>
       </dl>
 
