@@ -23,11 +23,11 @@
     --slate-deep:#12307A;
     --sage:#5C6570;
     --sage-deep:#3E4550;
-    --clay:#0EBFAE;
-    --clay-deep:#0C8078;
+    --clay:#12B886;
+    --clay-deep:#0B7A55;
     --spark:#FF6A3D;
     --spark-text:#B23F14;
-    --clay-text:#0A665F;
+    --clay-text:#0A6647;
     --rail:56px;
     --sans:"Aspekta Variable", "Chiron GoRound TC", system-ui, -apple-system, "Segoe UI", sans-serif;
     --serif:var(--sans);
@@ -381,7 +381,8 @@
   .sp-table td{padding:13px 12px 13px 0;border-bottom:1px solid rgba(14,22,38,.28);vertical-align:top}
   .sp-table .num{text-align:right;font-variant-numeric:tabular-nums;width:4.5em;padding-right:28px}
   .st{font-weight:600}
-  .st.todo{color:#B42318}.st.sugg{color:#8A5300}.st.done{color:#0C6B63}.st.none{color:var(--ink-2);font-weight:500}
+  .st.todo{color:#B42318}.st.sugg{color:#8A5300}.st.done{color:#0A6647}
+  .st.done::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--clay);margin-right:7px;vertical-align:1px}.st.none{color:var(--ink-2);font-weight:500}
   .sp-foot{margin:14px 0 0;font-size:var(--fs-sm);color:var(--ink-2)}
   /* custom cursor: a dot that leaves a short fading path; becomes a ring-and-dot node over links */
   .cur-dot{position:fixed;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--ink);
@@ -462,9 +463,9 @@
     <svg class="hero-net" viewBox="0 0 640 420" aria-hidden="true">
       <defs>
         <linearGradient id="hn0" gradientUnits="userSpaceOnUse" x1="80" y1="150" x2="640" y2="150"><stop offset="0" stop-color="#12307A"/><stop offset="1" stop-color="#2450E6"/></linearGradient>
-        <linearGradient id="hn1" gradientUnits="userSpaceOnUse" x1="300" y1="-30" x2="300" y2="440"><stop offset="0" stop-color="#2450E6"/><stop offset="1" stop-color="#0EBFAE"/></linearGradient>
-        <linearGradient id="hn2" gradientUnits="userSpaceOnUse" x1="160" y1="400" x2="580" y2="-20"><stop offset="0" stop-color="#0EBFAE"/><stop offset="1" stop-color="#0C8078"/></linearGradient>
-        <linearGradient id="hn3" gradientUnits="userSpaceOnUse" x1="400" y1="0" x2="640" y2="240"><stop offset="0" stop-color="#0EBFAE"/><stop offset="1" stop-color="#2450E6"/></linearGradient>
+        <linearGradient id="hn1" gradientUnits="userSpaceOnUse" x1="300" y1="-30" x2="300" y2="440"><stop offset="0" stop-color="#2450E6"/><stop offset="1" stop-color="#12B886"/></linearGradient>
+        <linearGradient id="hn2" gradientUnits="userSpaceOnUse" x1="160" y1="400" x2="580" y2="-20"><stop offset="0" stop-color="#12B886"/><stop offset="1" stop-color="#0B7A55"/></linearGradient>
+        <linearGradient id="hn3" gradientUnits="userSpaceOnUse" x1="400" y1="0" x2="640" y2="240"><stop offset="0" stop-color="#12B886"/><stop offset="1" stop-color="#2450E6"/></linearGradient>
       </defs>
       <g style="mix-blend-mode:multiply">
         <line x1="80" y1="150" x2="640" y2="150" stroke="url(#hn0)" stroke-width="30" stroke-linecap="round" style="mix-blend-mode:multiply" opacity=".92"/>
@@ -734,7 +735,7 @@
     var cv = document.getElementById('netCanvas');
     var ctx = cv && cv.getContext('2d');
     if(!ctx) return { start:function(){}, stop:function(){}, still:function(){} };
-    var SLICES = [['#2450E6','#12307A'],['#0EBFAE','#2450E6'],['#0C8078','#0EBFAE'],['#2450E6','#0EBFAE'],['#5C6570','#2450E6'],['#FF6A3D','#FFB08F']];
+    var SLICES = [['#2450E6','#12307A'],['#12B886','#2450E6'],['#0B7A55','#12B886'],['#2450E6','#12B886'],['#2450E6','#12B886'],['#FF6A3D','#FFB08F']];
     var ANG = [0,45,90,135];
     var EASES = [
       function(x){ return x; },
@@ -919,7 +920,7 @@
 })();
 /* dot-grid icons */
 (function(){
-  var C = { blue:'#2450E6', sky:'#9DB6F7', teal:'#0EBFAE', coral:'#FF8A63', stone:'#8A929C' };
+  var C = { blue:'#2450E6', sky:'#9DB6F7', teal:'#12B886', coral:'#FF8A63', stone:'#8A929C' };
   var ICONS = {
     step:    [[0,4,0,2,'sky'],[0,2,2,2,'sky'],[2,2,2,0,'teal'],[2,0,4,0,'coral']],
     spark:   [[0,0,4,4,'sky'],[4,0,0,4,'teal'],[2,0,2,4,'coral']],

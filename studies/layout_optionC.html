@@ -120,6 +120,7 @@
   .acts{display:flex;gap:6px}
   .act{font:inherit;font-size:.86rem;background:transparent;color:var(--ink);border:1px solid var(--line);padding:6px 14px;cursor:pointer;border-radius:2px}
   .act.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .act.on::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green-s);margin-right:7px;vertical-align:1px}
   .act:hover{border-color:var(--ink)}
 
   .flow{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gut);margin-top:clamp(56px,8vw,96px)}
@@ -143,7 +144,8 @@
   .rf-plane:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   .sig{font-weight:600}
   .sig::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
-  .sig.pink::before{background:var(--pink-s)}.sig.green::before{background:var(--green-s)}.sig.grey::before{background:var(--ink-3)}
+  .sig.pink::before{background:var(--pink-s)}.sig.green::before{background:var(--green-s);box-shadow:0 0 0 3px rgba(18,226,126,.28)}
+  .sig.green{background:linear-gradient(transparent 58%,rgba(18,226,126,.38) 58%);padding:0 2px}.sig.grey::before{background:var(--ink-3)}
   .rf-why{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
   .rf-why .meta{grid-column:1/4}.rf-why .rf-text{grid-column:4/12;color:var(--ink)}
 
@@ -194,7 +196,7 @@
   .cmpx[data-v="old"] .cmp-rows .bar{background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 12px);margin:14px 0}
   .cmpx[data-v="old"] .cmp-rows .v .old{color:var(--ink-3)}
   .cmpx[data-v="new"] .cmp-rows li{margin-bottom:0}
-  .cmpx[data-v="new"] .cmp-rows .bar{background:linear-gradient(180deg,#8CE7F2,#5692FF,#B9A8F2,#5692FF,#8CE7F2);background-size:100% 500%;background-position:0 calc(var(--i) * 25%)}
+  .cmpx[data-v="new"] .cmp-rows .bar{background:linear-gradient(180deg,#8CE7F2,#5692FF,#12E27E,#5692FF,#8CE7F2);background-size:100% 500%;background-position:0 calc(var(--i) * 25%)}
   .cmpx[data-v="new"] .cmp-rows .v .old{opacity:0}
   .cmpx[data-v="new"] .cmp-rows .v .new{opacity:1;color:var(--ink)}
 

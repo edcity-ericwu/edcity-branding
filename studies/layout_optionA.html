@@ -16,7 +16,7 @@
     --paper:#F1F4F8; --panel:#E7EDF4; --panel-2:#DCE5EF;
     --ink:#0F1B26; --ink-2:#435263; --ink-3:#5F6E7E; --line:#CFD9E4;
     --brand:#2B4E65; --brand-deep:#1D394C; --spark:#E8935A; --spark-deep:#C97462;
-    --ok:#4A5E45; --stone:#6F7C88; --wayfind:#457799; --sky:#2482BE;
+    --ok:#2F8F6B; --ok-deep:#237A58; --stone:#6F7C88; --wayfind:#457799; --sky:#2482BE;
     --mesh-1:rgba(69,119,153,.66); --mesh-2:rgba(232,147,90,.18); --mesh-3:rgba(146,184,222,.45);
     --radius:4px; --radius-lg:6px;
     --font-body:"Chiron Hei HK","Aspekta Variable",system-ui,sans-serif;
@@ -313,7 +313,7 @@
   /* 01 as a sequence: one line runs through prepare → teach → assess → next step and fills as the section scrolls */
   .seq{list-style:none;margin:80px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 28px;position:relative;--seq:0}
   .seq::before,.seq::after{content:"";position:absolute;left:0;top:6px;height:1px;background:var(--line);right:0}
-  .seq::after{height:3px;top:5px;border-radius:2px;right:auto;width:calc(var(--seq) * 100%);background:linear-gradient(90deg,var(--wayfind),var(--spark))}
+  .seq::after{height:3px;top:5px;border-radius:2px;right:auto;width:calc(var(--seq) * 100%);background:linear-gradient(90deg,var(--ok) 0%,var(--wayfind) 62%,var(--spark) 100%)}
   .seq li{position:relative;padding-top:34px}
   .seq i{position:absolute;left:0;top:0;width:13px;height:13px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line);z-index:1;transition:all .35s ease}
   .seq li.on i{background:var(--ok);border-color:var(--ok)}
@@ -339,10 +339,10 @@
   .mock .m-line{font-size:.92rem;line-height:1.55;margin:10px 0 14px}
   .mock .m-row{display:flex;gap:8px;align-items:center}
   .mock .m-btn{font-family:var(--sans);font-weight:600;font-size:.78rem;border-radius:calc(var(--radius) * .75);padding:8px 13px;border:1px solid var(--line)}
-  .mock .m-btn.solid{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .mock .m-btn.solid{background:var(--ok-deep);color:#fff;border-color:var(--ok-deep)}
   .mock .m-rail{display:flex;gap:5px;margin-top:16px}
   .mock .m-rail i{height:4px;flex:1;border-radius:3px;background:var(--line)}
-  .mock .m-rail i.on{background:var(--brand)}
+  .mock .m-rail i.on{background:var(--ok)}
   .mock .m-rail i.now{background:var(--spark);flex:0 0 10px;border-radius:50%;height:10px;margin-top:-3px}
   .mock .why{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
   .mock .why summary{font-family:var(--sans);font-weight:600;font-size:.8rem;color:var(--brand);cursor:pointer;list-style:none;display:flex;align-items:center;gap:7px}
@@ -417,7 +417,7 @@
   }
   .band .arrive{list-style:none;margin:0 auto 72px;padding:0;display:grid;grid-template-columns:repeat(6,1fr);position:relative;max-width:980px}
   .band .arrive::before{content:"";position:absolute;left:calc(100%/12);right:calc(100%/12);top:5px;height:3px;border-radius:2px;
-    background:linear-gradient(90deg,var(--wayfind),var(--spark))}
+    background:linear-gradient(90deg,var(--ok) 0%,var(--wayfind) 62%,var(--spark) 100%)}
   .band .arrive li{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative}
   .band .arrive i{width:13px;height:13px;border-radius:50%;background:var(--ok);position:relative;z-index:1}
   .band .arrive li.end i{width:22px;height:22px;margin-top:-4px;background:var(--paper);border:2px solid var(--spark);box-shadow:0 0 0 8px color-mix(in srgb,var(--spark) 22%,transparent),0 0 40px 10px color-mix(in srgb,var(--spark) 45%,transparent)}
@@ -489,7 +489,7 @@
   .momentum.on{opacity:1;pointer-events:auto}
   .momentum .track{position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--line)}
   .momentum .fill{position:absolute;left:-1px;top:0;width:3px;height:calc(var(--prog,0) * 100%);border-radius:2px;
-    background:linear-gradient(var(--wayfind),var(--spark))}
+    background:linear-gradient(var(--ok) 0%,var(--wayfind) 62%,var(--spark) 100%)}
   .momentum ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:34px;position:relative}
   .momentum a{display:flex;align-items:center;gap:12px;font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--ink-3)}
   .momentum i{width:11px;height:11px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line);flex:none;transition:all .3s ease}
