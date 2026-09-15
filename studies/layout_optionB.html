@@ -961,23 +961,30 @@
     cv = document.createElement('canvas'); cv.className = 'cur-trail'; document.body.appendChild(cv); ctx = cv.getContext('2d');
     var size = function(){ cv.width = innerWidth*dpr; cv.height = innerHeight*dpr; }; size(); addEventListener('resize', size);
   }
-  var x = -100, y = -100;
+  var x = -100, y = -100, LIFE = 280;
   addEventListener('pointermove', function(e){
     x = e.clientX; y = e.clientY; dot.classList.add('on');
-    dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    if(!ctx) dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
     var t = e.target.closest && e.target.closest('a,button,summary,[role="button"],.rf-plane');
     dot.classList.toggle('hot', !!t);
-    if(ctx) pts.push({ x:x, y:y, t:performance.now() });
+    if(ctx){
+      var evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+      if(!evs.length) evs = [e];
+      evs.forEach(function(c){ pts.push({ x:c.clientX, y:c.clientY, t:performance.now() }); });
+    }
   }, { passive:true });
   document.addEventListener('mouseleave', function(){ dot.classList.remove('on'); });
   if(!ctx) return;
   (function frame(now){
-    pts = pts.filter(function(p){ return now - p.t < 520; });
+    pts = pts.filter(function(p){ return now - p.t < LIFE; });
+    // dot and trail head drawn in the same frame, so the line always starts at the dot
+    dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    if(pts.length){ var h = pts[pts.length-1]; if(h.x !== x || h.y !== y) pts.push({ x:x, y:y, t:now }); }
     ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,innerWidth,innerHeight);
     if(pts.length > 1){
       ctx.lineCap = 'round'; ctx.lineJoin = 'round';
       for(var i=1;i<pts.length;i++){
-        var a = pts[i-1], b = pts[i], k = 1 - (now - b.t)/520;
+        var a = pts[i-1], b = pts[i], k = 1 - (now - b.t)/LIFE;
         ctx.strokeStyle = 'rgba(' + Math.round(36 + (14-36)*(1-k)) + ',' + Math.round(80 + (191-80)*(1-k)) + ',' + Math.round(230 + (174-230)*(1-k)) + ',' + (k*0.9).toFixed(3) + ')';
         ctx.lineWidth = 1 + k*5;
         ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
