@@ -255,7 +255,7 @@
 
   /* ============ generic section ============ */
   section.blk{padding:clamp(var(--sec-pad-min),var(--sec-pad-vw),var(--sec-pad-max)) 0}
-  section.blk.panel{background:var(--panel)}
+  section.blk.panel{background:color-mix(in srgb,var(--panel) 72%,transparent)}
   .eyebrow{font-family:var(--sans);font-weight:var(--eyebrow-weight);font-size:var(--eyebrow-size);letter-spacing:var(--eyebrow-ls);text-transform:uppercase;margin:0 0 16px;color:var(--ink-3)}
   .blk.spark .eyebrow{color:var(--ink-3)}
   h2.big{font-size:var(--h2-size);line-height:var(--h2-lh);font-weight:var(--h2-weight);letter-spacing:var(--h2-ls)}
@@ -413,6 +413,15 @@
   [data-p="a"] :focus-visible{outline-color:var(--sky)}
 
   .blk{position:relative}
+  /* first-light cursor: the pointer carries a soft dawn glow — slate halo, apricot core — that trails with easing */
+  .glow{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:-1;
+    background:
+      radial-gradient(circle, rgba(255,246,232,.95) 0%, rgba(255,226,196,.7) 10%, rgba(232,147,90,.22) 30%, rgba(232,147,90,.08) 48%, transparent 68%);
+    mix-blend-mode:normal;opacity:0;transition:opacity .6s ease;will-change:transform}
+  .glow.on{opacity:1}
+  .glow::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;
+    background:radial-gradient(circle, #fff 0 30%, color-mix(in srgb,var(--spark) 70%,#fff) 60%, transparent 72%);mix-blend-mode:normal;
+    transform:translate(var(--dx,0px),var(--dy,0px))}
   .eyebrow .step{display:inline-block;margin-right:12px;padding-right:12px;border-right:1px solid var(--line);color:var(--ink)}
   /* Calm Momentum carrier: the page advances as a sequence of steps. A left rail fills as you move
      through it, and the dawn warms from slate towards first light the further you go. */
@@ -1024,6 +1033,25 @@ void main(){
     });
   })();
 
+
+  /* ---------- first-light cursor glow (fine pointers, full motion only) ---------- */
+  (function(){
+    if(!matchMedia('(pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var g = document.createElement('div'); g.className = 'glow'; g.setAttribute('aria-hidden','true'); document.body.appendChild(g);
+    var tx = innerWidth/2, ty = innerHeight/2, x = tx, y = ty, running = false;
+    function frame(){
+      x += (tx - x) * .12; y += (ty - y) * .12;
+      g.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+      // the bright core sits exactly on the pointer while the wide glow lags behind it
+      g.style.setProperty('--dx', (tx - x).toFixed(1) + 'px'); g.style.setProperty('--dy', (ty - y).toFixed(1) + 'px');
+      if(Math.abs(tx - x) + Math.abs(ty - y) > .3) requestAnimationFrame(frame); else running = false;
+    }
+    addEventListener('pointermove', function(e){
+      tx = e.clientX; ty = e.clientY; g.classList.add('on');
+      if(!running){ running = true; requestAnimationFrame(frame); }
+    }, { passive:true });
+    document.addEventListener('mouseleave', function(){ g.classList.remove('on'); });
+  })();
 
   /* ---------- 01 sequence fills with the section ---------- */
   (function(){
