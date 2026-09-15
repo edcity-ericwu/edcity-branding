@@ -52,7 +52,7 @@
   }
   /* ============ shared type scale & spacing — same across A/B/C, only colour/radius/motion differ ============ */
   :root{
-    --h1-size:clamp(1.9rem,4vw,3.1rem); --h1-weight:600; --h1-ls:.002em; --h1-lh:1.25;
+    --h1-size:clamp(2.6rem,6.4vw,5rem); --h1-weight:700; --h1-ls:-.02em; --h1-lh:1.08;
     --h2-size:clamp(1.8rem,3.8vw,2.6rem); --h2-weight:600; --h2-lh:1.18; --h2-ls:-.005em;
     --eyebrow-size:.82rem; --eyebrow-ls:.16em; --eyebrow-weight:600;
     --sec-pad-min:100px; --sec-pad-vw:12vw; --sec-pad-max:190px;
@@ -138,9 +138,22 @@
     display:flex;justify-content:space-between;align-items:flex-end;gap:30px;
     width:100%;padding-top:clamp(96px,15vh,170px);padding-bottom:clamp(40px,8vh,92px);
   }
-  .hero-lead{max-width:min(90vw,600px)}
+  .hero-lead{max-width:min(92vw,820px)}
+  /* the route departs from the hero: six unlit stops, the first one ringed; the closing section shows the same route fully lit */
+  .hero{flex-direction:column}
+  .hero-inner{flex:1;padding-bottom:clamp(36px,6vh,64px)}
+  .depart-wrap{position:relative;z-index:2;width:100%;padding-bottom:clamp(28px,5vh,48px)}
+  .depart{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);position:relative}
+  .depart::before{content:"";position:absolute;left:6px;right:0;top:6px;height:1px;
+    background:linear-gradient(90deg,var(--ink-3),color-mix(in srgb,var(--ink-3) 30%,transparent))}
+  .depart a{display:flex;flex-direction:column;gap:12px;align-items:flex-start;font-family:var(--sans);font-size:.74rem;font-weight:600;letter-spacing:.05em;color:var(--ink-3)}
+  .depart a:hover{color:var(--ink)}
+  .depart i{width:13px;height:13px;border-radius:50%;background:var(--paper);border:1.5px solid var(--ink-3);position:relative;z-index:1}
+  .depart li.start i{border-color:var(--spark);border-width:2px;box-shadow:0 0 0 6px color-mix(in srgb,var(--spark) 22%,transparent)}
+  .depart li.start a{color:var(--ink)}
+  @media (max-width:760px){ .depart span{display:none} }
   .hero h1{font-size:var(--h1-size);line-height:var(--h1-lh);font-weight:var(--h1-weight);letter-spacing:var(--h1-ls)}
-  .hero-lead .en{font-family:var(--sans);font-size:.9rem;color:var(--ink-2);margin:26px 0 20px;max-width:78%}
+  .hero-lead .en{font-family:var(--sans);font-size:1.02rem;color:var(--ink-2);margin:30px 0 26px;max-width:46ch}
   .hero .cta-row{display:flex;flex-wrap:wrap;gap:12px}
   @media (max-width:760px){
     .hero-inner{flex-direction:column;align-items:flex-start;gap:34px}
@@ -381,7 +394,8 @@
   .band .arrive li.end i{width:22px;height:22px;margin-top:-4px;background:var(--paper);border:2px solid var(--spark);box-shadow:0 0 0 8px color-mix(in srgb,var(--spark) 22%,transparent),0 0 40px 10px color-mix(in srgb,var(--spark) 45%,transparent)}
   .band .arrive span{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--ink-3)}
   .band .arrive li.end span{color:var(--ink)}
-  .band .eyebrow{display:inline-block}
+  .band .eyebrow,.quote .eyebrow{display:inline-block}
+  .quote .eyebrow{margin-bottom:34px}
   .band .finale{font-family:var(--sans);font-size:clamp(2.6rem,6.4vw,5rem);line-height:1.08;letter-spacing:-.02em;font-weight:700;margin:6px 0 0}
   .band .sub{color:var(--ink-2);margin:26px auto 0;max-width:46ch;font-size:1.02rem}
   .band .cta-row{margin-top:40px;align-items:center;gap:22px}
@@ -389,7 +403,8 @@
   @media (max-width:760px){ .band .arrive span{display:none} }
 
   /* footer */
-  footer{background:var(--ink);color:color-mix(in srgb,var(--paper) 78%,#7C879F);padding:56px 0 40px;font-size:.86rem}
+  /* the page closes where it opened: below the warm band, a lit horizon line, then the intro's deep slate */
+  footer{background:linear-gradient(180deg, #34617D 0, #2B4E65 120px, #1D394C 340px);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--spark) 55%,transparent);color:color-mix(in srgb,var(--paper) 78%,#7C879F);padding:56px 0 40px;font-size:.86rem}
   footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
   footer .brand svg{width:96px;color:var(--paper)}
   footer h4{font-family:var(--sans);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb,var(--paper) 55%,#7C879F);margin:0 0 12px;font-weight:700}
@@ -738,7 +753,7 @@ void main(){
 }
 </script>
 
-<nav class="momentum" aria-label="頁面進度"><span class="track"><span class="fill"></span></span><ol><li><a href="#meet" data-step="meet"><i></i><span>01 認識</span></a></li><li><a href="#edcity-ai" data-step="edcity-ai"><i></i><span>02 備課與教學</span></a></li><li><a href="#voice" data-step="voice"><i></i><span>03 見證</span></a></li><li><a href="#ecosystem" data-step="ecosystem"><i></i><span>04 連結資源</span></a></li><li><a href="#faq" data-step="faq"><i></i><span>05 導入</span></a></li><li><a href="#book" data-step="book"><i></i><span>06 下一步</span></a></li></ol></nav>
+<nav class="momentum" aria-label="頁面進度"><span class="track"><span class="fill"></span></span><ol><li><a href="#meet" data-step="meet"><i></i><span>01 認識平台</span></a></li><li><a href="#edcity-ai" data-step="edcity-ai"><i></i><span>02 AI 助理</span></a></li><li><a href="#voice" data-step="voice"><i></i><span>03 教師見證</span></a></li><li><a href="#ecosystem" data-step="ecosystem"><i></i><span>04 連結資源</span></a></li><li><a href="#faq" data-step="faq"><i></i><span>05 導入問答</span></a></li><li><a href="#book" data-step="book"><i></i><span>06 下一步</span></a></li></ol></nav>
 <div class="dawn" aria-hidden="true"></div>
 
 <header>
@@ -778,6 +793,7 @@ void main(){
         </div>
       </div>
     </div>
+    <div class="wrap depart-wrap"><ol class="depart" aria-label="頁面路線"><li class="start"><a href="#meet"><i></i><span>01 認識平台</span></a></li><li><a href="#edcity-ai"><i></i><span>02 AI 助理</span></a></li><li><a href="#voice"><i></i><span>03 教師見證</span></a></li><li><a href="#ecosystem"><i></i><span>04 連結資源</span></a></li><li><a href="#faq"><i></i><span>05 導入問答</span></a></li><li><a href="#book"><i></i><span>06 下一步</span></a></li></ol></div>
   </section>
 
   <section class="partners" data-r>
@@ -791,7 +807,7 @@ void main(){
 
   <section class="blk" id="meet">
     <div class="wrap">
-      <p class="eyebrow" data-r><span class="step">01</span>認識 EdCity</p>
+      <p class="eyebrow" data-r><span class="step">01</span>認識平台</p>
       <h2 class="big" data-r>貫通備課、教學與評估，<br>成就一體化學習平台</h2>
       <p class="lead" data-r>EdCity 結合學習管理、教學工具、智能助手與經審核的資源，構建以 AI 為核心的一體化平台；圍繞課堂實況、學生需要與家庭參與而設計，讓每個教學時刻都有清晰依據。</p>
       <ol class="seq" data-r>
@@ -805,7 +821,7 @@ void main(){
 
   <section class="blk" id="edcity-ai">
     <div class="wrap">
-      <p class="eyebrow" data-r><span class="step">02</span>EdCity.ai</p>
+      <p class="eyebrow" data-r><span class="step">02</span>AI 助理</p>
       <h2 class="big" data-r>教師專屬的<br>AI 助理與教學工具箱</h2>
       <p class="lead" data-r>由備課到批改，EdCity.ai 全面理解你的課堂：生成教材、整理學生需要、給出有理據的建議，讓教學決定始終由你掌握。</p>
       <div class="cta-row" data-r>
@@ -843,6 +859,7 @@ void main(){
 
   <section class="blk center quote panel" id="voice">
     <div class="wrap">
+      <p class="eyebrow" data-r><span class="step">03</span>教師見證</p>
       <blockquote data-r><span class="cjk-open">「</span>它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
       <div class="qphoto" data-r><span class="head"></span><p class="who"><b>陳老師</b> · 中學中文科 · 教師訪談摘錄（示意）</p></div>
       <div class="cta-row center" data-r><a class="lk" href="#book">▶ 觀看訪談影片</a></div>
@@ -851,7 +868,7 @@ void main(){
 
   <section class="blk spark" id="ecosystem">
     <div class="wrap">
-      <p class="eyebrow" data-r><span class="step">04</span>教育生態系統</p>
+      <p class="eyebrow" data-r><span class="step">04</span>連結資源</p>
       <h2 class="big" data-r>整合各方資源，<br>讓適切支援適時展現</h2>
       <p class="lead" data-r>連結教學應用程式、智能助手與經審核資源，構建完整的教育生態系統；呈現有用的連繫與機會，決定權始終在你手上。</p>
       <div class="cta-row" data-r>
@@ -881,7 +898,7 @@ void main(){
   <section class="blk" id="faq">
     <div class="wrap faq-wrap">
       <div class="faq-head">
-        <p class="eyebrow" data-r><span class="step">05</span>常見問題</p>
+        <p class="eyebrow" data-r><span class="step">05</span>導入問答</p>
         <h2 class="big" data-r>在導入之前，<br>學校常問</h2>
       </div>
       <div class="faq" data-r>
@@ -907,7 +924,7 @@ void main(){
 
   <section class="band" id="book">
     <div class="wrap">
-      <ol class="arrive" data-r aria-hidden="true"><li><i></i><span>01 認識</span></li><li><i></i><span>02 備課與教學</span></li><li><i></i><span>03 見證</span></li><li><i></i><span>04 連結資源</span></li><li><i></i><span>05 導入</span></li><li class="end"><i></i><span>06 下一步</span></li></ol>
+      <ol class="arrive" data-r aria-hidden="true"><li><i></i><span>01 認識平台</span></li><li><i></i><span>02 AI 助理</span></li><li><i></i><span>03 教師見證</span></li><li><i></i><span>04 連結資源</span></li><li><i></i><span>05 導入問答</span></li><li class="end"><i></i><span>06 下一步</span></li></ol>
       <p class="eyebrow" data-r><span class="step">06</span>下一步</p>
       <h2 class="finale" data-r>為學校開啟<br>清晰的下一步</h2>
       <p class="sub" data-r>預約一次 45 分鐘導覽，由你學校的真實情境出發，親身了解 EdCity。</p>
