@@ -86,8 +86,12 @@
   .chip{display:inline-block;width:10px;height:10px;margin-right:8px;vertical-align:-1px}
   .cc.sq{aspect-ratio:1/1;width:100%}
 
-  .cluster{display:grid;grid-template-columns:repeat(3,1fr);gap:0;aspect-ratio:1/1;margin-top:clamp(56px,8vw,96px);position:sticky;top:90px}
-  .cluster i{display:block;aspect-ratio:1/1}
+  .cluster{display:grid;grid-template-columns:repeat(2,1fr);gap:0;aspect-ratio:2/3;margin-top:clamp(56px,8vw,96px);position:sticky;top:90px}
+  .cluster i{display:block;position:relative;transition:opacity .35s ease, filter .35s ease}
+  .cluster i b{position:absolute;left:10px;top:8px;font:560 var(--s-meta)/1 var(--en);color:var(--ink);opacity:.7}
+  .cluster.picking i:not(.on){opacity:.16;filter:saturate(.4)}
+  .row{cursor:default}
+  .row.on .k{color:var(--blue-ink)}
 
   /* spec rows: hairlines + column position do the grouping */
   .rows{list-style:none;padding:0;margin-top:clamp(56px,8vw,96px);border-top:1px solid var(--line)}
@@ -116,16 +120,17 @@
   .refract{margin-top:clamp(56px,8vw,96px)}
   .rf-stage{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:0;height:clamp(250px,26vw,320px);isolation:isolate}
   .rf-plane{grid-row:1;align-self:start;height:78%;font:inherit;text-align:left;border:0;cursor:pointer;
-    display:flex;flex-direction:column;justify-content:space-between;padding:16px 18px;color:var(--ink);mix-blend-mode:multiply;
-    transition:opacity .3s ease, transform .3s ease}
+    display:flex;flex-direction:column;justify-content:space-between;padding:16px 18px;color:var(--ink);background:transparent;position:relative;top:0;
+    transition:opacity .3s ease, top .3s ease}
+  .rf-plane::before{content:"";position:absolute;inset:0;background:var(--bg);mix-blend-mode:multiply;z-index:-1}
   .rf-plane .meta{color:var(--ink)}
   .rf-plane .rf-v{font-size:var(--s-body);font-weight:500;max-width:14em}
-  .rf-plane[data-i="0"]{grid-column:1/5;margin-top:0;background:rgba(140,231,242,.85)}
-  .rf-plane[data-i="1"]{grid-column:4/8;margin-top:5%;background:rgba(243,91,236,.42)}
-  .rf-plane[data-i="2"]{grid-column:7/11;margin-top:10%;background:rgba(185,168,242,.8)}
-  .rf-plane[data-i="3"]{grid-column:10/13;margin-top:15%;background:rgba(18,226,126,.45)}
+  .rf-plane[data-i="0"]{grid-column:1/5;margin-top:0;--bg:rgba(140,231,242,.85)}
+  .rf-plane[data-i="1"]{grid-column:4/8;margin-top:5%;--bg:rgba(243,91,236,.42)}
+  .rf-plane[data-i="2"]{grid-column:7/11;margin-top:10%;--bg:rgba(185,168,242,.8)}
+  .rf-plane[data-i="3"]{grid-column:10/13;margin-top:15%;--bg:rgba(18,226,126,.45)}
   .rf-stage.picking .rf-plane:not(.on){opacity:.45}
-  .rf-plane.on{transform:translateY(-6px)}
+  .rf-plane.on{top:-6px}
   .rf-plane:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   .sig{font-weight:600}
   .sig::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
@@ -137,8 +142,6 @@
   .quad > div{padding-top:14px;border-top:1px solid var(--line)}
   .quad .meta{color:var(--ink);margin-bottom:8px}
 
-  .quote .cc.sq{margin-top:6px}
-  .quote .meta{margin-top:-8px}
 
   .mosaic{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);row-gap:28px;margin-top:clamp(56px,8vw,96px)}
   .mosaic .ph,.mosaic .cc{width:100%;height:100%}
@@ -149,13 +152,29 @@
   .m3{grid-column:10/13}.m3 > div{aspect-ratio:1/1}
   .m4{grid-column:7/13}.m4 > div{aspect-ratio:2/1}
 
-  .cmp{margin-top:clamp(40px,6vw,72px);border-top:1px solid var(--ink)}
-  .cr{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);padding:18px 0;border-bottom:1px solid var(--line)}
-  .cr span:nth-child(1){grid-column:1/4;color:var(--ink);font-weight:500}
-  .cr span:nth-child(2){grid-column:4/8;color:var(--ink-3)}
-  .cr span:nth-child(3){grid-column:8/13;color:var(--ink)}
-  .cr.head span{font-family:var(--han);font-size:var(--s-meta);color:var(--ink-3);font-weight:400}
 
+
+  /* comparison: same five rows, toggled between scattered and connected */
+  .cmpx{margin-top:clamp(40px,6vw,72px)}
+  .cmp-toggle{display:flex;align-items:center;gap:6px;margin-bottom:28px}
+  .cmp-toggle button{font:inherit;font-size:.9rem;background:transparent;color:var(--ink);border:1px solid var(--line);padding:8px 16px;border-radius:2px;cursor:pointer}
+  .cmp-toggle button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .cmp-hint{margin-left:14px}
+  .cmp-rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+  .cmp-rows li{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);align-items:stretch;
+    border-bottom:1px solid var(--line);transition:margin .45s cubic-bezier(.2,.7,.2,1)}
+  .cmp-rows .k{grid-column:1/4;padding:20px 0;color:var(--ink);font-weight:500}
+  .cmp-rows .bar{grid-column:4/5;justify-self:start;width:14px;transition:background .45s ease, margin .45s ease}
+  .cmp-rows .v{grid-column:5/13;position:relative;padding:20px 0}
+  .cmp-rows .v span{display:block;transition:opacity .35s ease}
+  .cmp-rows .v .new{position:absolute;left:0;right:0;top:20px;opacity:0}
+  .cmpx[data-v="old"] .cmp-rows li{margin-bottom:14px}
+  .cmpx[data-v="old"] .cmp-rows .bar{background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 12px);margin:14px 0}
+  .cmpx[data-v="old"] .cmp-rows .v .old{color:var(--ink-3)}
+  .cmpx[data-v="new"] .cmp-rows li{margin-bottom:0}
+  .cmpx[data-v="new"] .cmp-rows .bar{background:linear-gradient(180deg,#8CE7F2,#5692FF,#B9A8F2,#5692FF,#8CE7F2);background-size:100% 500%;background-position:0 calc(var(--i) * 25%)}
+  .cmpx[data-v="new"] .cmp-rows .v .old{opacity:0}
+  .cmpx[data-v="new"] .cmp-rows .v .new{opacity:1;color:var(--ink)}
   .tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gut);margin-top:clamp(40px,6vw,72px)}
   .tri article{padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 
@@ -172,6 +191,9 @@
     font-family:var(--han);font-weight:600;font-size:clamp(2.2rem,6vw,5.6rem);line-height:1.15;color:var(--ink);opacity:0}
   .xfer-cells{position:absolute;inset:0;display:grid}
   .xfer-cells i{display:block;transform:scale(0);transform-origin:50% 100%;will-change:transform}
+  .quote-peak .xfer-msg{flex-direction:column}
+  .quote-peak blockquote{font-family:var(--han);font-weight:600;font-size:clamp(2rem,4.4vw,4.4rem);line-height:1.25;color:var(--ink);text-align:center}
+  .quote-peak .meta{margin-top:26px;font-family:var(--han)}
   .xfer.static{height:100vh}
   .xfer.static .xfer-msg{opacity:1}
 
@@ -190,7 +212,6 @@
     .rf-plane[data-i="0"]{margin-top:0!important}
     .rf-why{grid-template-columns:1fr}.rf-why .meta,.rf-why .rf-text{grid-column:1/-1}
     .mosaic{grid-template-columns:repeat(2,1fr)}.m1,.m2,.m3,.m4{grid-column:auto;grid-row:auto}.m1,.m4{grid-column:1/-1}
-    .cr{grid-template-columns:1fr}.cr span{grid-column:1/-1!important}.cr.head{display:none}
     .foot .g > div{grid-column:span 2;margin-bottom:28px}
   }
 
@@ -285,9 +306,9 @@
       <p class="body c4-8">EdCity 結合學習管理、教學工具、智能助手與經審核的資源，構建以 AI 為核心的一體化平台；圍繞課堂實況、學生需要與家庭參與而設計，讓每個教學時刻都有清晰依據。</p>
 
       <div class="cluster c1-3" aria-hidden="true">
-        <i class="cc c-a"></i><i></i><i class="cc c-b ring"></i>
-        <i></i><i class="cc c-c"></i><i></i>
-        <i class="cc c-d"></i><i></i><i class="cc c-a"></i>
+        <i class="cc c-a"><b>01</b></i><i class="cc c-b ring"><b>02</b></i>
+        <i class="cc c-c"><b>03</b></i><i class="cc c-d"><b>04</b></i>
+        <i class="cc c-b"><b>05</b></i><i class="cc c-a ring"><b>06</b></i>
       </div>
       <ol class="rows c4-12">
         <li class="row"><span class="n">01</span><span class="k">一對一學習支援</span><span class="v">按每名學生的學習進度與個別需要，度身提供下一步建議。</span><span class="t">學習支援</span></li>
@@ -326,14 +347,6 @@
         <div><p class="meta">AI 批改</p><p class="body">提供中文作文批改回饋，教師可逐項調整核實。</p></div>
         <div><p class="meta">學習洞察</p><p class="body">將課堂數據轉化為清晰的下一步行動。</p></div>
       </div>
-    </div>
-  </section>
-
-  <section class="band quote">
-    <div class="g">
-      <div class="cc c-b sq c1-3" aria-hidden="true"></div>
-      <blockquote class="stmt c4-11"><span class="cjk-open">「</span>它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
-      <p class="meta c4-11">中學中文科教師 · 教師訪談摘錄（示意內容）</p>
     </div>
   </section>
 
@@ -390,13 +403,19 @@
     <div class="g">
       <p class="meta c1-3">[05] 為何不同</p>
       <h2 class="stmt c4-11">智能並非附加功能，而是平台的核心設計</h2>
-      <div class="cmp c1-12">
-        <div class="cr head"><span>範疇</span><span>傳統教育平台</span><span>EdCity</span></div>
-        <div class="cr"><span>學習管理</span><span>課程與紀錄分開管理，人手追蹤進度。</span><span>進度、需要與下一步，整合在同一視圖。</span></div>
-        <div class="cr"><span>技能與素養</span><span>以完成率衡量學習。</span><span>以素養發展的軌跡呈現學習。</span></div>
-        <div class="cr"><span>內容生成</span><span>教材逐份人手製作。</span><span>由課堂數據生成草稿，教師定稿。</span></div>
-        <div class="cr"><span>適時學習</span><span>學生自行搜尋資源。</span><span>合適資源在需要的一刻出現。</span></div>
-        <div class="cr"><span>學習分析</span><span>匯出報表，事後檢視。</span><span>即時洞察，指向具體行動。</span></div>
+      <div class="cmpx c1-12" data-v="old">
+        <div class="cmp-toggle" role="group" aria-label="比較">
+          <button type="button" class="on" data-v="old" aria-pressed="true">傳統教育平台</button>
+          <button type="button" data-v="new" aria-pressed="false">EdCity</button>
+          <span class="meta dim cmp-hint">切換看看：分散的步驟，如何連成一條線</span>
+        </div>
+        <ol class="cmp-rows">
+          <li style="--i:0"><span class="k">學習管理</span><span class="bar"></span><span class="v"><span class="old">課程與紀錄分開管理，人手追蹤進度。</span><span class="new">進度、需要與下一步，整合在同一視圖。</span></span></li>
+          <li style="--i:1"><span class="k">技能與素養</span><span class="bar"></span><span class="v"><span class="old">以完成率衡量學習。</span><span class="new">以素養發展的軌跡呈現學習。</span></span></li>
+          <li style="--i:2"><span class="k">內容生成</span><span class="bar"></span><span class="v"><span class="old">教材逐份人手製作。</span><span class="new">由課堂數據生成草稿，教師定稿。</span></span></li>
+          <li style="--i:3"><span class="k">適時學習</span><span class="bar"></span><span class="v"><span class="old">學生自行搜尋資源。</span><span class="new">合適資源在需要的一刻出現。</span></span></li>
+          <li style="--i:4"><span class="k">學習分析</span><span class="bar"></span><span class="v"><span class="old">匯出報表，事後檢視。</span><span class="new">即時洞察，指向具體行動。</span></span></li>
+        </ol>
       </div>
     </div>
   </section>
@@ -413,9 +432,9 @@
     </div>
   </section>
 
-  <section class="xfer" aria-label="為學校開啟清晰的下一步">
+  <section class="xfer quote-peak" aria-label="教師訪談">
     <div class="xfer-stage">
-      <p class="xfer-msg">為學校開啟<br>清晰的下一步</p>
+      <div class="xfer-msg"><blockquote><span class="cjk-open">「</span>它沒有取代我的判斷，<br>而是讓我更快看到全班的需要。」</blockquote><p class="meta">中學中文科教師 · 教師訪談摘錄（示意內容）</p></div>
       <div class="xfer-cells" aria-hidden="true"></div>
     </div>
   </section>
@@ -456,7 +475,7 @@
   var vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
   var fs = [
   'precision highp float;',
-  'uniform vec2 uRes;uniform float uProg;uniform float uTime;uniform float uCell;',
+  'uniform vec2 uRes;uniform float uProg;uniform float uTime;uniform float uCell;uniform vec4 uMsg;',
   'const vec3 PAPER=vec3(.961,.969,1.);const vec3 BLUE=vec3(.337,.573,1.);const vec3 SKY=vec3(.549,.906,.949);',
   'const vec3 LAV=vec3(.725,.659,.949);const vec3 PINK=vec3(.953,.357,.925);const vec3 GREEN=vec3(.071,.886,.494);',
   'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
@@ -488,7 +507,7 @@
   ' float stepH=floor(h(vec2(fid.x,41.))*4.)/4.;',
   ' float thr=rowN*.72+stepH*.16+h(fid+23.)*.12;',
   ' float rev=smoothstep(.58,.95,p)*1.08;float a=clamp((rev-thr)/.05,0.,1.);',
-  ' float band=1.-smoothstep(.12,.3,abs(rowN-.5));float keep=step(h(fid+31.),.07+band*.16);a*=1.-keep;',
+  ' float band=1.-smoothstep(.12,.3,abs(rowN-.5));vec2 cx0=fid*uCell+off,cx1=cx0+uCell;float hit=step(uMsg.x,cx1.x)*step(cx0.x,uMsg.z)*step(uMsg.y,cx1.y)*step(cx0.y,uMsg.w);float keep=step(h(fid+31.),.07+band*.16)*(1.-hit);a*=1.-keep;',
   ' float inside=step(max(abs(flc.x-.5),abs(flc.y-.5)),.5*(1.-a));',
   ' float alpha=(p<.58)?1.:inside;',
   ' gl_FragColor=vec4(col,alpha);}'
@@ -510,7 +529,7 @@
   var loc = gl.getAttribLocation(prog,'p');
   gl.enableVertexAttribArray(loc);
   gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  var uRes=gl.getUniformLocation(prog,'uRes'), uProg=gl.getUniformLocation(prog,'uProg'), uTime=gl.getUniformLocation(prog,'uTime'), uCell=gl.getUniformLocation(prog,'uCell');
+  var uRes=gl.getUniformLocation(prog,'uRes'), uProg=gl.getUniformLocation(prog,'uProg'), uTime=gl.getUniformLocation(prog,'uTime'), uCell=gl.getUniformLocation(prog,'uCell'), uMsg=gl.getUniformLocation(prog,'uMsg');
 
   var dpr = Math.min(window.devicePixelRatio||1, 1.5), W=0, H=0;
   function size(){
@@ -529,6 +548,8 @@
     var p = progress();
     var cell = Math.max(56*dpr, Math.floor(Math.min(W,H)/7));
     gl.uniform2f(uRes,W,H); gl.uniform1f(uProg,p); gl.uniform1f(uCell,cell);
+    var rg = document.createRange(); rg.selectNodeContents(msg); var mr = rg.getBoundingClientRect(), cr = canvas.getBoundingClientRect(), pad = 6;
+    gl.uniform4f(uMsg, (mr.left-cr.left-pad)*dpr, (mr.top-cr.top-pad)*dpr, (mr.right-cr.left+pad)*dpr, (mr.bottom-cr.top+pad)*dpr);
     gl.uniform1f(uTime, reduce ? 0 : (now - t0)/1000);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     msg.style.opacity = ss(.55,.8,p);
@@ -563,6 +584,8 @@
       box.style.gridTemplateColumns = 'repeat('+cols+',1fr)';
       box.style.gridAutoRows = cw+'px';
       var colStep = []; for(var c=0;c<cols;c++) colStep.push(Math.floor(rnd(si*31+c)*4)/4);
+      var rg = document.createRange(); rg.selectNodeContents(msg); var mr = rg.getBoundingClientRect(), br = box.getBoundingClientRect();
+      var m0x = mr.left-br.left-6, m0y = mr.top-br.top-6, m1x = mr.right-br.left+6, m1y = mr.bottom-br.top+6;
       for(var r=0;r<rows;r++) for(var c2=0;c2<cols;c2++){
         var el = document.createElement('i'), seed = si*1000 + r*57 + c2, pal = PAL[Math.floor(rnd(seed+3)*PAL.length)];
         var ang = Math.floor(rnd(seed+5)*360);
@@ -575,7 +598,7 @@
         cells.push({ el:el,
           rise: fromBottom*.78 + colStep[c2]*.14 + rnd(seed+13)*.08,
           open: rowN*.72 + colStep[c2]*.16 + rnd(seed+17)*.12,
-          keep: rnd(seed+19) < (.05 + band*.08) });
+          keep: rnd(seed+19) < (.05 + band*.08) && !(c2*cw < m1x && (c2+1)*cw > m0x && r*cw < m1y && (r+1)*cw > m0y) });
       }
     }
     build();
@@ -628,6 +651,23 @@
     });
     stage.addEventListener('mouseleave', function(){ stage.classList.remove('picking'); });
   });
+
+  (function(){
+    var cl = document.querySelector('.cluster'), cells = cl ? [].slice.call(cl.querySelectorAll('i')) : [];
+    [].slice.call(document.querySelectorAll('.rows .row')).forEach(function(row, k, all){
+      row.tabIndex = 0;
+      function on(){ cl && cl.classList.add('picking'); all.forEach(function(r,j){ r.classList.toggle('on', j===k); }); cells.forEach(function(c,j){ c.classList.toggle('on', j===k); }); }
+      function off(){ cl && cl.classList.remove('picking'); row.classList.remove('on'); }
+      row.addEventListener('mouseenter', on); row.addEventListener('focus', on);
+      row.addEventListener('mouseleave', off); row.addEventListener('blur', off);
+    });
+    document.querySelectorAll('.cmpx').forEach(function(box){
+      box.querySelectorAll('.cmp-toggle button').forEach(function(b){ b.addEventListener('click', function(){
+        box.setAttribute('data-v', b.getAttribute('data-v'));
+        box.querySelectorAll('.cmp-toggle button').forEach(function(o){ o.classList.toggle('on', o===b); o.setAttribute('aria-pressed', o===b); });
+      }); });
+    });
+  })();
   var STATE = { '採用':['green','已採用'], '調整':['pink','待調整'], '略過':['grey','已略過'] };
   document.querySelectorAll('.act').forEach(function(b){ b.addEventListener('click', function(){
     var st = document.getElementById('decisionState'), v = STATE[b.textContent.trim()];
