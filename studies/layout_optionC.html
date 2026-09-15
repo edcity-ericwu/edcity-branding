@@ -52,7 +52,8 @@
   .nav{grid-column:4/11;display:flex;gap:clamp(12px,2vw,28px);font-size:.9rem}
   .nav a .br{color:var(--ink-3);transition:color .2s}
   .nav a:hover .br{color:var(--blue-ink)}
-  .nav-cta{grid-column:11/13;justify-self:end;font-size:.9rem;font-weight:500}
+  .nav-cta{grid-column:11/13;justify-self:end;font-size:.86rem;font-weight:500;background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:2px}
+  .nav-cta:hover{background:var(--blue-ink)}
 
   /* ---- bands ---- */
   .band{padding:clamp(90px,15vh,170px) 0;border-top:1px solid var(--line)}
@@ -60,7 +61,7 @@
   .band .g > *{margin-bottom:0}
   .band .stmt{margin-bottom:clamp(22px,3vw,34px)}
   .band .body.c4-8{margin-bottom:26px}
-  .links{display:flex;gap:28px;flex-wrap:wrap}
+  .links{display:flex;gap:28px;flex-wrap:wrap;align-items:center}
   .lk{font-weight:500;border-bottom:1px solid var(--ink);padding-bottom:2px}
   .lk:hover{color:var(--blue-ink);border-color:var(--blue-ink)}
   .btn-ink{display:inline-block;background:var(--ink);color:var(--paper);font-weight:500;padding:14px 22px;border-radius:2px}
@@ -110,7 +111,27 @@
 
   .flow{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gut);margin-top:clamp(56px,8vw,96px)}
   .flow li{display:flex;flex-direction:column;gap:6px;padding-top:14px;border-top:1px solid var(--ink);color:var(--ink)}
-  .flow + .spec{margin-top:48px}
+  .refract + .spec{margin-top:56px}
+  /* refraction: four translucent planes overlap; where two cross, a third hue appears */
+  .refract{margin-top:clamp(56px,8vw,96px)}
+  .rf-stage{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:0;height:clamp(250px,26vw,320px);isolation:isolate}
+  .rf-plane{grid-row:1;align-self:start;height:78%;font:inherit;text-align:left;border:0;cursor:pointer;
+    display:flex;flex-direction:column;justify-content:space-between;padding:16px 18px;color:var(--ink);mix-blend-mode:multiply;
+    transition:opacity .3s ease, transform .3s ease}
+  .rf-plane .meta{color:var(--ink)}
+  .rf-plane .rf-v{font-size:var(--s-body);font-weight:500;max-width:14em}
+  .rf-plane[data-i="0"]{grid-column:1/5;margin-top:0;background:rgba(140,231,242,.85)}
+  .rf-plane[data-i="1"]{grid-column:4/8;margin-top:5%;background:rgba(243,91,236,.42)}
+  .rf-plane[data-i="2"]{grid-column:7/11;margin-top:10%;background:rgba(185,168,242,.8)}
+  .rf-plane[data-i="3"]{grid-column:10/13;margin-top:15%;background:rgba(18,226,126,.45)}
+  .rf-stage.picking .rf-plane:not(.on){opacity:.45}
+  .rf-plane.on{transform:translateY(-6px)}
+  .rf-plane:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .sig{font-weight:600}
+  .sig::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:1px}
+  .sig.pink::before{background:var(--pink-s)}.sig.green::before{background:var(--green-s)}.sig.grey::before{background:var(--ink-3)}
+  .rf-why{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+  .rf-why .meta{grid-column:1/4}.rf-why .rf-text{grid-column:4/12;color:var(--ink)}
 
   .quad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gut);margin-top:clamp(64px,9vw,110px)}
   .quad > div{padding-top:14px;border-top:1px solid var(--line)}
@@ -145,7 +166,7 @@
   .foot .legal{margin-top:64px}
 
   /* ---- section transition: cells build up, then open onto a statement ---- */
-  .xfer{position:relative;height:230vh}
+  .xfer{position:relative;height:180vh}
   .xfer-stage{position:sticky;top:0;height:100vh;overflow:hidden}
   .xfer-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 var(--m);
     font-family:var(--han);font-weight:600;font-size:clamp(2.2rem,6vw,5.6rem);line-height:1.15;color:var(--ink);opacity:0}
@@ -163,14 +184,18 @@
     .row,.sr{grid-template-columns:repeat(4,minmax(0,1fr))}
     .row .n{grid-column:1/2}.row .k{grid-column:2/5}.row .v{grid-column:2/5}.row .t{display:none}
     .sr dt{grid-column:1/-1}.sr dd,.sr dd.aside{grid-column:1/-1;justify-self:start}
-    .flow,.quad,.tri{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
+    .quad,.tri{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
+    .rf-stage{grid-template-columns:1fr;height:auto}
+    .rf-plane{grid-column:1/-1!important;grid-row:auto;height:120px;margin-top:-18px!important;margin-left:0}
+    .rf-plane[data-i="0"]{margin-top:0!important}
+    .rf-why{grid-template-columns:1fr}.rf-why .meta,.rf-why .rf-text{grid-column:1/-1}
     .mosaic{grid-template-columns:repeat(2,1fr)}.m1,.m2,.m3,.m4{grid-column:auto;grid-row:auto}.m1,.m4{grid-column:1/-1}
     .cr{grid-template-columns:1fr}.cr span{grid-column:1/-1!important}.cr.head{display:none}
     .foot .g > div{grid-column:span 2;margin-bottom:28px}
   }
 
   /* ============ opening: fuzz → pixelate → reveal, scroll-driven ============ */
-  .poss{position:relative;height:320vh;background:var(--paper)}
+  .poss{position:relative;height:220vh;background:var(--paper)}
   .poss-stage{position:sticky;top:0;height:100vh;overflow:hidden}
   .poss-msg{
     position:absolute;inset:0;margin:0;display:flex;align-items:center;justify-content:center;
@@ -243,7 +268,7 @@
       <p class="meta c1-3">[00] 香港教育城<br>教與學的智能夥伴</p>
       <h1 class="stmt xl c4-12">因應每個需要，<br>成就每一步學習</h1>
       <p class="body c4-8">以 AI 為核心的教與學平台，連結教師、學生與家庭；在合適的時機提供適切支援，讓教學更有效、學習更有方向、家校協作更順暢。</p>
-      <p class="links c4-8"><a class="lk" href="#meet">認識 EdCity →</a><a class="lk" href="#book">預約導覽 →</a></p>
+      <p class="links c4-8"><a class="btn-ink" href="#book">預約導覽 →</a><a class="lk" href="#meet">認識 EdCity →</a></p>
       <figure class="fig c1-12">
         <div class="ph r21-9"></div>
         <figcaption>[圖 01] 主視覺照片：香港課堂的探索時刻 · 待拍攝</figcaption>
@@ -275,13 +300,6 @@
     </div>
   </section>
 
-  <section class="xfer" aria-label="同一個時刻，多看一個角度">
-    <div class="xfer-stage">
-      <p class="xfer-msg">同一個時刻，<br>多看一個角度</p>
-      <div class="xfer-cells" aria-hidden="true"></div>
-    </div>
-  </section>
-
   <section class="band" id="edcity-ai">
     <div class="g">
       <p class="meta c1-3">[02] EdCity.ai</p>
@@ -295,11 +313,11 @@
 
       <p class="meta c1-3 spec-k">[圖 03]<br>EdCity.ai · 備課建議</p>
       <dl class="spec c4-12">
-        <div class="sr"><dt>建議</dt><dd class="strong">先重溫《岳陽樓記》的借景抒情，四名學生未掌握前置概念。</dd><dd class="aside"><i class="chip c-a"></i>備課</dd></div>
+        <div class="sr"><dt>建議</dt><dd class="strong">先重溫《岳陽樓記》的借景抒情，四名學生未掌握前置概念。</dd><dd class="aside"><b class="sig pink">機會</b></dd></div>
         <div class="sr"><dt>原因</dt><dd>4 名學生上週隨堂測「借景抒情」一題未達標；本課文依賴此前置概念。</dd><dd class="aside"></dd></div>
         <div class="sr"><dt>資源</dt><dd>校本資源：《岳陽樓記》複習包（10 分鐘）</dd><dd class="aside"></dd></div>
         <div class="sr"><dt>依據</dt><dd>中四級隨堂測 · 信心：高</dd><dd class="aside">更新於 3 分鐘前</dd></div>
-        <div class="sr"><dt>教師決定</dt><dd class="acts"><button class="act on" type="button">採用</button><button class="act" type="button">調整</button><button class="act" type="button">略過</button></dd><dd class="aside">步驟 3 / 5</dd></div>
+        <div class="sr"><dt>教師決定</dt><dd class="acts"><button class="act on" type="button">採用</button><button class="act" type="button">調整</button><button class="act" type="button">略過</button></dd><dd class="aside"><b class="sig green" id="decisionState">已採用</b></dd></div>
       </dl>
 
       <div class="quad c1-12">
@@ -340,12 +358,18 @@
       <p class="links c4-8"><a class="lk" href="#book">探索生態系統 →</a><a class="lk" href="#book">供應商專區 →</a></p>
 
       <p class="meta c1-3 spec-k">[圖 08]<br>資源配對 · 按學習需要</p>
-      <ol class="flow c4-12">
-        <li><span class="meta">學習需要</span><span>中一 · 記敘文閱讀延伸</span></li>
-        <li><span class="meta">訊號</span><span>4 名學生閱讀速度落後一個級別</span></li>
-        <li><span class="meta">經審核資源</span><span>中文橋樑書單 · 親子共讀指南</span></li>
-        <li><span class="meta">下一步</span><span>派給家長，兩週後回看進度</span></li>
-      </ol>
+      <div class="refract c1-12">
+        <div class="rf-stage" role="group" aria-label="由學習需要到下一步：選一個層面查看原因">
+          <button class="rf-plane on" type="button" data-i="0" aria-pressed="true"><span class="meta">01 學習需要</span><span class="rf-v">中一 · 記敘文閱讀延伸</span></button>
+          <button class="rf-plane" type="button" data-i="1" aria-pressed="false"><span class="meta">02 訊號 · <b class="sig pink">機會浮現</b></span><span class="rf-v">4 名學生閱讀速度落後一個級別</span></button>
+          <button class="rf-plane" type="button" data-i="2" aria-pressed="false"><span class="meta">03 經審核資源</span><span class="rf-v">中文橋樑書單 · 親子共讀指南</span></button>
+          <button class="rf-plane" type="button" data-i="3" aria-pressed="false"><span class="meta">04 下一步 · <b class="sig green">已確認</b></span><span class="rf-v">派給家長，兩週後回看進度</span></button>
+        </div>
+        <div class="rf-why" aria-live="polite">
+          <p class="meta">為何連在一起</p>
+          <p class="rf-text">單元要求學生掌握記敘文的閱讀延伸。系統由這個學習需要出發，而不是由內容出發。</p>
+        </div>
+      </div>
       <dl class="spec c4-12">
         <div class="sr"><dt>配對結果</dt><dd class="strong">為「中一 · 記敘文閱讀延伸」配對到 3 項經審核資源。</dd><dd class="aside">3 項</dd></div>
         <div class="sr"><dt>01</dt><dd>中文橋樑書單（中一至中二）</dd><dd class="aside"><i class="chip c-a"></i>閱讀延伸</dd></div>
@@ -590,6 +614,32 @@
 
   document.querySelectorAll('.act').forEach(function(b){ b.addEventListener('click', function(){
     b.parentNode.querySelectorAll('.act').forEach(function(o){ o.classList.toggle('on', o===b); }); }); });
+  document.querySelectorAll('.refract').forEach(function(rf){
+    var WHY = [
+      '單元要求學生掌握記敘文的閱讀延伸。系統由這個學習需要出發，而不是由內容出發。',
+      '隨堂閱讀紀錄顯示 4 名學生速度落後一個級別：這是一個浮現的機會，所以以粉紅點標示，並寫明原因。',
+      '只配對經審核的資源，並按需要排序：閱讀延伸在前，家庭參與隨後。每項都可看到入選原因。',
+      '教師確認後才派給家長，並設定兩週後回看進度。已確認的一步以綠點標示。'
+    ];
+    var stage = rf.querySelector('.rf-stage'), text = rf.querySelector('.rf-text');
+    var planes = [].slice.call(rf.querySelectorAll('.rf-plane'));
+    function pick(i){
+      planes.forEach(function(p, k){ p.classList.toggle('on', k===i); p.setAttribute('aria-pressed', k===i); });
+      text.textContent = WHY[i];
+    }
+    planes.forEach(function(p, k){
+      p.addEventListener('click', function(){ pick(k); });
+      p.addEventListener('mouseenter', function(){ stage.classList.add('picking'); pick(k); });
+      p.addEventListener('focus', function(){ stage.classList.add('picking'); pick(k); });
+    });
+    stage.addEventListener('mouseleave', function(){ stage.classList.remove('picking'); });
+  });
+  var STATE = { '採用':['green','已採用'], '調整':['pink','待調整'], '略過':['grey','已略過'] };
+  document.querySelectorAll('.act').forEach(function(b){ b.addEventListener('click', function(){
+    var st = document.getElementById('decisionState'), v = STATE[b.textContent.trim()];
+    if(st && v){ st.className = 'sig ' + v[0]; st.textContent = v[1]; }
+  }); });
+
 })();
 </script>
 
