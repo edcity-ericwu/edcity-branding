@@ -741,13 +741,21 @@
     if(!ctx) return { start:function(){}, stop:function(){}, still:function(){} };
     var SLICES = [['#2450E6','#12307A'],['#0EBFAE','#2450E6'],['#0C8078','#0EBFAE'],['#2450E6','#0EBFAE'],['#5C6570','#2450E6'],['#FF6A3D','#FFB08F']];
     var ANG = [0,30,45,60,90,120,135,150];
+    var EASES = [
+      function(x){ return x; },
+      function(x){ return x*x*x; },
+      function(x){ return 1 - Math.pow(1-x, 3); },
+      function(x){ return x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x+2, 3)/2; },
+      function(x){ return x*x; },
+      function(x){ return 1 - (1-x)*(1-x); }
+    ];
     var W = 0, H = 0, dpr = 1, bw = 20, bands = [], nodes = {}, uid = 0, raf = 0, last = 0, nextSpawn = 0;
 
     function size(){
       dpr = Math.min(window.devicePixelRatio||1, 2);
       W = cv.clientWidth; H = cv.clientHeight;
       cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
-      bw = Math.max(12, Math.min(30, Math.min(W,H)*0.026));
+      bw = Math.max(20, Math.min(48, Math.min(W,H)*0.042));
     }
     function pick(){ return Math.random() < .08 ? SLICES[5] : SLICES[Math.floor(Math.random()*5)]; }
     function spawn(grown){
@@ -762,8 +770,11 @@
       ts.forEach(function(t){ if(t<0) tIn=Math.max(tIn,t); else tOut=Math.min(tOut,t); });
       var sx = px+dx*tIn, sy = py+dy*tIn, L = tOut - tIn;
       var sl = pick();
-      bands.push({ id:++uid, sx:sx, sy:sy, dx:dx, dy:dy, L:L, head: grown ? L*grown : 0,
-        v: (110 + Math.random()*120) * Math.max(.7, Math.min(W,H)/800), c0:sl[0], c1:sl[1], alpha:1, hold:0 });
+      var scale = Math.max(.7, Math.min(W,H)/800);
+      var tier = Math.random(), vAvg = (tier < .33 ? 60 + Math.random()*50 : tier < .7 ? 130 + Math.random()*80 : 240 + Math.random()*160) * scale;
+      var ease = EASES[Math.floor(Math.random()*EASES.length)], D = L / vAvg;
+      bands.push({ id:++uid, sx:sx, sy:sy, dx:dx, dy:dy, L:L, D:D, t: grown ? D*grown : 0, ease:ease,
+        head: grown ? L*ease(grown) : 0, c0:sl[0], c1:sl[1], alpha:1, hold:0 });
     }
     function cross(a,b){
       var ax2 = a.sx+a.dx*a.head, ay2 = a.sy+a.dy*a.head, bx2 = b.sx+b.dx*b.head, by2 = b.sy+b.dy*b.head;
@@ -775,7 +786,7 @@
     }
     function step(dt, now){
       bands.forEach(function(b){
-        if(b.head < b.L) b.head = Math.min(b.L, b.head + b.v*dt);
+        if(b.t < b.D){ b.t = Math.min(b.D, b.t + dt); b.head = b.L * b.ease(b.t / b.D); }
         else { b.hold += dt; if(b.hold > 2.2) b.alpha -= dt/1.4; }
       });
       bands = bands.filter(function(b){ return b.alpha > 0; });
@@ -786,7 +797,7 @@
         var p = cross(bands[i], bands[j]);
         if(p && p.x>-bw && p.x<W+bw && p.y>-bw && p.y<H+bw) nodes[k] = { x:p.x, y:p.y, a:bands[i].id, b:bands[j].id, t0:now };
       }
-      var growing = bands.filter(function(b){ return b.head < b.L; }).length;
+      var growing = bands.filter(function(b){ return b.t < b.D; }).length;
       if(now > nextSpawn && (bands.length < 9 || growing < 3)){ spawn(0); nextSpawn = now + 700 + Math.random()*900; }
     }
     function draw(now){
@@ -828,7 +839,7 @@
     return {
       start:function(){ if(raf) cancelAnimationFrame(raf); reset(); nextSpawn = performance.now()+400; raf = requestAnimationFrame(loop); },
       stop:function(){ if(raf) cancelAnimationFrame(raf); raf = 0; },
-      still:function(){ reset(); for(var i=0;i<5;i++) spawn(1); bands.forEach(function(b){ b.head = b.L; }); step(0, 0); draw(0); }
+      still:function(){ reset(); for(var i=0;i<5;i++) spawn(1); bands.forEach(function(b){ b.t = b.D; b.head = b.L; }); step(0, 0); draw(0); }
     };
   })();
 
