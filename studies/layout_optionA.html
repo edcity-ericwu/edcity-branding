@@ -95,8 +95,10 @@
   /* ============ header ============ */
   header{
     position:fixed;top:0;left:0;right:0;z-index:20;
-    background:transparent;
+    background:transparent;border-bottom:1px solid transparent;
+    transition:background-color .3s ease, border-color .3s ease, backdrop-filter .3s ease;
   }
+  header.solid{background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom-color:var(--line)}
   header .wrap{display:flex;align-items:center;gap:28px;padding-top:26px;padding-bottom:10px}
   .brand{display:flex;align-items:center;color:var(--ink)}
   .brand svg{width:104px;height:auto;display:block}
@@ -137,23 +139,6 @@
     width:100%;padding-top:clamp(96px,15vh,170px);padding-bottom:clamp(40px,8vh,92px);
   }
   .hero-lead{max-width:min(90vw,600px)}
-  /* product frame: the momentum idea in the product itself — prepare, teach, assess, next step */
-  .hero-product{margin:0;flex:0 1 440px;background:color-mix(in srgb,var(--paper) 88%,transparent);
-    border-top:2px solid var(--ink);border-bottom:1px solid var(--line);padding:16px 0 14px;backdrop-filter:blur(6px)}
-  .hp-top{display:flex;justify-content:space-between;font-family:var(--sans);font-size:.7rem;font-weight:600;letter-spacing:.08em;color:var(--ink-3);padding:0 2px}
-  .hp-title{font-family:var(--sans);font-weight:700;font-size:1.15rem;margin:14px 2px 10px}
-  .hp-steps{list-style:none;margin:0;padding:0;position:relative}
-  .hp-steps li{display:grid;grid-template-columns:22px 4.2em minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 2px;border-top:1px solid var(--line);font-size:.86rem;position:relative}
-  .hp-steps i{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);justify-self:center}
-  .hp-steps li.done i{background:var(--wayfind);border-color:var(--wayfind)}
-  .hp-steps li.now i{border-color:var(--spark);box-shadow:0 0 0 4px color-mix(in srgb,var(--spark) 22%,transparent)}
-  .hp-steps .t{font-family:var(--sans);font-weight:700;color:var(--ink)}
-  .hp-steps .d{color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .hp-steps .s{font-family:var(--sans);font-size:.72rem;font-weight:600;color:var(--ink-3)}
-  .hp-steps li.now .s{color:var(--spark-deep)}
-  .hp-steps li:not(.now):not(.done) .d{color:var(--ink-3)}
-  .hp-foot{margin:10px 2px 0;font-size:.72rem;color:var(--ink-3)}
-  @media (max-width:1000px){ .hero-product{display:none} }
   .hero h1{font-size:var(--h1-size);line-height:var(--h1-lh);font-weight:var(--h1-weight);letter-spacing:var(--h1-ls)}
   .hero-lead .en{font-family:var(--sans);font-size:.9rem;color:var(--ink-2);margin:26px 0 20px;max-width:78%}
   .hero .cta-row{display:flex;flex-wrap:wrap;gap:12px}
@@ -239,26 +224,12 @@
   .car-ctrl.paused .car-play .ic-play{display:block}
 
 
-  .trust{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;max-width:var(--wrap);margin:28px auto 0}
-  .trust .t{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:.74rem;color:var(--ink-2)}
-  .trust .t i{width:34px;height:34px;border:1px dashed var(--ink-3);border-radius:9px;display:block}
-  @media (max-width:760px){ .trust{grid-template-columns:repeat(3,1fr)} }
 
-  .catalogue{max-width:var(--wrap);margin:56px auto 0;text-align:left}
-  .catalogue .cat-head{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 4px;text-align:left}
-  .cat-row{
     display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;
     padding:14px 4px;border-top:1px solid var(--line);
   }
-  .cat-row:last-child{border-bottom:1px solid var(--line)}
-  .cat-t{font-family:var(--font-body);font-size:.92rem;color:var(--ink)}
-  .cat-tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;color:var(--stone);border:1px solid var(--stone);border-radius:999px;padding:4px 10px;white-space:nowrap}
-  .cat-status{font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;display:flex;align-items:center;gap:6px;white-space:nowrap;color:var(--ink-2)}
-  .cat-status i{width:6px;height:6px;border-radius:50%;background:var(--ink-3);flex-shrink:0}
-  .cat-status.ok i{background:var(--ok)}
   @media (max-width:640px){
-    .cat-row{grid-template-columns:1fr;gap:6px;justify-items:start}
-  }
+    }
 
   .qphoto{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:18px}
   .qphoto .head{width:44px;height:44px;border-radius:50%;border:1px dashed var(--ink-3);flex-shrink:0}
@@ -459,7 +430,7 @@
 
   /* plain-language governance note — a warmth / reassurance point */
   .governance{
-    max-width:var(--wrap);margin:36px auto 0;display:flex;flex-wrap:wrap;gap:10px 22px;
+    max-width:var(--wrap);margin:28px auto 0;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;
     font-family:var(--sans);font-size:.82rem;color:var(--ink-2);
   }
   .governance span{display:flex;align-items:center;gap:8px}
@@ -765,17 +736,6 @@ void main(){
           <a class="lk" href="#meet">認識 EdCity →</a>
         </div>
       </div>
-      <figure class="hero-product" data-r aria-label="產品示意：今日的下一步">
-        <figcaption class="hp-top"><span>EdCity · 中四丙 · 中文</span><span>星期三</span></figcaption>
-        <p class="hp-title">今日的下一步</p>
-        <ol class="hp-steps">
-          <li class="done"><i></i><span class="t">備課</span><span class="d">《岳陽樓記》教材已生成</span><span class="s">完成</span></li>
-          <li class="done"><i></i><span class="t">教學</span><span class="d">第三節 · 借景抒情</span><span class="s">完成</span></li>
-          <li class="now"><i></i><span class="t">評估</span><span class="d">4 名學生未掌握前置概念</span><span class="s">建議重溫</span></li>
-          <li><i></i><span class="t">下一步</span><span class="d">複習包（10 分鐘）· 待教師決定</span><span class="s">—</span></li>
-        </ol>
-        <p class="hp-foot">建議由 EdCity.ai 提供 · 決定由教師作出</p>
-      </figure>
     </div>
   </section>
 
@@ -878,53 +838,10 @@ void main(){
         </ul>
         <div class="m-rail"><i class="on"></i><i class="now"></i><i></i></div>
       </div>
-      <div class="features">
-        <div class="f" data-r><b>教學應用程式</b><span>支援課堂互動與延伸學習的工具。</span></div>
-        <div class="f" data-r><b>智能助手</b><span>因應特定學習需要而設的智能助理。</span></div>
-        <div class="f" data-r><b>資源配對</b><span>根據課程情境，推薦適切教學資源。</span></div>
-        <div class="f" data-r><b>安全審核</b><span>把關資料安全、私隱保障與兒童保護。</span></div>
-      </div>
       <div class="governance" data-r>
         <span>學生資料留在本地，不作模型訓練</span>
         <span>家長可查看給孩子的每一項建議</span>
         <span>教師可隨時關閉 AI 建議</span>
-      </div>
-      <div class="trust" data-r>
-        <span class="t"><i></i>資料本地</span>
-        <span class="t"><i></i>私隱保護</span>
-        <span class="t"><i></i>保護兒童</span>
-        <span class="t"><i></i>存取控制</span>
-        <span class="t"><i></i>稽核紀錄</span>
-        <span class="t"><i></i>傳輸加密</span>
-        <span class="t"><i></i>單一登入</span>
-        <span class="t"><i></i>角色權限</span>
-        <span class="t"><i></i>資料備份</span>
-        <span class="t"><i></i>可攜出資料</span>
-        <span class="t"><i></i>合規報告</span>
-        <span class="t"><i></i>教育局標準</span>
-      </div>
-      <div class="catalogue" data-r>
-        <p class="cat-head">資源目錄 · 精選示例</p>
-        <div class="cat-row">
-          <span class="cat-t">中文橋樑書單（中一至中二）</span>
-          <span class="cat-tag">閱讀延伸</span>
-          <span class="cat-status ok"><i></i>已審核</span>
-        </div>
-        <div class="cat-row">
-          <span class="cat-t">親子共讀 20 分鐘指南</span>
-          <span class="cat-tag">家庭參與</span>
-          <span class="cat-status ok"><i></i>已審核</span>
-        </div>
-        <div class="cat-row">
-          <span class="cat-t">STEM 動手實驗包（小四至小六）</span>
-          <span class="cat-tag">探究學習</span>
-          <span class="cat-status"><i></i>待審核</span>
-        </div>
-        <div class="cat-row">
-          <span class="cat-t">朗讀輔助工具 · 特殊教育需要適配</span>
-          <span class="cat-tag">無障礙學習</span>
-          <span class="cat-status ok"><i></i>已審核</span>
-        </div>
       </div>
     </div>
   </section>
@@ -1117,7 +1034,7 @@ void main(){
     var rail = document.querySelector('.momentum');
     var links = [].slice.call(rail.querySelectorAll('a'));
     var secs = links.map(function(a){ return document.getElementById(a.dataset.step); });
-    var root = document.documentElement, hero = document.querySelector('.hero'), ticking = false;
+    var root = document.documentElement, hero = document.querySelector('.hero'), header = document.querySelector('header'), ticking = false;
     function update(){
       ticking = false;
       var max = root.scrollHeight - innerHeight;
@@ -1125,6 +1042,7 @@ void main(){
       var prog = Math.max(0, Math.min(1, (scrollY - first) / (max - first)));
       root.style.setProperty('--prog', prog.toFixed(4));
       rail.classList.toggle('on', hero.getBoundingClientRect().bottom < innerHeight * .4);
+      header.classList.toggle('solid', scrollY > 24);
       var mid = innerHeight * .45, cur = -1;
       secs.forEach(function(s, i){ if(s.getBoundingClientRect().top < mid) cur = i; });
       if(scrollY >= max - 2) cur = secs.length - 1;
