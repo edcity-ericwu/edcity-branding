@@ -471,19 +471,18 @@
   'void main(){',
   ' vec2 fc=gl_FragCoord.xy;fc.y=uRes.y-fc.y;float asp=uRes.x/uRes.y;',
   ' vec2 uv=fc/uRes.y;float p=uProg;',
-  /* stage A/B: starts as a coarse grid of soft cells, subdivides to the final grid */
+  /* stage A/B: a grid of distinct gradient cells from the first frame, subdividing to the final grid */
   ' float sb=smoothstep(.0,.5,p);float lev=floor(mix(2.,0.,sb)+.001);float cs=uCell*pow(2.,lev);',
   ' vec2 off=mod(uRes,uCell)*.5;vec2 g=(fc-off)/cs;vec2 id=floor(g);vec2 lc=fract(g);',
-  ' vec2 cen=(id+.5)*cs+off;float s=cs*.8;vec2 jit=(vec2(h(id+3.),h(id+7.))-.5)*s*.6;',
-  ' vec3 c00=field((cen+vec2(-s,-s)+jit)/uRes.y),c10=field((cen+vec2(s,-s)+jit)/uRes.y),c01=field((cen+vec2(-s,s)-jit)/uRes.y),c11=field((cen+vec2(s,s)-jit)/uRes.y);',
-  ' vec2 sm=smoothstep(0.,1.,lc);vec3 col=mix(mix(c00,c10,sm.x),mix(c01,c11,sm.x),sm.y);',
-  /* hairline gutters make the structure explicit until the cells open */
-  ' vec2 ed=min(lc,1.-lc)*cs;float gut=1.-smoothstep(.6,1.6,min(ed.x,ed.y));',
-  ' col=mix(col,PAPER,gut*.85*(1.-smoothstep(.55,.62,p)));',
-  /* concentric rings in some cells once gridded (final grid only) */
+  ' vec2 key=id+lev*17.;float pk=floor(h(key+1.)*5.);',
+  ' vec3 ca=SKY,cb=BLUE;',
+  ' if(pk>.5){ca=LAV;cb=BLUE;} if(pk>1.5){ca=PAPER;cb=SKY;} if(pk>2.5){ca=BLUE;cb=LAV;} if(pk>3.5){ca=SKY;cb=LAV;}',
+  ' float an=h(key+5.)*6.2832;vec2 dir=vec2(cos(an),sin(an));',
+  ' float tt=clamp(dot(lc-.5,dir)*.9+.5,0.,1.);vec3 col=mix(ca,cb,tt);',
+  /* concentric lines inside some cells, from the start */
+  ' if(h(key+11.)<.24){vec2 corner=vec2(step(.5,h(key+13.)),step(.5,h(key+17.)));float d=length(lc-corner)*cs;',
+  '  float sp=max(uCell*.28,cs*.1);float ring=1.-smoothstep(.6,1.6,abs(mod(d,sp)-sp*.5));ring*=step(d,cs*1.15);col=mix(col,vec3(1.),ring*.8);}',
   ' vec2 fg=(fc-off)/uCell;vec2 fid=floor(fg);vec2 flc=fract(fg);',
-  ' if(h(fid+11.)<.2){vec2 corner=vec2(step(.5,h(fid+13.)),step(.5,h(fid+17.)));float d=length(flc-corner)*uCell;',
-  '  float ring=1.-smoothstep(.6,1.6,abs(mod(d,uCell*.28)-uCell*.14));ring*=step(d,uCell*1.15)*smoothstep(.45,.6,p);col=mix(col,vec3(1.),ring*.75);}',
   /* stage C: cells open top-down along a stepped skyline, with random jitter; a few stay */
   ' float rows=uRes.y/uCell;float rowN=(fid.y+.5)/max(rows,1.);',
   ' float stepH=floor(h(vec2(fid.x,41.))*4.)/4.;',
