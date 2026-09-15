@@ -57,7 +57,9 @@
 
   /* ---- bands ---- */
   .band{padding:clamp(90px,15vh,170px) 0;border-top:1px solid var(--line)}
-  .band.hero{border-top:0;padding-top:clamp(120px,18vh,190px)}
+  .band.hero{border-top:0;padding-top:clamp(90px,14vh,150px)}
+  .hero-lede{margin-bottom:0!important}
+  .hero .fig{margin-top:clamp(40px,5vw,64px)}
   .band .g > *{margin-bottom:0}
   .band .stmt{margin-bottom:clamp(22px,3vw,34px)}
   .band .body.c4-8{margin-bottom:26px}
@@ -143,14 +145,26 @@
   .quad .meta{color:var(--ink);margin-bottom:8px}
 
 
-  .mosaic{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);row-gap:28px;margin-top:clamp(56px,8vw,96px)}
-  .mosaic .ph,.mosaic .cc{width:100%;height:100%}
-  .mosaic figure{display:flex;flex-direction:column}
-  .mosaic figure > div{flex:1}
-  .m1{grid-column:1/7;grid-row:1/3}.m1 > div{min-height:0}
-  .m2{grid-column:7/10}.m2 > div{aspect-ratio:1/1}
-  .m3{grid-column:10/13}.m3 > div{aspect-ratio:1/1}
-  .m4{grid-column:7/13}.m4 > div{aspect-ratio:2/1}
+  /* more than one angle: one classroom moment, three views, each revealing its own layer */
+  .angles{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gut);margin-top:clamp(56px,8vw,96px);align-items:start}
+  .ang-fig{grid-column:1/8}
+  .ang-ph{position:relative;aspect-ratio:4/3}
+  .ang-layer{position:absolute;inset:0;opacity:0;transition:opacity .45s ease}
+  .ang-layer .tag{position:absolute;left:var(--x);top:var(--y);max-width:52%;display:flex;flex-direction:column;gap:4px;
+    background:var(--paper);color:var(--ink);padding:12px 14px;font-size:.92rem;line-height:1.45;transform:translateY(8px);transition:transform .45s ease}
+  .ang-layer .tag.cell-sky{background:linear-gradient(135deg,#8CE7F2,#5692FF);color:var(--ink)}
+  .ang-layer .tag.cell-lav{background:linear-gradient(135deg,#B9A8F2,#5692FF);color:var(--ink)}
+  .ang-side{grid-column:9/13}
+  .ang-tabs{display:flex;gap:6px;margin-bottom:28px}
+  .ang-tabs button{font:inherit;font-size:.92rem;background:transparent;color:var(--ink);border:1px solid var(--line);padding:9px 18px;border-radius:2px;cursor:pointer}
+  .ang-tabs button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .ang-rows{display:none;margin:0;border-top:1px solid var(--ink)}
+  .ang-rows > div{padding:14px 0;border-bottom:1px solid var(--line)}
+  .ang-rows dt{font-size:var(--s-meta);color:var(--ink-3)}
+  .ang-rows dd{margin:4px 0 0;color:var(--ink)}
+  .angles[data-view="student"] .ang-layer[data-for="student"],.angles[data-view="teacher"] .ang-layer[data-for="teacher"],.angles[data-view="parent"] .ang-layer[data-for="parent"]{opacity:1}
+  .angles[data-view="student"] .ang-layer[data-for="student"] .tag,.angles[data-view="teacher"] .ang-layer[data-for="teacher"] .tag,.angles[data-view="parent"] .ang-layer[data-for="parent"] .tag{transform:none}
+  .angles[data-view="student"] .ang-rows[data-for="student"],.angles[data-view="teacher"] .ang-rows[data-for="teacher"],.angles[data-view="parent"] .ang-rows[data-for="parent"]{display:block}
 
 
 
@@ -211,27 +225,28 @@
     .rf-plane{grid-column:1/-1!important;grid-row:auto;height:120px;margin-top:-18px!important;margin-left:0}
     .rf-plane[data-i="0"]{margin-top:0!important}
     .rf-why{grid-template-columns:1fr}.rf-why .meta,.rf-why .rf-text{grid-column:1/-1}
-    .mosaic{grid-template-columns:repeat(2,1fr)}.m1,.m2,.m3,.m4{grid-column:auto;grid-row:auto}.m1,.m4{grid-column:1/-1}
+    .ang-fig,.ang-side{grid-column:1/-1}.ang-side{margin-top:28px}
     .foot .g > div{grid-column:span 2;margin-bottom:28px}
   }
 
   /* ============ opening: fuzz → pixelate → reveal, scroll-driven ============ */
   .poss{position:relative;height:220vh;background:var(--paper)}
   .poss-stage{position:sticky;top:0;height:100vh;overflow:hidden}
-  .poss-msg{
-    position:absolute;inset:0;margin:0;display:flex;align-items:center;justify-content:center;
-    padding:0 clamp(16px,4vw,48px);text-align:center;
-    font-family:'Aspekta Variable',system-ui,sans-serif;font-weight:720;text-transform:uppercase;
-    font-size:clamp(2.6rem,9.2vw,9.5rem);line-height:.92;letter-spacing:-.025em;color:var(--ink);
-    opacity:0;text-wrap:balance;
-  }
+  .poss-msg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:0 clamp(16px,4vw,48px);text-align:center;opacity:0;pointer-events:none}
+  .poss-h{margin:0;font-family:'Aspekta Variable',system-ui,sans-serif;font-weight:720;text-transform:uppercase;
+    font-size:clamp(2.6rem,8.4vw,8.6rem);line-height:.92;letter-spacing:-.025em;color:var(--ink);text-wrap:balance}
+  .poss-sub{margin:clamp(22px,3vw,34px) 0 0;font-family:var(--han);font-weight:500;font-size:var(--s-stmt);color:var(--ink);opacity:0}
+  .poss-cta{margin:26px 0 0;display:flex;gap:28px;align-items:center;justify-content:center;opacity:0}
+  .poss-cta.live{pointer-events:auto}
   .poss-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;mix-blend-mode:multiply;pointer-events:none}
   .poss-hint{
     position:absolute;left:0;right:0;bottom:clamp(20px,5vh,44px);text-align:center;
     font-family:'Aspekta Variable',system-ui,sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.24em;
     text-transform:uppercase;color:var(--ink-2);
   }
-  .poss.static .poss-msg{opacity:1}
+  .poss.static .poss-msg,.poss.static .poss-sub,.poss.static .poss-cta{opacity:1}
+  .poss.static .poss-cta{pointer-events:auto}
   .poss.static .poss-hint{display:none}
 </style>
 </head>
@@ -276,7 +291,11 @@
 
 <section class="poss" id="possibility" aria-label="Make space for possibility">
   <div class="poss-stage">
-    <h2 class="poss-msg">Make space<br>for possibility.</h2>
+    <div class="poss-msg">
+      <h1 class="poss-h">Make space<br>for possibility.</h1>
+      <p class="poss-sub">因應每個需要，成就每一步學習</p>
+      <p class="poss-cta"><a class="btn-ink" href="#book">預約導覽 →</a><a class="lk" href="#meet">認識 EdCity →</a></p>
+    </div>
     <canvas class="poss-canvas" aria-hidden="true"></canvas>
     <p class="poss-hint" aria-hidden="true">Scroll</p>
   </div>
@@ -287,9 +306,7 @@
   <section class="band hero">
     <div class="g">
       <p class="meta c1-3">[00] 香港教育城<br>教與學的智能夥伴</p>
-      <h1 class="stmt xl c4-12">因應每個需要，<br>成就每一步學習</h1>
-      <p class="body c4-8">以 AI 為核心的教與學平台，連結教師、學生與家庭；在合適的時機提供適切支援，讓教學更有效、學習更有方向、家校協作更順暢。</p>
-      <p class="links c4-8"><a class="btn-ink" href="#book">預約導覽 →</a><a class="lk" href="#meet">認識 EdCity →</a></p>
+      <p class="stmt c4-11 hero-lede">以 AI 為核心的教與學平台，連結教師、學生與家庭；在合適的時機提供適切支援。</p>
       <figure class="fig c1-12">
         <div class="ph r21-9"></div>
         <figcaption>[圖 01] 主視覺照片：香港課堂的探索時刻 · 待拍攝</figcaption>
@@ -354,11 +371,46 @@
     <div class="g">
       <p class="meta c1-3">[03] 課堂裡的可能</p>
       <h2 class="stmt c4-11">同一個時刻，多看一個角度</h2>
-      <div class="mosaic c1-12">
-        <figure class="m1"><div class="ph"></div><figcaption>[圖 04] 學生探索一道題的多種解法</figcaption></figure>
-        <figure class="m2"><div class="ph"></div><figcaption>[圖 05] 教師視角</figcaption></figure>
-        <figure class="m3"><div class="cc c-c ring"></div><figcaption>[圖 06] 學習關係圖</figcaption></figure>
-        <figure class="m4"><div class="cc c-d"></div><figcaption>[圖 07] 折射／可能性 · 待繪製</figcaption></figure>
+      <div class="angles c1-12" data-view="teacher">
+        <figure class="ang-fig">
+          <div class="ph ang-ph">
+            <div class="ang-layer" data-for="student">
+              <span class="tag" style="--x:18%;--y:22%"><b class="sig pink">卡在這一步</b>第 3 步：把除數倒過來</span>
+              <span class="tag cell-sky" style="--x:52%;--y:58%">提示：先找倒數，再相乘</span>
+            </div>
+            <div class="ang-layer" data-for="teacher">
+              <span class="tag" style="--x:12%;--y:18%"><b class="sig pink">同一個錯誤</b>4 名學生在第 3 步出錯</span>
+              <span class="tag cell-lav" style="--x:46%;--y:62%">建議：下課前 3 分鐘小組重溫</span>
+            </div>
+            <div class="ang-layer" data-for="parent">
+              <span class="tag cell-sky" style="--x:16%;--y:24%">本週學到：分數除法</span>
+              <span class="tag" style="--x:50%;--y:60%"><b class="sig green">已掌握</b>3 項中的 2 項</span>
+            </div>
+          </div>
+          <figcaption>[圖 04] 中二數學 · 分數除法 · 課堂第 25 分鐘 · 待拍攝</figcaption>
+        </figure>
+        <div class="ang-side">
+          <div class="ang-tabs" role="group" aria-label="選擇角度">
+            <button type="button" data-view="student" aria-pressed="false">學生</button>
+            <button type="button" data-view="teacher" aria-pressed="true" class="on">教師</button>
+            <button type="button" data-view="parent" aria-pressed="false">家長</button>
+          </div>
+          <dl class="ang-rows" data-for="student">
+            <div><dt>我在哪裡</dt><dd>第 3 步：把除數倒過來</dd></div>
+            <div><dt>下一步</dt><dd>一個提示，再試一次同類題</dd></div>
+            <div><dt>不會看到</dt><dd>分數、排名或其他同學的表現</dd></div>
+          </dl>
+          <dl class="ang-rows" data-for="teacher">
+            <div><dt>全班情況</dt><dd>4 名學生在同一步出錯，其餘已完成</dd></div>
+            <div><dt>建議</dt><dd>下課前 3 分鐘小組重溫，由教師決定</dd></div>
+            <div><dt>依據</dt><dd>本節課堂練習 · 更新於 1 分鐘前</dd></div>
+          </dl>
+          <dl class="ang-rows" data-for="parent">
+            <div><dt>本週學到</dt><dd>分數除法（已掌握 3 項中的 2 項）</dd></div>
+            <div><dt>在家可以做</dt><dd>用食譜份量一起練習 5 分鐘</dd></div>
+            <div><dt>不需要擔心</dt><dd>課堂上的每一次嘗試與錯誤</dd></div>
+          </dl>
+        </div>
       </div>
     </div>
   </section>
@@ -463,11 +515,20 @@
 </footer>
 
 <script>
+/* one grid module for the whole page: a cell is exactly one column plus its gutter, starting at the page margin */
+function gridModule(width){
+  var probe = document.querySelector('main .g') || document.querySelector('.g');
+  var cs = getComputedStyle(probe), m = parseFloat(cs.paddingLeft)||0, gut = parseFloat(cs.columnGap)||0;
+  var cols = width < 760 ? 4 : 12, col = (width - 2*m - (cols-1)*gut) / cols;
+  return { margin:m, pitch:col + gut, cols:cols };
+}
+</script>
+<script>
 /* opening: soft refracted field → pixelates coarse to fine → cells open to reveal the message */
 (function(){
   var sec = document.getElementById('possibility');
   if(!sec) return;
-  var msg = sec.querySelector('.poss-msg'), hint = sec.querySelector('.poss-hint'), canvas = sec.querySelector('.poss-canvas');
+  var msg = sec.querySelector('.poss-msg'), sub = sec.querySelector('.poss-sub'), cta = sec.querySelector('.poss-cta'), hint = sec.querySelector('.poss-hint'), canvas = sec.querySelector('.poss-canvas');
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var gl = canvas.getContext('webgl', { premultipliedAlpha:false, antialias:false });
   if(!gl){ sec.classList.add('static'); canvas.remove(); return; }
@@ -475,7 +536,7 @@
   var vs = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
   var fs = [
   'precision highp float;',
-  'uniform vec2 uRes;uniform float uProg;uniform float uTime;uniform float uCell;uniform vec4 uMsg;',
+  'uniform vec2 uRes;uniform float uProg;uniform float uTime;uniform float uCell;uniform vec4 uMsg;uniform vec2 uOff;',
   'const vec3 PAPER=vec3(.961,.969,1.);const vec3 BLUE=vec3(.337,.573,1.);const vec3 SKY=vec3(.549,.906,.949);',
   'const vec3 LAV=vec3(.725,.659,.949);const vec3 PINK=vec3(.953,.357,.925);const vec3 GREEN=vec3(.071,.886,.494);',
   'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
@@ -492,7 +553,7 @@
   ' vec2 uv=fc/uRes.y;float p=uProg;',
   /* stage A/B: a grid of distinct gradient cells from the first frame, subdividing to the final grid */
   ' float sb=smoothstep(.0,.5,p);float lev=floor(mix(2.,0.,sb)+.001);float cs=uCell*pow(2.,lev);',
-  ' vec2 off=mod(uRes,uCell)*.5;vec2 g=(fc-off)/cs;vec2 id=floor(g);vec2 lc=fract(g);',
+  ' vec2 off=uOff;vec2 g=(fc-off)/cs;vec2 id=floor(g);vec2 lc=fract(g);',
   ' vec2 key=id+lev*17.;float pk=floor(h(key+1.)*5.);',
   ' vec3 ca=SKY,cb=BLUE;',
   ' if(pk>.5){ca=LAV;cb=BLUE;} if(pk>1.5){ca=PAPER;cb=SKY;} if(pk>2.5){ca=BLUE;cb=LAV;} if(pk>3.5){ca=SKY;cb=LAV;}',
@@ -529,7 +590,7 @@
   var loc = gl.getAttribLocation(prog,'p');
   gl.enableVertexAttribArray(loc);
   gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  var uRes=gl.getUniformLocation(prog,'uRes'), uProg=gl.getUniformLocation(prog,'uProg'), uTime=gl.getUniformLocation(prog,'uTime'), uCell=gl.getUniformLocation(prog,'uCell'), uMsg=gl.getUniformLocation(prog,'uMsg');
+  var uRes=gl.getUniformLocation(prog,'uRes'), uProg=gl.getUniformLocation(prog,'uProg'), uTime=gl.getUniformLocation(prog,'uTime'), uCell=gl.getUniformLocation(prog,'uCell'), uMsg=gl.getUniformLocation(prog,'uMsg'), uOff=gl.getUniformLocation(prog,'uOff');
 
   var dpr = Math.min(window.devicePixelRatio||1, 1.5), W=0, H=0;
   function size(){
@@ -546,13 +607,14 @@
   var t0 = performance.now(), visible = true, raf = 0;
   function draw(now){
     var p = progress();
-    var cell = Math.max(56*dpr, Math.floor(Math.min(W,H)/7));
-    gl.uniform2f(uRes,W,H); gl.uniform1f(uProg,p); gl.uniform1f(uCell,cell);
+    var gm = gridModule(canvas.clientWidth), cell = gm.pitch*dpr;
+    gl.uniform2f(uRes,W,H); gl.uniform1f(uProg,p); gl.uniform1f(uCell,cell); gl.uniform2f(uOff, gm.margin*dpr, 0);
     var rg = document.createRange(); rg.selectNodeContents(msg); var mr = rg.getBoundingClientRect(), cr = canvas.getBoundingClientRect(), pad = 6;
     gl.uniform4f(uMsg, (mr.left-cr.left-pad)*dpr, (mr.top-cr.top-pad)*dpr, (mr.right-cr.left+pad)*dpr, (mr.bottom-cr.top+pad)*dpr);
     gl.uniform1f(uTime, reduce ? 0 : (now - t0)/1000);
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     msg.style.opacity = ss(.55,.8,p);
+    var q = ss(.8,.95,p); sub.style.opacity = q; cta.style.opacity = q; cta.classList.toggle('live', q > .5);
     hint.style.opacity = 1 - ss(0,.08,p);
   }
   function loop(now){ draw(now); raf = visible && !reduce ? requestAnimationFrame(loop) : 0; }
@@ -580,8 +642,10 @@
     function build(){
       box.innerHTML = ''; cells = [];
       var W = box.clientWidth, H = box.clientHeight;
-      var cols = W < 760 ? 4 : 12, cw = W/cols, rows = Math.ceil(H/cw);
-      box.style.gridTemplateColumns = 'repeat('+cols+',1fr)';
+      var gm = gridModule(W), cw = gm.pitch, lead = Math.ceil(gm.margin/cw);
+      var left = gm.margin - lead*cw, cols = Math.ceil((W - left)/cw), rows = Math.ceil(H/cw);
+      box.style.left = left+'px'; box.style.right = 'auto'; box.style.width = (cols*cw)+'px';
+      box.style.gridTemplateColumns = 'repeat('+cols+','+cw+'px)';
       box.style.gridAutoRows = cw+'px';
       var colStep = []; for(var c=0;c<cols;c++) colStep.push(Math.floor(rnd(si*31+c)*4)/4);
       var rg = document.createRange(); rg.selectNodeContents(msg); var mr = rg.getBoundingClientRect(), br = box.getBoundingClientRect();
@@ -668,6 +732,13 @@
       }); });
     });
   })();
+
+  document.querySelectorAll('.angles').forEach(function(box){
+    box.querySelectorAll('.ang-tabs button').forEach(function(b){ b.addEventListener('click', function(){
+      box.setAttribute('data-view', b.getAttribute('data-view'));
+      box.querySelectorAll('.ang-tabs button').forEach(function(o){ o.classList.toggle('on', o===b); o.setAttribute('aria-pressed', o===b); });
+    }); });
+  });
   var STATE = { '採用':['green','已採用'], '調整':['pink','待調整'], '略過':['grey','已略過'] };
   document.querySelectorAll('.act').forEach(function(b){ b.addEventListener('click', function(){
     var st = document.getElementById('decisionState'), v = STATE[b.textContent.trim()];
