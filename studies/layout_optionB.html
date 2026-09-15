@@ -771,7 +771,7 @@
       var sx = px+dx*tIn, sy = py+dy*tIn, L = tOut - tIn;
       var sl = pick();
       var scale = Math.max(.7, Math.min(W,H)/800);
-      var tier = Math.random(), vAvg = (tier < .33 ? 60 + Math.random()*50 : tier < .7 ? 130 + Math.random()*80 : 240 + Math.random()*160) * scale;
+      var tier = Math.random(), vAvg = (tier < .33 ? 120 + Math.random()*90 : tier < .7 ? 240 + Math.random()*140 : 420 + Math.random()*260) * scale;
       var ease = EASES[Math.floor(Math.random()*EASES.length)], D = L / vAvg;
       bands.push({ id:++uid, sx:sx, sy:sy, dx:dx, dy:dy, L:L, D:D, t: grown ? D*grown : 0, ease:ease,
         head: grown ? L*ease(grown) : 0, c0:sl[0], c1:sl[1], alpha:1, hold:0 });
@@ -787,7 +787,7 @@
     function step(dt, now){
       bands.forEach(function(b){
         if(b.t < b.D){ b.t = Math.min(b.D, b.t + dt); b.head = b.L * b.ease(b.t / b.D); }
-        else { b.hold += dt; if(b.hold > 3.2) b.alpha -= dt/1.6; }
+        else { b.hold += dt; if(b.hold > 2.6) b.alpha -= dt/1.3; }
       });
       bands = bands.filter(function(b){ return b.alpha > 0; });
       var live = {}; bands.forEach(function(b){ live[b.id] = b; });
@@ -798,7 +798,7 @@
         if(p && p.x>-bw && p.x<W+bw && p.y>-bw && p.y<H+bw) nodes[k] = { x:p.x, y:p.y, a:bands[i].id, b:bands[j].id, t0:now };
       }
       var growing = bands.filter(function(b){ return b.t < b.D; }).length;
-      if(now > nextSpawn && bands.length < 6 && (growing < 2 || bands.length < 3)){ spawn(0); nextSpawn = now + 1000 + Math.random()*1000; }
+      if(now > nextSpawn && bands.length < 6 && (growing < 2 || bands.length < 3)){ spawn(0); nextSpawn = now + 650 + Math.random()*700; }
     }
     function draw(now){
       ctx.setTransform(dpr,0,0,dpr,0,0);
