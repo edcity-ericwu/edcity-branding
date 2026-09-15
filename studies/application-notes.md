@@ -11,16 +11,16 @@ Where a study needs something that cannot be produced confidently here (real pho
 Palettes are not fixed. Expect them to shift as the visual languages pull apart.
 
 **Palette revisions (deeper pass):**
-- **Slate, Earth & First Light (2026-09-14, sunrise pass):** the brick-red/burnt-orange spark colours were too close to raw clay and too close a match to Option C's territory. Re-derived against the moodboard's sunrise-over-mountains photo: sparks are apricot glow (`#E8935A`) and dusty coral (`#C97462`); structural blue is `#457799` / `#2B4E65` (nudged brighter/clearer after an earlier pass read too grey/gloomy, still kept less saturated than the interactive blue below); a small, function-only "Clear sky" blue (`#2482BE`) is reserved for links/focus/active states, and now also drives the primary CTA buttons directly. Added Pine Green (`#4A5E45`, from the tree line at the photo's base) for progress/adopted-state colour (採用 button, 已審核 status dots). Paper/panel base tones were cooled from a golden cream to a neutral one (`#F0EFE9` / `#EBE7DD` / `#E3DDD0`) since the warm substrate alone was reading "orange" independent of any gradient. The opening intro's WebGL gradient and the hero/CTA mesh gradients were rebuilt/rebalanced off the same sunrise photo's actual colour progression and proportions (mostly cool blue, gold only breaking through as a small low accent — dawn, not dusk), replacing an earlier cold-blue/coral ramp and an earlier near-equal blue/gold balance that read as spreading warmth. Palette documentation (`palette-study.html`) now leads with OKLCH notation, hex as secondary reference.
+- **Slate, Earth & First Light (2026-09-14, sunrise pass):** the brick-red/burnt-orange spark colours were too close to raw clay and too close a match to Option C's territory. Re-derived against the moodboard's sunrise-over-mountains photo: sparks are apricot glow (`#E8935A`) and dusty coral (`#C97462`); structural blue is `#457799` / `#2B4E65` (nudged brighter/clearer after an earlier pass read too grey/gloomy, still kept less saturated than the interactive blue below); a small, function-only "Clear sky" blue (`#2482BE`) is reserved for links/focus/active states, and now also drives the primary CTA buttons directly. Added Pine Green (`#4A5E45`, from the tree line at the photo's base) for progress/adopted-state colour (採用 button, 已審核 status dots). Paper/panel base tones were cooled from a golden cream to a neutral one (`#F0EFE9` / `#EBE7DD` / `#E3DDD0`) since the warm substrate alone was reading "orange" independent of any gradient. The opening intro's WebGL gradient and the hero/CTA mesh gradients were rebuilt/rebalanced off the same sunrise photo's actual colour progression and proportions (mostly cool blue, gold only breaking through as a small low accent — dawn, not dusk), replacing an earlier cold-blue/coral ramp and an earlier near-equal blue/gold balance that read as spreading warmth. Palette documentation (`palette_optionA.html`) now leads with OKLCH notation, hex as secondary reference.
 - **Clear Field, Bright Signal:** blue was covering every surface. Added **Stone** (`#5C6570`, grounded grey from the moodboard's architecture/sea photography) to carry structure and navigation, and **Teal** (`#1F7A72`, the moodboard's ocean horizon) for wayfinding/orientation marks. Bright blue is now held to decisions and action only — buttons, links, focus.
 - **Bright Field, Two Points** (Option C, unaffected by the A/B swap below): was a blue backbone with accent points — read as generic bright SaaS. Reframed as a **refraction field**: blue demoted to one plane among several (cyan, lavender, peach, pink), each standing in for an angle of light through glass; Lavender promoted from a gradient-only bridge tone to a full field colour. Added an explicit rule: colour is never the only signal — every pink/green mark carries a label or icon too.
-- **Slate, Earth & First Light:** held as-is; already the best-aligned. The "sober, high-contrast mode for dense data" from the feedback is expressed in `studio-study.html`'s comparison table rather than a palette change.
+- **Slate, Earth & First Light:** held as-is; already the best-aligned. The "sober, high-contrast mode for dense data" from the feedback is expressed in `layout_optionB.html`'s comparison table rather than a palette change.
 
 **Done:** media/photo placeholders across Option A and B recoloured to use each option's actual moodboard/palette colours instead of generic neutral dashed boxes.
 
-**Done:** `unified.html`'s updates section rebuilt as a full-width edge-to-edge carousel (sanalabs.com/products/sana-learn reference) with a pill-shaped dot/progress/pause-play control.
+**Done:** `layout_optionA.html`'s updates section rebuilt as a full-width edge-to-edge carousel (sanalabs.com/products/sana-learn reference) with a pill-shaped dot/progress/pause-play control.
 
-**A/B palette swap (2026-09-11):** the client's revised moodboard showed Calm Momentum carrying a warm, earthy swatch (brick red / burnt orange / slate-navy / tan / cream) rather than bright blue — closer to what this repo had called "Slate, Earth & First Light." So the two palettes swapped concepts: **Calm Momentum (`unified.html`) now carries Slate, Earth & First Light**; **Human Craft (`studio-study.html`) now carries Clear Field, Bright Signal**. Colour, corner-radius, and motion timing moved together as one package. Layout, copy, and each study's own signature device (guided thresholds for A, supportive threads for B) did not change — only which palette expresses them. `unified.html`'s guided-threshold dividers were separately removed per feedback (felt decorative); its six capability cards now carry line icons instead.
+**A/B palette swap (2026-09-11):** the client's revised moodboard showed Calm Momentum carrying a warm, earthy swatch (brick red / burnt orange / slate-navy / tan / cream) rather than bright blue — closer to what this repo had called "Slate, Earth & First Light." So the two palettes swapped concepts: **Calm Momentum (`layout_optionA.html`) now carries Slate, Earth & First Light**; **Human Craft (`layout_optionB.html`) now carries Clear Field, Bright Signal**. Colour, corner-radius, and motion timing moved together as one package. Layout, copy, and each study's own signature device (guided thresholds for A, supportive threads for B) did not change — only which palette expresses them. `layout_optionA.html`'s guided-threshold dividers were separately removed per feedback (felt decorative); its six capability cards now carry line icons instead.
 
 ## Concept ↔ study ↔ signature device
 
@@ -28,9 +28,9 @@ Palettes are not fixed. Expect them to shift as the visual languages pull apart.
 
 | Option | Concept | Study file | Palette | Signature device | THIS IS NOT |
 | --- | --- | --- | --- | --- | --- |
-| A | Calm Momentum | `unified.html` (default palette) | Slate, Earth & First Light | **Guided thresholds** (device retired from the UI per feedback — see below) — calm, structured progression through the six numbered capability cards and catalogue index; orientation cues in Stone/Clay earth tones. Disciplined type, information-led grid, restrained motion, giftee-group.com-style airiness. | bright "innovation" gradients, neon data networks, urgency-led dashboards, bureaucratic, rigid, performative |
-| B | Human Craft | `studio-study.html` | Clear Field, Bright Signal | **Supportive threads** — one governed line/thread that connects people, information, and next steps without taking control. Line-based illustration and motion; editorial photography. | decorative line texture, childish, sentimental, messy, over-familiar |
-| C | Curious Intelligence | `home-study.html` | Bright Field, Two Points | **Refracted possibilities** — an optical system of transparency, overlap, and refraction; complexity becomes clearer viewed from more than one angle. Colour is never the only carrier of meaning; motion optional, purposeful, low-stimulation. | neon gradients, cosmic data fields, black-box "magic", opaque, automated, gimmicky |
+| A | Calm Momentum | `layout_optionA.html` (default palette) | Slate, Earth & First Light | **Guided thresholds** (device retired from the UI per feedback — see below) — calm, structured progression through the six numbered capability cards and catalogue index; orientation cues in Stone/Clay earth tones. Disciplined type, information-led grid, restrained motion, giftee-group.com-style airiness. | bright "innovation" gradients, neon data networks, urgency-led dashboards, bureaucratic, rigid, performative |
+| B | Human Craft | `layout_optionB.html` | Clear Field, Bright Signal | **Supportive threads** — one governed line/thread that connects people, information, and next steps without taking control. Line-based illustration and motion; editorial photography. | decorative line texture, childish, sentimental, messy, over-familiar |
+| C | Curious Intelligence | `layout_optionC.html` (grid; earlier card version `layout_optionC_v1.html`) | Bright Field, Two Points | **Refracted possibilities** — an optical system of transparency, overlap, and refraction; complexity becomes clearer viewed from more than one angle. Colour is never the only carrier of meaning; motion optional, purposeful, low-stimulation. | neon gradients, cosmic data fields, black-box "magic", opaque, automated, gimmicky |
 
 Imagery cues from the WIP moodboards (inspiration only — do not lift):
 - **Calm Momentum:** architectural thresholds and vaulted naves (a doorway of light), a calm sea horizon, disciplined Chinese editorial poster typography, warm real collaboration.
@@ -39,7 +39,7 @@ Imagery cues from the WIP moodboards (inspiration only — do not lift):
 
 ---
 
-## Option B — Human Craft (`studio-study.html`)
+## Option B — Human Craft (`layout_optionB.html`)
 
 **Board comment:** A respectful, considered platform where AI supports professional judgement. Editorial warmth and visible care make complex education work feel manageable — not impersonal.
 
@@ -57,7 +57,7 @@ Best current alignment of visual system and concept. "Teacher retains final judg
 
 ---
 
-## Option C — Curious Intelligence (`home-study.html`)
+## Option C — Curious Intelligence (`layout_optionC_v1.html`)
 
 **Board comment:** An open field of intelligible possibilities: AI reveals relevant relationships and next steps, while people can inspect, adapt, and decide.
 
@@ -74,11 +74,11 @@ The clearest AI-native expression, but currently risks reading as a modern SaaS 
 - "Why this recommendation?" becomes a **visible, repeatable component pattern** — not a buried trust statement.
 - Add one or two visualisations of how a **learner need → approved resource → tool → next action** connect. Articulate, explainable intelligence made concrete.
 
-**Done:** `home-study.html`'s hero was rebuilt against amita-oshiete.jp's actual measured DOM geometry (live `getBoundingClientRect`/`getComputedStyle`, not a screenshot guess) — panel is a pure-graphic near-square (670:702), the trend box is flush to its top-right edge, the wordmark card is enlarged to real signature scale, trending chips are plain pills (matching the reference's actual hero styling — the faceted-polygon treatment belongs to a different section further down amita's page and was corrected back out). No further amita-matching work queued unless raised again.
+**Done:** `layout_optionC_v1.html`'s hero was rebuilt against amita-oshiete.jp's actual measured DOM geometry (live `getBoundingClientRect`/`getComputedStyle`, not a screenshot guess) — panel is a pure-graphic near-square (670:702), the trend box is flush to its top-right edge, the wordmark card is enlarged to real signature scale, trending chips are plain pills (matching the reference's actual hero styling — the faceted-polygon treatment belongs to a different section further down amita's page and was corrected back out). No further amita-matching work queued unless raised again.
 
 ---
 
-## Option A — Calm Momentum (`unified.html`, default palette)
+## Option A — Calm Momentum (`layout_optionA.html`, default palette)
 
 **Board comment:** A calm, navigable platform that turns a complex education ecosystem into clear, trustworthy next actions — without pressure or AI spectacle.
 

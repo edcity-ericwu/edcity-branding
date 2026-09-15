@@ -111,7 +111,7 @@ A bridge gives the "super-connector" idea a human, physical form. It should be a
 
 What each study already does that answers this strategy, and where it falls short.
 
-| Brand-strategy point | Option A · Calm Momentum (`unified.html`) | Option B · Human Craft (`studio-study.html`) | Option C · Curious Intelligence (`home-study.html`) |
+| Brand-strategy point | Option A · Calm Momentum (`layout_optionA.html`) | Option B · Human Craft (`layout_optionB.html`) | Option C · Curious Intelligence (`layout_optionC_v1.html`) |
 | --- | --- | --- | --- |
 | **Wayfinding, primary anchor** | Guided-threshold dividers were retired from the UI per feedback (felt decorative) — no dedicated wayfinding device now; a `--wayfind` colour token exists but isn't referenced anywhere in the CSS. **Gap.** | No explicit wayfinding device yet — the supportive thread guides *within* the EdCity.ai mock, not across the page. **Gap.** | Refraction/need→signal→resource→action flow reads as a *route*, but isn't badged as wayfinding anywhere in copy. Partial. |
 | **AI as guide, not mascot** ("採用/調整/略過", never a chat avatar) | ✓ — same shared AI-suggestion card pattern across all three studies (skeleton-level, not option-specific). | ✓ — same pattern; reinforced by the "陳老師" faculty quote ("工具應該讓判斷更容易，不是替判斷做決定") which is close to word-for-word the boundaries table's "enabling, never overbearing" line. | ✓ — same pattern; "為何推薦？" disclosure link in the AI card is the clearest working example of "explains its reasoning" in any of the three. |
