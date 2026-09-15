@@ -46,12 +46,12 @@ Imagery cues from the WIP moodboards (inspiration only — do not lift):
 Best current alignment of visual system and concept. "Teacher retains final judgement," verified resources, and next-step guidance *substantiate* respectful, human-centred support rather than claiming it. Chinese-first copy and contextual teacher language root it in the actual Hong Kong setting.
 
 **Keep**
-- Paper-like warmth, editorial pacing, calm considered tone.
+- Editorial pacing, calm considered tone. *(Decision 2026-09-15: the palette stays cool and clear; warmth is carried by type, pacing, voice and photography rather than paper tones.)*
 - Human agency made explicit — 採用 / 調整 / 略過.
 - Credible product framing: AI produces a draft or recommendation; teachers decide.
 
 **Improve**
-- Make "craft" **operational**: a subtle thread / annotation / marked-up-document system running through illustrations, diagrams, dividers, and motion — not texture pasted onto UI.
+- ~~Make "craft" operational through an annotation / marked-up-document system.~~ *Retired 2026-09-15; the line network (intro), curvy bands and dot-grid icons carry the line language instead.*
 - Warmth must not soften functional hierarchy. Tables, dashboards, statuses, and dense school-admin tasks need a **high-contrast, sober mode**.
 - Photography used selectively for real moments of teaching, coaching, collaboration. Avoid an editorial campaign with product modules bolted on. *(placeholder for now)*
 
