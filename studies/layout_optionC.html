@@ -57,6 +57,11 @@
 
   /* ---- bands ---- */
   .band{padding:clamp(90px,15vh,170px) 0;border-top:1px solid var(--line)}
+  /* rhythm: one loud band, one quiet band, instead of an even beat */
+  .band.loud{padding:clamp(130px,22vh,240px) 0}
+  .band.loud .stmt.xl{margin-bottom:clamp(30px,4vw,48px)}
+  .band.quiet{padding:clamp(56px,9vh,96px) 0}
+  .stmt.sm{font-size:clamp(1.2rem,1.9vw,1.6rem)}
   .band.hero{border-top:0;padding-top:clamp(90px,14vh,150px)}
   .hero-lede{margin-bottom:0!important}
   .hero .fig{margin-top:clamp(40px,5vw,64px)}
@@ -189,8 +194,6 @@
   .cmpx[data-v="new"] .cmp-rows .bar{background:linear-gradient(180deg,#8CE7F2,#5692FF,#B9A8F2,#5692FF,#8CE7F2);background-size:100% 500%;background-position:0 calc(var(--i) * 25%)}
   .cmpx[data-v="new"] .cmp-rows .v .old{opacity:0}
   .cmpx[data-v="new"] .cmp-rows .v .new{opacity:1;color:var(--ink)}
-  .tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gut);margin-top:clamp(40px,6vw,72px)}
-  .tri article{padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 
   .foot{border-top:1px solid var(--line);padding:64px 0 36px}
   .foot .g > div{display:flex;flex-direction:column;gap:8px}
@@ -220,7 +223,7 @@
     .row,.sr{grid-template-columns:repeat(4,minmax(0,1fr))}
     .row .n{grid-column:1/2}.row .k{grid-column:2/5}.row .v{grid-column:2/5}.row .t{display:none}
     .sr dt{grid-column:1/-1}.sr dd,.sr dd.aside{grid-column:1/-1;justify-self:start}
-    .quad,.tri{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
+    .quad{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
     .rf-stage{grid-template-columns:1fr;height:auto}
     .rf-plane{grid-column:1/-1!important;grid-row:auto;height:120px;margin-top:-18px!important;margin-left:0}
     .rf-plane[data-i="0"]{margin-top:0!important}
@@ -283,7 +286,6 @@
       <a href="#meet"><span class="br">[</span>產品<span class="br">]</span></a>
       <a href="#ecosystem"><span class="br">[</span>生態系統<span class="br">]</span></a>
       <a href="#compare"><span class="br">[</span>為何不同<span class="br">]</span></a>
-      <a href="#about"><span class="br">[</span>動態<span class="br">]</span></a>
     </nav>
     <a class="nav-cta" href="#book">預約導覽 →</a>
   </div>
@@ -367,10 +369,10 @@
     </div>
   </section>
 
-  <section class="band">
+  <section class="band loud">
     <div class="g">
       <p class="meta c1-3">[03] 課堂裡的可能</p>
-      <h2 class="stmt c4-11">同一個時刻，多看一個角度</h2>
+      <h2 class="stmt xl c4-12">同一個時刻，多看一個角度</h2>
       <div class="angles c1-12" data-view="teacher">
         <figure class="ang-fig">
           <div class="ph ang-ph">
@@ -442,19 +444,13 @@
         <div class="sr"><dt>03</dt><dd>公共圖書館 · 少年章節書專架</dd><dd class="aside"><i class="chip c-c"></i>社區資源</dd></div>
       </dl>
 
-      <div class="quad c1-12">
-        <div><p class="meta">教學應用程式</p><p class="body">支援課堂互動與延伸學習的工具。</p></div>
-        <div><p class="meta">智能助手</p><p class="body">因應特定學習需要而設的智能助理。</p></div>
-        <div><p class="meta">資源配對</p><p class="body">根據課程情境，推薦適切教學資源。</p></div>
-        <div><p class="meta">安全審核</p><p class="body">把關資料安全、私隱保障與兒童保護。</p></div>
-      </div>
     </div>
   </section>
 
-  <section class="band" id="compare">
+  <section class="band quiet" id="compare">
     <div class="g">
       <p class="meta c1-3">[05] 為何不同</p>
-      <h2 class="stmt c4-11">智能並非附加功能，而是平台的核心設計</h2>
+      <h2 class="stmt sm c4-11">智能並非附加功能，而是平台的核心設計</h2>
       <div class="cmpx c1-12" data-v="old">
         <div class="cmp-toggle" role="group" aria-label="比較">
           <button type="button" class="on" data-v="old" aria-pressed="true">傳統教育平台</button>
@@ -472,18 +468,6 @@
     </div>
   </section>
 
-  <section class="band" id="about">
-    <div class="g">
-      <p class="meta c1-3">[06] 動態</p>
-      <h2 class="stmt c4-11">最新動向</h2>
-      <div class="tri c1-12">
-        <article><p class="meta">教師工作坊</p><p class="body strong">AI 與讀寫教學 — 實作坊</p><p class="meta dim">2026 年秋季 · 示意內容</p></article>
-        <article><p class="meta">產品更新</p><p class="body strong">學習洞察面板 — 新增班別比較</p><p class="meta dim">更新記錄 · 示意內容</p></article>
-        <article><p class="meta">活動</p><p class="body strong">EdCity AI 教育峰會 — 香港</p><p class="meta dim">日期待定 · 示意內容</p></article>
-      </div>
-    </div>
-  </section>
-
   <section class="xfer quote-peak" aria-label="教師訪談">
     <div class="xfer-stage">
       <div class="xfer-msg"><blockquote><span class="cjk-open">「</span>它沒有取代我的判斷，<br>而是讓我更快看到全班的需要。」</blockquote><p class="meta">中學中文科教師 · 教師訪談摘錄（示意內容）</p></div>
@@ -493,7 +477,7 @@
 
   <section class="band book" id="book">
     <div class="g">
-      <p class="meta c1-3">[07] 預約導覽</p>
+      <p class="meta c1-3">[06] 預約導覽</p>
       <h2 class="stmt c4-11">為你的學校預約一次導覽，親身了解 EdCity。</h2>
       <p class="links c4-8"><a class="btn-ink" href="#top">預約導覽 →</a></p>
     </div>
@@ -509,7 +493,7 @@
     </div>
     <div class="c7-8"><p class="meta">產品</p><a href="#edcity-ai">EdCity.ai</a><a href="#meet">教學工具箱</a><a href="#meet">校本教材庫</a><a href="#meet">學習洞察</a></div>
     <div class="c9-10"><p class="meta">生態系統</p><a href="#ecosystem">教學應用程式</a><a href="#ecosystem">智能助手</a><a href="#ecosystem">資源配對</a><a href="#ecosystem">供應商專區</a></div>
-    <div class="c11-12"><p class="meta">關於</p><a href="#about">願景</a><a href="#about">私隱與保安</a><a href="#compare">比較</a><a href="#book">聯絡</a></div>
+    <div class="c11-12"><p class="meta">關於</p><a href="#meet">願景</a><a href="#ecosystem">私隱與保安</a><a href="#compare">比較</a><a href="#book">聯絡</a></div>
     <p class="meta dim c1-12 legal">© 香港教育城 2026 · 本頁為品牌設計研究，內容為示意 · 方案 C / Option C · 網格版</p>
   </div>
 </footer>
