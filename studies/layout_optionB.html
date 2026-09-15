@@ -25,6 +25,8 @@
     --clay:#0EBFAE;
     --clay-deep:#0C8078;
     --spark:#FF6A3D;
+    --spark-text:#B23F14;
+    --clay-text:#0A665F;
     --rail:56px;
     --sans:"Aspekta Variable", "Chiron GoRound TC", system-ui, -apple-system, "Segoe UI", sans-serif;
     --serif:var(--sans);
@@ -59,7 +61,7 @@
   /* full-screen menu */
   .site-nav{
     position:fixed;left:var(--rail);top:0;right:0;bottom:0;z-index:35;
-    background:var(--nav-c,var(--slate));color:var(--nav-ink,var(--ink));
+    background:var(--paper);color:var(--ink);border-left:3px solid var(--slate);
     transform:translateX(-103%);
     transition:transform .55s cubic-bezier(.15,.85,.45,1), background-color .3s ease;
     display:flex;flex-direction:column;justify-content:center;
@@ -70,7 +72,8 @@
   .site-nav a{font-family:var(--sans);font-weight:700;letter-spacing:-.025em;font-size:clamp(2rem,7vw,4.6rem);line-height:1.08;display:inline-flex;align-items:baseline;gap:.28em}
   .site-nav a .u{background-image:linear-gradient(currentColor,currentColor);background-size:0 3px;background-repeat:no-repeat;background-position:0 92%;transition:background-size .28s ease}
   .site-nav a:hover .u,.site-nav a:focus-visible .u{background-size:100% 3px}
-  .site-nav a .sl{font-weight:400;color:var(--sl,currentColor)}
+  .site-nav a .sl{font-size:0;display:inline-block;width:.42em;height:.42em;align-self:center;border-radius:50%;
+    background:radial-gradient(circle, var(--ink) 0 22%, transparent 26% 58%, var(--ink) 60% 72%, transparent 76%)}
   .site-nav .meta{position:absolute;left:clamp(28px,7vw,84px);bottom:clamp(24px,5vh,52px);font-family:var(--mono);font-size:var(--fs-xs);opacity:.75;letter-spacing:.02em}
   .site-nav .close{
     all:unset;box-sizing:border-box;cursor:pointer;
@@ -101,7 +104,7 @@
   section:first-of-type{border-top:0}
   .sec{padding:clamp(44px,8vh,88px) 0}
   .lead{max-width:640px;margin:22px 0 0;color:var(--ink-2)}
-  .lead .spark{color:var(--spark);font-family:var(--sans);font-weight:600}
+  .lead .spark{color:var(--spark-text);font-family:var(--sans);font-weight:600}
 
   .pill{
     display:inline-flex;align-items:center;gap:9px;position:relative;
@@ -134,9 +137,15 @@
   .lk:hover{color:var(--slate);border-color:var(--slate)}
   .float-cta{position:fixed;top:18px;right:clamp(16px,3vw,32px);z-index:45;opacity:0;transform:translateY(-8px);pointer-events:none;transition:opacity .3s ease, transform .3s ease}
   .float-cta.show{opacity:1;transform:none;pointer-events:auto}
+  .nav-open .float-cta{opacity:0;pointer-events:none}
 
   /* hero */
-  .hero{padding:clamp(40px,9vh,104px) 0 clamp(44px,8vh,96px)}
+  .hero{padding:clamp(40px,9vh,104px) 0 clamp(44px,8vh,96px);position:relative;overflow:hidden}
+  .hero > .wrap{position:relative;z-index:1}
+  /* the intro's network, settled: a quiet static composition beside the headline */
+  .hero-net{position:absolute;right:clamp(24px,5vw,90px);top:clamp(20px,5vh,60px);width:min(40vw,560px);height:auto;z-index:0;pointer-events:none}
+  @media (max-width:1100px){ .hero-net{display:none} }
+  .hero-partners{margin:22px 0 0;font-size:var(--fs-xs);color:var(--ink-3)}
   .hero h1{font-size:clamp(1.7rem,4.8vw,3.6rem);line-height:1.25;letter-spacing:.005em;margin:0;text-wrap:balance}
   .hero .stand{max-width:52ch;margin:30px 0 0;color:var(--ink-2);font-size:var(--fs-base)}
 
@@ -160,9 +169,9 @@
   /* inset mock card */
   .mock{
     margin:34px 0 0;
-    border:1px solid var(--line-2);background:var(--paper-2);
-    border-radius:10px;
-    padding:20px 20px 22px;
+    border:0;border-top:2px solid var(--ink);border-bottom:1px solid var(--line-2);background:transparent;
+    border-radius:0;
+    padding:20px 0 22px;
   }
   .mock .m-tag{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
   .mock .m-line{font-size:var(--fs-base);line-height:1.55;margin:12px 0 14px}
@@ -187,7 +196,7 @@
   .mock ul.m-match{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
   .mock ul.m-match li{display:flex;justify-content:space-between;gap:12px;font-size:var(--fs-sm);border-top:1px solid var(--line);padding-top:9px}
   .mock ul.m-match li:first-child{border-top:0;padding-top:0}
-  .mock ul.m-match .need{font-family:var(--sans);font-size:var(--fs-xs);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--spark);align-self:center;white-space:nowrap}
+  .mock ul.m-match .need{font-family:var(--sans);font-size:var(--fs-xs);font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--spark-text);align-self:center;white-space:nowrap}
 
   /* feature hairline grid */
   .feats{margin:40px 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
@@ -236,7 +245,7 @@
     background:radial-gradient(circle, var(--ink) 0 2.2px, var(--paper) 2.8px);border:1.4px solid var(--ink);transform:translate(-50%,-50%);
   }
   .mock .spine i.a{top:2%} .mock .spine i.b{top:50%} .mock .spine i.c{top:98%}
-  .mock .m-hand{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:.04em;text-transform:uppercase;color:var(--clay-deep);margin:14px 0 4px}
+  .mock .m-hand{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:.04em;text-transform:uppercase;color:var(--clay-text);margin:14px 0 4px}
   .mock .m-out{font-family:var(--sans);font-weight:600;font-size:var(--fs-sm);margin-top:14px;color:var(--ink)}
 
   /* denser, higher-contrast comparison — warmth must not soften hierarchy */
@@ -268,7 +277,8 @@
   .hero-shot{margin:clamp(36px,7vh,72px) 0 0}
 
   /* editorial portrait + pull-quote, faculty-style */
-  .portrait-quote{margin:40px 0 0;display:grid;grid-template-columns:1fr 1.6fr;gap:32px;align-items:center}
+  .sec.quote{padding:clamp(110px,18vh,200px) 0}
+  .portrait-quote{margin:0;display:grid;grid-template-columns:1fr 1.6fr;gap:32px;align-items:center}
   .portrait-quote .media{margin:0}
   .pq-role{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:.14em;color:var(--ink-3);margin:0 0 14px}
   .portrait-quote blockquote{
@@ -359,7 +369,9 @@
 
 
   /* sober working mode: ink, solid rules, aligned numbers, status in words; no gradients or motion */
-  .sober-panel{margin:40px 0 0;border-top:3px solid var(--ink);font-family:var(--sans);color:var(--ink)}
+  #class-view{padding:clamp(40px,6vh,64px) 0}
+  #class-view h2{font-size:var(--fs-lg)}
+  .sober-panel{margin:28px 0 0;border-top:3px solid var(--ink);font-family:var(--sans);color:var(--ink)}
   .sp-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid var(--ink)}
   .sp-head b{font-size:var(--fs-base);font-weight:600}
   .sp-head span{font-size:var(--fs-sm);color:var(--ink-2)}
@@ -370,6 +382,13 @@
   .st{font-weight:600}
   .st.todo{color:#B42318}.st.sugg{color:#8A5300}.st.done{color:#0C6B63}.st.none{color:var(--ink-2);font-weight:500}
   .sp-foot{margin:14px 0 0;font-size:var(--fs-sm);color:var(--ink-2)}
+  /* custom cursor: a dot that leaves a short fading path; becomes a ring-and-dot node over links */
+  .cur-dot{position:fixed;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--ink);
+    z-index:1000;pointer-events:none;transition:width .2s ease, height .2s ease, margin .2s ease, background .2s ease;opacity:0}
+  .cur-dot.on{opacity:1}
+  .cur-dot.hot{width:30px;height:30px;margin:-15px 0 0 -15px;background:radial-gradient(circle, var(--ink) 0 14%, transparent 18% 62%, var(--ink) 66% 74%, transparent 78%)}
+  .cur-trail{position:fixed;inset:0;z-index:999;pointer-events:none}
+  html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor summary{cursor:none}
 </style>
 <script>document.documentElement.className += " r";</script>
 
@@ -439,6 +458,25 @@
 <main>
 
   <section class="hero">
+    <svg class="hero-net" viewBox="0 0 640 420" aria-hidden="true">
+      <defs>
+        <linearGradient id="hn0" gradientUnits="userSpaceOnUse" x1="80" y1="150" x2="640" y2="150"><stop offset="0" stop-color="#12307A"/><stop offset="1" stop-color="#2450E6"/></linearGradient>
+        <linearGradient id="hn1" gradientUnits="userSpaceOnUse" x1="300" y1="-30" x2="300" y2="440"><stop offset="0" stop-color="#2450E6"/><stop offset="1" stop-color="#0EBFAE"/></linearGradient>
+        <linearGradient id="hn2" gradientUnits="userSpaceOnUse" x1="160" y1="400" x2="580" y2="-20"><stop offset="0" stop-color="#0EBFAE"/><stop offset="1" stop-color="#0C8078"/></linearGradient>
+        <linearGradient id="hn3" gradientUnits="userSpaceOnUse" x1="400" y1="0" x2="640" y2="240"><stop offset="0" stop-color="#0EBFAE"/><stop offset="1" stop-color="#2450E6"/></linearGradient>
+      </defs>
+      <g style="mix-blend-mode:multiply">
+        <line x1="80" y1="150" x2="640" y2="150" stroke="url(#hn0)" stroke-width="30" stroke-linecap="round" style="mix-blend-mode:multiply" opacity=".92"/>
+        <line x1="300" y1="-30" x2="300" y2="440" stroke="url(#hn1)" stroke-width="30" stroke-linecap="round" style="mix-blend-mode:multiply" opacity=".92"/>
+        <line x1="160" y1="400" x2="580" y2="-20" stroke="url(#hn2)" stroke-width="30" stroke-linecap="round" style="mix-blend-mode:multiply" opacity=".92"/>
+        <line x1="400" y1="0" x2="640" y2="240" stroke="url(#hn3)" stroke-width="30" stroke-linecap="round" style="mix-blend-mode:multiply" opacity=".92"/>
+      </g>
+      <circle cx="300" cy="150" r="24" fill="none" stroke="#0E1626" stroke-width="2"/><circle cx="300" cy="150" r="4.5" fill="#0E1626"/>
+      <circle cx="410" cy="150" r="24" fill="none" stroke="#0E1626" stroke-width="2"/><circle cx="410" cy="150" r="4.5" fill="#0E1626"/>
+      <circle cx="300" cy="260" r="24" fill="none" stroke="#0E1626" stroke-width="2"/><circle cx="300" cy="260" r="4.5" fill="#0E1626"/>
+      <circle cx="550" cy="150" r="24" fill="none" stroke="#0E1626" stroke-width="2"/><circle cx="550" cy="150" r="4.5" fill="#0E1626"/>
+      <circle cx="480" cy="80" r="24" fill="none" stroke="#0E1626" stroke-width="2"/><circle cx="480" cy="80" r="4.5" fill="#0E1626"/>
+    </svg>
     <div class="wrap">
       <h1>因應每個需要，<br>成就每一步學習。</h1>
       <p class="stand" data-r>以 AI 為核心的教與學平台，連結教師、學生與家庭；在合適的時機提供適切支援，讓教學更有效、學習更有方向、家校協作更順暢。</p>
@@ -446,16 +484,8 @@
         <a class="pill solid" href="#book">預約導覽 →</a>
         <a class="lk" href="#meet">認識 EdCity →</a>
       </div>
+      <p class="hero-partners" data-r>與全港中小學、大專院校及夥伴機構協作 · 官立中學 · 資助小學 · 特殊學校 · 大專院校 · 出版夥伴 · 服務機構</p>
       <div class="media hero-shot" data-ar="21:9" data-r><span class="cap">全幅編輯攝影：教師與學生在課室 · 待拍攝</span></div>
-    </div>
-  </section>
-
-  <section class="sec partners" data-r>
-    <div class="wrap">
-      <p class="lbl">與全港中小學、大專院校及夥伴機構協作</p>
-      <ul>
-        <li>官立中學</li><li>資助小學</li><li>特殊學校</li><li>大專院校</li><li>出版夥伴</li><li>服務機構</li>
-      </ul>
     </div>
   </section>
 
@@ -627,7 +657,7 @@
       </div>
       <div><h4>產品</h4><ul><li><a href="#edcity-ai">EdCity.ai</a></li><li><a href="#meet">教學工具箱</a></li><li><a href="#meet">校本教材庫</a></li><li><a href="#meet">學習洞察</a></li></ul></div>
       <div><h4>生態系統</h4><ul><li><a href="#ecosystem">教學應用程式</a></li><li><a href="#ecosystem">智能助手</a></li><li><a href="#ecosystem">資源配對</a></li><li><a href="#ecosystem">供應商專區</a></li></ul></div>
-      <div><h4>關於</h4><ul><li><a href="#meet">願景</a></li><li><a href="#ecosystem">私隱與保安</a></li><li><a href="#class-view">比較</a></li><li><a href="#book">聯絡</a></li></ul></div>
+      <div><h4>關於</h4><ul><li><a href="#meet">願景</a></li><li><a href="#ecosystem">私隱與保安</a></li><li><a href="#class-view">全班狀況</a></li><li><a href="#book">聯絡</a></li></ul></div>
     </div>
     <div class="legal">
       <span>© 香港教育城 2026</span>
@@ -651,12 +681,11 @@
     var slashSpans = [].slice.call(nav.querySelectorAll('.sl'));
     function open(){
       var f = FILLS[turn % FILLS.length]; turn++;
-      nav.style.setProperty('--nav-c', f[0]);
-      nav.style.setProperty('--nav-ink', f[1]);
+
       slashSpans.forEach(function(s, k){
         var c = SLASHES[(turn + k) % SLASHES.length];
         if(c === f[0]) c = SLASHES[(turn + k + 2) % SLASHES.length];
-        s.style.color = c;
+
       });
       nav.hidden = false; void nav.offsetWidth;
       nav.classList.add('open');
@@ -919,6 +948,44 @@
   });
 })();
 
+</script>
+<script>
+/* dot cursor with a trailing path (fine pointers only; no trail under reduced motion) */
+(function(){
+  if(!matchMedia('(pointer: fine)').matches) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.classList.add('has-cursor');
+  var dot = document.createElement('div'); dot.className = 'cur-dot'; document.body.appendChild(dot);
+  var cv = null, ctx = null, pts = [], dpr = Math.min(devicePixelRatio||1, 2);
+  if(!reduce){
+    cv = document.createElement('canvas'); cv.className = 'cur-trail'; document.body.appendChild(cv); ctx = cv.getContext('2d');
+    var size = function(){ cv.width = innerWidth*dpr; cv.height = innerHeight*dpr; }; size(); addEventListener('resize', size);
+  }
+  var x = -100, y = -100;
+  addEventListener('pointermove', function(e){
+    x = e.clientX; y = e.clientY; dot.classList.add('on');
+    dot.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    var t = e.target.closest && e.target.closest('a,button,summary,[role="button"],.rf-plane');
+    dot.classList.toggle('hot', !!t);
+    if(ctx) pts.push({ x:x, y:y, t:performance.now() });
+  }, { passive:true });
+  document.addEventListener('mouseleave', function(){ dot.classList.remove('on'); });
+  if(!ctx) return;
+  (function frame(now){
+    pts = pts.filter(function(p){ return now - p.t < 520; });
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,innerWidth,innerHeight);
+    if(pts.length > 1){
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      for(var i=1;i<pts.length;i++){
+        var a = pts[i-1], b = pts[i], k = 1 - (now - b.t)/520;
+        ctx.strokeStyle = 'rgba(' + Math.round(36 + (14-36)*(1-k)) + ',' + Math.round(80 + (191-80)*(1-k)) + ',' + Math.round(230 + (174-230)*(1-k)) + ',' + (k*0.9).toFixed(3) + ')';
+        ctx.lineWidth = 1 + k*5;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+    }
+    requestAnimationFrame(frame);
+  })(performance.now());
+})();
 </script>
 </body>
 </html>
