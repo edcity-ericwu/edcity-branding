@@ -24,7 +24,7 @@ Option letters match the client moodboard exactly and mean the same thing everyw
 | --- | --- |
 | `index.html` | Start page linking every study. |
 | `present.html` | Compare board: a 3×3 grid (moodboard → palette → layout, for each option) with 2D scroll-snap. Moodboard cells take a pasted Figma prototype link. |
-| `palette_optionA.html` | **Slate, Earth & First Light.** Built from the moodboard's sunrise photo: structural slate blue, warm tan and rose-beige, apricot and dusty-coral sparks, a clear-sky blue for links, pine green for progress. Includes the Spark & Light gradient rules. |
+| `palette_optionA.html` | **Slate, Sky & First Light.** Built from the moodboard's sunrise photo at dawn: structural slate blue on a cool morning-paper and mist ground, a clear-sky blue for the primary button and links, apricot and dusty coral as small first-light accents, pine green for what's done. Includes the Spark & Light gradient rules. |
 | `palette_optionB.html` | **Clear Field, Bright Signal.** Bright-blue backbone on near-white, held to decisions only; stone for structure, teal for wayfinding, one coral signal. |
 | `palette_optionC.html` | **Bright Field, Two Points.** A refraction field: blue as one plane among cyan, lavender, peach and pink, with two small signal points (pink = opportunity, green = done). |
 | `layout_optionA.html` | Calm, left-aligned structure. A WebGL dawn opening brightens into the hero; the page then advances as six numbered steps tracked by a left progress rail, with a four-step sequence (備課 → 教學 → 評估 → 下一步) and a closing section where every step is lit. One primary action (booking), flat ruled product mocks, a full-width FAQ, and a warm light that follows the pointer. |
