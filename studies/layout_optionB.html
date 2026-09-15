@@ -278,6 +278,7 @@
   .media[data-ar="21:9"]{aspect-ratio:21/9}
   .media[data-ar="16:9"]{aspect-ratio:16/9}
   .media[data-ar="3:2"]{aspect-ratio:3/2}
+  .media[data-ar="3:4"]{aspect-ratio:3/4}
   .media .cap{position:absolute;left:14px;bottom:10px;font-size:.68rem}
   .media.video::after{
     content:"▶";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
@@ -386,6 +387,20 @@
   @media (prefers-reduced-motion:reduce){
     #intro .skip,#intro .hint{animation:none}
   }
+
+  /* ============ dot-grid icons: rounded bands on a 5x5 dot grid, overlaps multiply ============ */
+  .enum .ic{flex:0 0 64px;width:64px;height:64px;align-self:center}
+  .enum .ic svg{display:block;width:100%;height:100%;overflow:visible}
+  .enum li{align-items:center}
+  @media (max-width:640px){ .enum .ic{width:44px;height:44px;flex-basis:44px} }
+
+  /* ============ curvy bands: thick gradient ribbons drawn on scroll, behind content ============ */
+  .has-curves{position:relative;overflow:hidden}
+  .has-curves > .wrap{position:relative;z-index:1}
+  .curves{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+  .curves path{fill:none;stroke-linecap:round;stroke-width:46;stroke-dasharray:1 1;stroke-dashoffset:1}
+  @media (max-width:760px){ .curves path{stroke-width:30} }
+  @media (prefers-reduced-motion:reduce){ .curves path{stroke-dashoffset:0!important} }
 </style>
 <script>document.documentElement.className += " r";</script>
 
@@ -453,7 +468,15 @@
 
 <main>
 
-  <section class="hero">
+  <section class="hero has-curves">
+    <svg class="curves" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="cgA" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="0"><stop offset="0" stop-color="#8EEBE1"/><stop offset="1" stop-color="#2450E6"/></linearGradient>
+        <linearGradient id="cgB" gradientUnits="userSpaceOnUse" x1="1440" y1="300" x2="860" y2="960"><stop offset="0" stop-color="#0EBFAE"/><stop offset="1" stop-color="#12307A"/></linearGradient>
+      </defs>
+      <path pathLength="1" stroke="url(#cgA)" d="M -80 640 C 260 560, 520 200, 760 300 S 900 760, 1120 600 S 1290 140, 1540 240"/>
+      <path pathLength="1" stroke="url(#cgB)" d="M 1540 820 C 1260 860, 1040 560, 1170 430 C 1290 310, 1430 460, 1320 590 C 1210 720, 930 660, 860 960"/>
+    </svg>
     <div class="wrap">
       <h1>因應每個需要，<br>成就每一步學習。</h1>
       <p class="stand" data-r>以 AI 為核心的教與學平台，連結教師、學生與家庭；在合適的時機提供適切支援，讓教學更有效、學習更有方向、家校協作更順暢。</p>
@@ -480,12 +503,12 @@
       <h2>貫通備課、教學與評估，成就一體化學習平台。</h2>
       <p class="lead" data-r>EdCity 結合學習管理、教學工具、智能助手與經審核的資源，構建以 AI 為核心的一體化平台；圍繞課堂實況、學生需要與家庭參與而設計，讓每個教學時刻都有清晰依據。</p>
       <ol class="enum">
-        <li data-r><span class="n">01</span><span class="t">一對一學習支援</span><span class="d">按每名學生的學習進度與個別需要，度身提供下一步建議。</span><span class="thumb">配圖：學生與進度視圖</span></li>
-        <li data-r><span class="n">02</span><span class="t">智能助手</span><span class="d">因應不同學習情境提供適切建議，最終決定仍由教師把關。</span><span class="thumb">配圖：教師檢視助手草稿</span></li>
-        <li data-r><span class="n">03</span><span class="t">適時學習</span><span class="d">在學生最需要的時刻，配對合適的學習資源。</span><span class="thumb">配圖：課堂上翻開資源</span></li>
-        <li data-r><span class="n">04</span><span class="t">協作備課</span><span class="d">支援教師協作編寫教材，共享校本資源庫。</span><span class="thumb">配圖：科組一起備課</span></li>
-        <li data-r><span class="n">05</span><span class="t">學習管理</span><span class="d">整合課程、紀錄與學習進度，一目了然。</span><span class="thumb">配圖：班級總覽畫面</span></li>
-        <li data-r><span class="n">06</span><span class="t">學習洞察</span><span class="d">將課堂數據轉化為清晰可行的教學行動。</span><span class="thumb">配圖：洞察轉為下一步</span></li>
+        <li data-r><span class="n">01</span><span class="ic" data-ic="step" aria-hidden="true"></span><span class="t">一對一學習支援</span><span class="d">按每名學生的學習進度與個別需要，度身提供下一步建議。</span><span class="thumb">配圖：學生與進度視圖</span></li>
+        <li data-r><span class="n">02</span><span class="ic" data-ic="spark" aria-hidden="true"></span><span class="t">智能助手</span><span class="d">因應不同學習情境提供適切建議，最終決定仍由教師把關。</span><span class="thumb">配圖：教師檢視助手草稿</span></li>
+        <li data-r><span class="n">03</span><span class="ic" data-ic="clock" aria-hidden="true"></span><span class="t">適時學習</span><span class="d">在學生最需要的時刻，配對合適的學習資源。</span><span class="thumb">配圖：課堂上翻開資源</span></li>
+        <li data-r><span class="n">04</span><span class="ic" data-ic="overlap" aria-hidden="true"></span><span class="t">協作備課</span><span class="d">支援教師協作編寫教材，共享校本資源庫。</span><span class="thumb">配圖：科組一起備課</span></li>
+        <li data-r><span class="n">05</span><span class="ic" data-ic="rows" aria-hidden="true"></span><span class="t">學習管理</span><span class="d">整合課程、紀錄與學習進度，一目了然。</span><span class="thumb">配圖：班級總覽畫面</span></li>
+        <li data-r><span class="n">06</span><span class="ic" data-ic="bars" aria-hidden="true"></span><span class="t">學習洞察</span><span class="d">將課堂數據轉化為清晰可行的教學行動。</span><span class="thumb">配圖：洞察轉為下一步</span></li>
       </ol>
     </div>
   </section>
@@ -529,7 +552,15 @@
     </div>
   </section>
 
-  <section class="sec quote" data-r>
+  <section class="sec quote has-curves" data-r>
+    <svg class="curves" viewBox="0 0 1440 1600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="cgC" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="760"><stop offset="0" stop-color="#FFB08F"/><stop offset="1" stop-color="#2450E6"/></linearGradient>
+        <linearGradient id="cgD" gradientUnits="userSpaceOnUse" x1="1440" y1="120" x2="1100" y2="1300"><stop offset="0" stop-color="#9DB6F7"/><stop offset="1" stop-color="#0C8078"/></linearGradient>
+      </defs>
+      <path pathLength="1" stroke="url(#cgC)" d="M -80 260 C 420 160, 560 620, 320 760 C 90 890, 40 520, 300 450 C 620 360, 980 700, 1540 560"/>
+      <path pathLength="1" stroke="url(#cgD)" d="M 1540 120 C 1180 60, 1000 340, 1180 520 C 1340 680, 1520 1000, 1100 1300"/>
+    </svg>
     <div class="wrap">
       <blockquote><span class="cjk-open">「</span>它沒有取代我的判斷，而是讓我更快看到全班的需要。」</blockquote>
       <p class="who">中學中文科教師 · 教師訪談摘錄（示意內容）</p>
@@ -938,5 +969,63 @@
   })();
 </script>
 
+<script>
+/* dot-grid icons */
+(function(){
+  var C = { blue:'#2450E6', sky:'#9DB6F7', teal:'#0EBFAE', coral:'#FF8A63', stone:'#8A929C' };
+  var ICONS = {
+    step:    [[0,4,0,2,'sky'],[0,2,2,2,'sky'],[2,2,2,0,'teal'],[2,0,4,0,'coral']],
+    spark:   [[0,0,4,4,'sky'],[4,0,0,4,'teal'],[2,0,2,4,'coral']],
+    clock:   [[1,0,3,0,'sky'],[3,0,4,1,'teal'],[4,1,4,3,'sky'],[4,3,3,4,'teal'],[3,4,1,4,'sky'],[1,4,0,3,'teal'],[0,3,0,1,'sky'],[0,1,1,0,'teal'],[2,2,2,1,'coral'],[2,2,3,2,'stone']],
+    overlap: [[0,0,3,0,'sky'],[3,0,3,3,'sky'],[3,3,0,3,'sky'],[0,3,0,0,'sky'],[1,1,4,1,'teal'],[4,1,4,4,'teal'],[4,4,1,4,'teal'],[1,4,1,1,'teal']],
+    rows:    [[0,0,0,4,'sky'],[0,0,4,0,'blue'],[0,2,3,2,'teal'],[0,4,2,4,'coral']],
+    bars:    [[0,4,4,4,'stone'],[1,4,1,2,'sky'],[2,4,2,1,'teal'],[3,4,3,0,'coral']]
+  };
+  var NS = 'http://www.w3.org/2000/svg', P = function(i){ return 10 + i*20; };
+  document.querySelectorAll('.ic[data-ic]').forEach(function(el){
+    var segs = ICONS[el.getAttribute('data-ic')]; if(!segs) return;
+    var svg = document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 100 100');
+    var g = document.createElementNS(NS,'g'); g.setAttribute('style','mix-blend-mode:multiply');
+    segs.forEach(function(sg){
+      var l = document.createElementNS(NS,'line');
+      l.setAttribute('x1',P(sg[0])); l.setAttribute('y1',P(sg[1])); l.setAttribute('x2',P(sg[2])); l.setAttribute('y2',P(sg[3]));
+      l.setAttribute('stroke',C[sg[4]]); l.setAttribute('stroke-width','17'); l.setAttribute('stroke-linecap','round');
+      l.setAttribute('style','mix-blend-mode:multiply');
+      g.appendChild(l);
+    });
+    svg.appendChild(g);
+    for(var y=0;y<5;y++) for(var x=0;x<5;x++){
+      var c = document.createElementNS(NS,'circle'); c.setAttribute('cx',P(x)); c.setAttribute('cy',P(y)); c.setAttribute('r','2.6'); c.setAttribute('fill','#0E1626');
+      svg.appendChild(c);
+    }
+    el.appendChild(svg);
+  });
+})();
+
+/* curvy bands draw as their section scrolls through */
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sets = [].slice.call(document.querySelectorAll('.has-curves')).map(function(sec){
+    return { sec:sec, paths:[].slice.call(sec.querySelectorAll('.curves path')) };
+  });
+  if(reduce){ sets.forEach(function(s){ s.paths.forEach(function(p){ p.style.strokeDashoffset = 0; }); }); return; }
+  var ticking = false;
+  function update(){
+    ticking = false;
+    var vh = innerHeight;
+    sets.forEach(function(s){
+      var r = s.sec.getBoundingClientRect();
+      var p = Math.min(1, Math.max(0, (vh - r.top) / (r.height * .9 + vh * .2)));
+      s.paths.forEach(function(path, i){
+        var q = Math.min(1, Math.max(0, p * 1.25 - i * .18));
+        path.style.strokeDashoffset = (1 - q).toFixed(4);
+      });
+    });
+  }
+  addEventListener('scroll', function(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }, { passive:true });
+  addEventListener('resize', update);
+  update();
+})();
+</script>
 </body>
 </html>
