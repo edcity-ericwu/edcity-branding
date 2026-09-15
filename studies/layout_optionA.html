@@ -87,8 +87,8 @@
   .pill:hover{transform:translateY(-1px)}
   /* one primary action (booking); everything else is a quiet text link */
   .lk{display:inline-flex;align-items:center;min-height:48px;font-family:var(--sans);font-weight:600;font-size:.95rem;color:var(--ink);
-    text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:6px;text-decoration-thickness:1.5px;transition:text-decoration-color .2s}
-  .lk:hover{text-decoration-color:var(--ink)}
+    text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--sky) 45%,transparent);text-underline-offset:6px;text-decoration-thickness:1.5px;transition:text-decoration-color .2s}
+  .lk:hover{text-decoration-color:var(--sky)}
   .cta-row .lk + .lk{margin-left:14px}
   .pill-ink{background:var(--ink);color:var(--paper)}
 
@@ -160,11 +160,38 @@
   }
 
   /* ============ content load-in ============ */
+  /* Calm Momentum motion: everything arrives moving forward (left → right), and lines draw in the reading direction */
   html.r [data-r]{
-    opacity:0;transform:translateY(var(--r-y)) scale(var(--r-scale));
-    transition:opacity var(--r-dur) var(--r-ease), transform var(--r-dur) var(--r-ease);
+    opacity:0;transform:translateX(-28px);
+    transition:opacity var(--r-dur) var(--r-ease), transform 1.1s var(--r-ease);
   }
   html.r [data-r].in{opacity:1;transform:none}
+  html.r .mock[data-r]{position:relative;border-top-color:transparent}
+  html.r .mock[data-r]::before{content:"";position:absolute;left:0;right:0;top:-2px;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(.6,0,.2,1) .15s}
+  html.r .mock[data-r].in::before{transform:scaleX(1)}
+  html.r .mock[data-r] ul.m-match li,html.r .mock[data-r] .m-line,html.r .mock[data-r] .m-row{opacity:0;transform:translateX(-16px);transition:opacity .6s ease, transform .8s var(--r-ease)}
+  html.r .mock[data-r].in ul.m-match li,html.r .mock[data-r].in .m-line,html.r .mock[data-r].in .m-row{opacity:1;transform:none}
+  html.r .mock[data-r].in .m-line{transition-delay:.35s} html.r .mock[data-r].in .m-row{transition-delay:.5s}
+  html.r .mock[data-r].in ul.m-match li:nth-child(1){transition-delay:.5s}
+  html.r .mock[data-r].in ul.m-match li:nth-child(2){transition-delay:.62s}
+  html.r .mock[data-r].in ul.m-match li:nth-child(3){transition-delay:.74s}
+  html.r .faq[data-r]{border-top-color:transparent;position:relative}
+  html.r .faq[data-r]::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(.6,0,.2,1) .1s}
+  html.r .faq[data-r].in::before{transform:scaleX(1)}
+  html.r .band .arrive[data-r]{transform:none}
+  html.r .band .arrive[data-r]::before{transform:scaleX(0);transform-origin:left;transition:transform 1.8s cubic-bezier(.6,0,.2,1) .2s}
+  html.r .band .arrive[data-r].in::before{transform:scaleX(1)}
+  html.r .band .arrive[data-r] li{opacity:.25;transition:opacity .5s ease}
+  html.r .band .arrive[data-r].in li{opacity:1}
+  html.r .band .arrive[data-r].in li:nth-child(1){transition-delay:.2s}
+  html.r .band .arrive[data-r].in li:nth-child(2){transition-delay:.5s}
+  html.r .band .arrive[data-r].in li:nth-child(3){transition-delay:.8s}
+  html.r .band .arrive[data-r].in li:nth-child(4){transition-delay:1.1s}
+  html.r .band .arrive[data-r].in li:nth-child(5){transition-delay:1.4s}
+  html.r .band .arrive[data-r].in li:nth-child(6){transition-delay:1.8s}
+  .depart::before{transform-origin:left;animation:draw 1.6s cubic-bezier(.6,0,.2,1) both}
+  .intro-hold .depart::before{animation:none;transform:scaleX(0)}
+  @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
   /* ============ partner strip ============ */
   .partners{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
@@ -286,7 +313,7 @@
   .seq::after{height:3px;top:5px;border-radius:2px;right:auto;width:calc(var(--seq) * 100%);background:linear-gradient(90deg,var(--wayfind),var(--spark))}
   .seq li{position:relative;padding-top:34px}
   .seq i{position:absolute;left:0;top:0;width:13px;height:13px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line);z-index:1;transition:all .35s ease}
-  .seq li.on i{background:var(--wayfind);border-color:var(--wayfind)}
+  .seq li.on i{background:var(--ok);border-color:var(--ok)}
   .seq li.now i{background:var(--paper);border-color:var(--spark);box-shadow:0 0 0 5px color-mix(in srgb,var(--spark) 22%,transparent)}
   .seq .n{font-family:var(--sans);font-size:.74rem;font-weight:600;letter-spacing:.08em;color:var(--ink-3)}
   .seq b{display:block;font-family:var(--sans);font-size:clamp(1.4rem,2.4vw,1.9rem);letter-spacing:-.01em;margin:6px 0 12px;color:var(--ink-3);transition:color .35s ease}
@@ -389,8 +416,7 @@
   .band .arrive::before{content:"";position:absolute;left:calc(100%/12);right:calc(100%/12);top:5px;height:3px;border-radius:2px;
     background:linear-gradient(90deg,var(--wayfind),var(--spark))}
   .band .arrive li{display:flex;flex-direction:column;align-items:center;gap:14px;position:relative}
-  .band .arrive i{width:13px;height:13px;border-radius:50%;background:var(--wayfind);position:relative;z-index:1}
-  .band .arrive li:nth-child(4) i,.band .arrive li:nth-child(5) i{background:color-mix(in srgb,var(--wayfind) 40%,var(--spark))}
+  .band .arrive i{width:13px;height:13px;border-radius:50%;background:var(--ok);position:relative;z-index:1}
   .band .arrive li.end i{width:22px;height:22px;margin-top:-4px;background:var(--paper);border:2px solid var(--spark);box-shadow:0 0 0 8px color-mix(in srgb,var(--spark) 22%,transparent),0 0 40px 10px color-mix(in srgb,var(--spark) 45%,transparent)}
   .band .arrive span{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--ink-3)}
   .band .arrive li.end span{color:var(--ink)}
@@ -440,8 +466,7 @@
     padding:9px 14px;border:1px solid currentColor;border-radius:999px;
   }
 
-  :focus-visible{outline:2px solid var(--brand);outline-offset:3px}
-  [data-p="a"] :focus-visible{outline-color:var(--sky)}
+  :focus-visible{outline:2px solid var(--sky);outline-offset:3px}
 
   .blk{position:relative}
   /* first-light cursor: the pointer carries a soft dawn glow — slate halo, apricot core — that trails with easing */
@@ -466,7 +491,7 @@
   .momentum a{display:flex;align-items:center;gap:12px;font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--ink-3)}
   .momentum i{width:11px;height:11px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line);flex:none;transition:all .3s ease}
   .momentum a span{opacity:0;transform:translateX(-4px);transition:opacity .3s ease, transform .3s ease;white-space:nowrap}
-  .momentum a.done i{border-color:var(--wayfind);background:var(--wayfind)}
+  .momentum a.done i{border-color:var(--ok);background:var(--ok)}
   .momentum a.now i{border-color:var(--spark);background:var(--paper);box-shadow:0 0 0 4px color-mix(in srgb,var(--spark) 22%,transparent)}
   .momentum a.now span,.momentum:hover a span{opacity:1;transform:none}
   .momentum a.now{color:var(--ink)}
@@ -498,6 +523,7 @@
     html{scroll-behavior:auto}
     *{animation:none!important;transition:none!important}
     html.r [data-r]{opacity:1;transform:none}
+    html.r [data-r]::before,html.r [data-r] *{transform:none!important;opacity:1!important;transition:none!important}
   }
 
   /* ============ WebGL opening ============ */
@@ -598,6 +624,9 @@
   #intro .fr-right{right:clamp(14px,3vw,26px)}
   @media (max-width:640px){ #intro .frame{display:none} }
   #intro .replay{display:none}
+  /* the hint carries a quiet timer: the line fills, then the dawn settles into the page */
+  #intro .hint::after{content:"";position:absolute;left:50%;width:140px;margin-left:-70px;bottom:-12px;height:1px;background:currentColor;opacity:.6;transform:scaleX(0);transform-origin:left;animation:introTimer 4.2s linear .2s forwards}
+  @keyframes introTimer{to{transform:scaleX(1)}}
   .replay-intro{
     background:none;border:1px solid var(--line);color:var(--ink-3);
     font-family:var(--sans);font-size:.72rem;border-radius:999px;padding:5px 12px;cursor:pointer;
@@ -1045,11 +1074,14 @@ void main(){
       intro.classList.add('nogl'); canvas.style.display = 'none';
     }
 
-    var dismissed = false;
+    var dismissed = false, autoT = 0, AUTO_MS = 4200;
     document.documentElement.classList.add('intro-hold');
+    // never block: if nobody interacts, the dawn settles into the hero on its own
+    function armAuto(){ clearTimeout(autoT); autoT = setTimeout(dismiss, AUTO_MS); }
+    armAuto();
     function dismiss(){
       if(dismissed) return;
-      dismissed = true;
+      dismissed = true; clearTimeout(autoT);
       intro.classList.add('gone');
       // the sky keeps moving while it brightens, then the headline arrives on the settled hero
       setTimeout(function(){ document.documentElement.classList.remove('intro-hold'); }, 700);
@@ -1073,6 +1105,7 @@ void main(){
       intro.classList.remove('gone');
       window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
       if(gl && !intro.classList.contains('nogl')) run();
+      armAuto();
       window.addEventListener('keydown', onKey);
       window.addEventListener('wheel', dismiss, { passive: true });
       window.addEventListener('touchmove', dismiss, { passive: true });
