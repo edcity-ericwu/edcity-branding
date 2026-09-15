@@ -6,7 +6,7 @@
 <title>EdCity Studio Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400;700&family=Chiron+GoRound+TC:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@300;400;700&family=Chiron+GoRound+TC:wght@400;500;600;700;800&display=swap">
 <style>
   @font-face{font-family:'Aspekta Variable';font-weight:100 900;font-display:swap;font-style:normal;src:url('assets/AspektaVF.woff2') format('woff2')}
   :root{
@@ -27,7 +27,7 @@
     --rail:56px;
     --sans:"Aspekta Variable", "Chiron GoRound TC", system-ui, -apple-system, "Segoe UI", sans-serif;
     --serif:"LXGW WenKai TC", Georgia, "Songti TC", serif;
-    --mono:"IBM Plex Mono", ui-monospace, monospace;
+    --mono:var(--sans);
     --han:"LXGW WenKai TC", var(--sans);
   }
   *{box-sizing:border-box}
@@ -41,12 +41,13 @@
   a{color:inherit;text-decoration:none}
 
   /* left rail */
-  .rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:40;background:linear-gradient(180deg, var(--slate) 0%, var(--clay-deep) 100%);color:var(--paper)}
+  .rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:40;background:var(--paper);color:var(--ink)}
   .nav-toggle{
     all:unset;box-sizing:border-box;cursor:pointer;width:100%;height:100%;padding:18px 0;
     display:flex;flex-direction:column;align-items:center;justify-content:space-between;color:inherit;
   }
   .nav-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:-4px}
+  .rail::after{content:"";position:absolute;top:0;right:0;bottom:0;width:3px;background:linear-gradient(180deg, var(--slate) 0%, var(--clay-deep) 100%)}
   .rail .dots{display:grid;grid-template-columns:1fr 1fr;gap:5px}
   .rail .dots i{width:6px;height:6px;border-radius:50%;background:currentColor;transition:transform .3s}
   .nav-open .rail .dots i:nth-child(1){transform:translate(3px,3px)}
@@ -272,8 +273,6 @@
   /* frame opens up as it scrolls through view — pellmell.fr's own mechanic:
      clip-path inset scrubbed by scroll position, not a one-shot reveal.
      corner radius (10px) matches pellmell.fr's media/photo/video blocks */
-  .media{clip-path:inset(7% round 10px);will-change:clip-path}
-  @media (prefers-reduced-motion:reduce){ .media{clip-path:none!important} }
   .ph{margin:36px 0 0;min-height:200px}
   .media[data-ar="21:9"]{aspect-ratio:21/9}
   .media[data-ar="16:9"]{aspect-ratio:16/9}
@@ -305,17 +304,7 @@
 
   /* Quarterre-style index: the thread's node opens a thumbnail on hover */
   .enum li{position:relative}
-  .enum .thumb{
-    position:absolute;right:0;top:50%;transform:translateY(-50%) scale(.92);
-    width:200px;aspect-ratio:3/2;border-radius:10px;overflow:hidden;
-    border:1px solid var(--line-2);background:color-mix(in srgb, var(--slate) 6%, transparent);
-    font-family:var(--mono);font-size:.62rem;color:var(--ink-3);display:flex;align-items:center;justify-content:center;
-    text-align:center;padding:8px;pointer-events:none;
-    opacity:0;visibility:hidden;
-    transition:opacity .45s ease, transform .45s cubic-bezier(.16,.84,.2,1), visibility .45s;
-  }
   @media (min-width:900px){
-    .enum li:hover .thumb{opacity:1;visibility:visible;transform:translateY(-50%) scale(1)}
     .enum li:hover .t{color:var(--clay-deep)}
   }
 
@@ -474,7 +463,7 @@
         <linearGradient id="cgA" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="0"><stop offset="0" stop-color="#8EEBE1"/><stop offset="1" stop-color="#2450E6"/></linearGradient>
         <linearGradient id="cgB" gradientUnits="userSpaceOnUse" x1="1440" y1="300" x2="860" y2="960"><stop offset="0" stop-color="#0EBFAE"/><stop offset="1" stop-color="#12307A"/></linearGradient>
       </defs>
-      <path pathLength="1" stroke="url(#cgA)" d="M -80 640 C 260 560, 520 200, 760 300 S 900 760, 1120 600 S 1290 140, 1540 240"/>
+      <path pathLength="1" stroke="url(#cgA)" d="M -80 860 C 260 820, 600 900, 860 640 S 1040 160, 1540 230"/>
       <path pathLength="1" stroke="url(#cgB)" d="M 1540 820 C 1260 860, 1040 560, 1170 430 C 1290 310, 1430 460, 1320 590 C 1210 720, 930 660, 860 960"/>
     </svg>
     <div class="wrap">
@@ -503,12 +492,12 @@
       <h2>貫通備課、教學與評估，成就一體化學習平台。</h2>
       <p class="lead" data-r>EdCity 結合學習管理、教學工具、智能助手與經審核的資源，構建以 AI 為核心的一體化平台；圍繞課堂實況、學生需要與家庭參與而設計，讓每個教學時刻都有清晰依據。</p>
       <ol class="enum">
-        <li data-r><span class="n">01</span><span class="ic" data-ic="step" aria-hidden="true"></span><span class="t">一對一學習支援</span><span class="d">按每名學生的學習進度與個別需要，度身提供下一步建議。</span><span class="thumb">配圖：學生與進度視圖</span></li>
-        <li data-r><span class="n">02</span><span class="ic" data-ic="spark" aria-hidden="true"></span><span class="t">智能助手</span><span class="d">因應不同學習情境提供適切建議，最終決定仍由教師把關。</span><span class="thumb">配圖：教師檢視助手草稿</span></li>
-        <li data-r><span class="n">03</span><span class="ic" data-ic="clock" aria-hidden="true"></span><span class="t">適時學習</span><span class="d">在學生最需要的時刻，配對合適的學習資源。</span><span class="thumb">配圖：課堂上翻開資源</span></li>
-        <li data-r><span class="n">04</span><span class="ic" data-ic="overlap" aria-hidden="true"></span><span class="t">協作備課</span><span class="d">支援教師協作編寫教材，共享校本資源庫。</span><span class="thumb">配圖：科組一起備課</span></li>
-        <li data-r><span class="n">05</span><span class="ic" data-ic="rows" aria-hidden="true"></span><span class="t">學習管理</span><span class="d">整合課程、紀錄與學習進度，一目了然。</span><span class="thumb">配圖：班級總覽畫面</span></li>
-        <li data-r><span class="n">06</span><span class="ic" data-ic="bars" aria-hidden="true"></span><span class="t">學習洞察</span><span class="d">將課堂數據轉化為清晰可行的教學行動。</span><span class="thumb">配圖：洞察轉為下一步</span></li>
+        <li data-r><span class="n">01</span><span class="ic" data-ic="step" aria-hidden="true"></span><span class="t">一對一學習支援</span><span class="d">按每名學生的學習進度與個別需要，度身提供下一步建議。</span></li>
+        <li data-r><span class="n">02</span><span class="ic" data-ic="spark" aria-hidden="true"></span><span class="t">智能助手</span><span class="d">因應不同學習情境提供適切建議，最終決定仍由教師把關。</span></li>
+        <li data-r><span class="n">03</span><span class="ic" data-ic="clock" aria-hidden="true"></span><span class="t">適時學習</span><span class="d">在學生最需要的時刻，配對合適的學習資源。</span></li>
+        <li data-r><span class="n">04</span><span class="ic" data-ic="overlap" aria-hidden="true"></span><span class="t">協作備課</span><span class="d">支援教師協作編寫教材，共享校本資源庫。</span></li>
+        <li data-r><span class="n">05</span><span class="ic" data-ic="rows" aria-hidden="true"></span><span class="t">學習管理</span><span class="d">整合課程、紀錄與學習進度，一目了然。</span></li>
+        <li data-r><span class="n">06</span><span class="ic" data-ic="bars" aria-hidden="true"></span><span class="t">學習洞察</span><span class="d">將課堂數據轉化為清晰可行的教學行動。</span></li>
       </ol>
     </div>
   </section>
@@ -919,31 +908,7 @@
     }
   })();
 
-  /* ---------- media frames open up on scroll (pellmell.fr's clip-path-inset scrub) ---------- */
-  (function(){
-    if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var els = [].slice.call(document.querySelectorAll('.media'));
-    if(!els.length) return;
-    var ticking = false;
-    function update(){
-      var vh = window.innerHeight;
-      els.forEach(function(el){
-        var r = el.getBoundingClientRect();
-        if(r.bottom < 0 || r.top > vh) return;
-        var p = Math.min(Math.max((vh - r.top) / (vh * 0.6), 0), 1);
-        el.style.clipPath = 'inset(' + (7 * (1 - p)).toFixed(2) + '% round 0px)';
-      });
-      ticking = false;
-    }
-    function onScroll(){
-      if(ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    update();
-  })();
+
 
   /* ---------- big headlines: split into lines, each masked and slid up on reveal ---------- */
   (function(){
