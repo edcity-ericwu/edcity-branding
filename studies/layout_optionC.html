@@ -471,20 +471,15 @@
   'void main(){',
   ' vec2 fc=gl_FragCoord.xy;fc.y=uRes.y-fc.y;float asp=uRes.x/uRes.y;',
   ' vec2 uv=fc/uRes.y;float p=uProg;',
-  /* stage A: fuzzy field seen through fluted glass */
-  ' float flute=sin(fc.x/uRes.x*90.)*.006*(1.-smoothstep(.2,.4,p));',
-  ' vec3 soft=vec3(field(uv+vec2(flute,0.)).r,field(uv).g,field(uv-vec2(flute,0.)).b);',
-  /* stage B: pixelate coarse → fine, cells snap to the final grid */
-  ' float sb=smoothstep(.26,.56,p);float lev=floor(mix(3.,0.,sb)+.001);float cs=uCell*pow(2.,lev);',
+  /* stage A/B: starts as a coarse grid of soft cells, subdivides to the final grid */
+  ' float sb=smoothstep(.0,.5,p);float lev=floor(mix(2.,0.,sb)+.001);float cs=uCell*pow(2.,lev);',
   ' vec2 off=mod(uRes,uCell)*.5;vec2 g=(fc-off)/cs;vec2 id=floor(g);vec2 lc=fract(g);',
   ' vec2 cen=(id+.5)*cs+off;float s=cs*.8;vec2 jit=(vec2(h(id+3.),h(id+7.))-.5)*s*.6;',
   ' vec3 c00=field((cen+vec2(-s,-s)+jit)/uRes.y),c10=field((cen+vec2(s,-s)+jit)/uRes.y),c01=field((cen+vec2(-s,s)-jit)/uRes.y),c11=field((cen+vec2(s,s)-jit)/uRes.y);',
-  ' vec2 sm=smoothstep(0.,1.,lc);vec3 cell=mix(mix(c00,c10,sm.x),mix(c01,c11,sm.x),sm.y);',
-  ' float qmix=smoothstep(.22,.32,p);vec3 col=mix(soft,cell,qmix);',
-  /* faint drifting squares while still fuzzy */
-  ' float sq=0.;for(int i=0;i<14;i++){float fi=float(i);vec2 pos=vec2(h(vec2(fi,1.))*asp,h(vec2(fi,2.)))+vec2(sin(uTime*.12+fi)*.03,cos(uTime*.1+fi*1.7)*.03);',
-  '  float sz=.035+h(vec2(fi,3.))*.06;vec2 d=abs(uv-pos);sq=max(sq,(1.-step(sz,max(d.x,d.y)))*(.18+h(vec2(fi,4.))*.2));}',
-  ' col=mix(col,PAPER,sq*(1.-smoothstep(.18,.34,p)));',
+  ' vec2 sm=smoothstep(0.,1.,lc);vec3 col=mix(mix(c00,c10,sm.x),mix(c01,c11,sm.x),sm.y);',
+  /* hairline gutters make the structure explicit until the cells open */
+  ' vec2 ed=min(lc,1.-lc)*cs;float gut=1.-smoothstep(.6,1.6,min(ed.x,ed.y));',
+  ' col=mix(col,PAPER,gut*.85*(1.-smoothstep(.55,.62,p)));',
   /* concentric rings in some cells once gridded (final grid only) */
   ' vec2 fg=(fc-off)/uCell;vec2 fid=floor(fg);vec2 flc=fract(fg);',
   ' if(h(fid+11.)<.2){vec2 corner=vec2(step(.5,h(fid+13.)),step(.5,h(fid+17.)));float d=length(flc-corner)*uCell;',
