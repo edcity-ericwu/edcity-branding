@@ -1,15 +1,21 @@
 # Imagery notes
 
-## Mood boards (Pinterest, being updated by the client)
+## Mood boards
+
+Figma moodboards (one frame per option, in the `EdCity_Branding-Moodboards` file): Option A node `106-2656`, Option B node `112-2858`, Option C node `112-2908`.
+
+Pinterest boards (being updated by the client):
 
 - **Calm Momentum** — https://pin.it/43loawaLQ
 - **Curious Intelligence** — https://pin.it/UdxWndGFO
-- **Human Craft** — https://pin.it/1Kyw7XbP5
+- **Connected Path** (board created as *Human Craft*) — https://pin.it/1Kyw7XbP5
 
 The client notes there is deliberate overlap in mood, tone, and feel across the
 three — the boards share references. That is consistent with the decision to run
 one unified direction with a layered job split (see the main README) rather than
 three separate identities.
+
+Motion references for the next inspiration board are captured as video for internal use only, with the same credit line the moodboards carry.
 
 ## Photography for the studies
 
