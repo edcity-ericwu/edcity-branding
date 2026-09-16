@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EdCity — Brand foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"></noscript>
+<style>
+  :root{
+    color-scheme:light;
+    --paper:#0E1116; --card:#171B22; --ink:#F2F4F8; --ink-2:#A7AFBD; --ink-3:#6E7686; --line:#262C36;
+    --oc:#2472AD;
+    --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --han:"Noto Sans TC",var(--sans); --mono:var(--sans);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{background:var(--paper);color:var(--ink);font-family:var(--han);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* one frame per screen, snapped vertically */
+  #board{position:absolute;inset:0;overflow:auto;scroll-snap-type:y mandatory;-ms-overflow-style:none;scrollbar-width:none}
+  #board::-webkit-scrollbar{display:none}
+  .cell{
+    height:100vh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;
+    display:flex;flex-direction:column;padding:clamp(70px,9vh,96px) clamp(18px,3vw,40px) clamp(18px,3vw,32px);
+  }
+  .cell-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;flex-shrink:0}
+  .cell-head .lbl{margin:0;font-family:var(--sans);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:9px}
+  .cell-head .lbl .dot{width:9px;height:9px;border-radius:50%;background:var(--oc)}
+  .cell-head .stage{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .cell-head .tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .cell-head .tools a,.cell-head .tools button{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    font-family:var(--sans);font-weight:600;font-size:.78rem;color:var(--ink-2);
+    border:1px solid var(--line);border-radius:999px;padding:6px 12px;
+  }
+  .cell-head .tools a:hover,.cell-head .tools button:hover{color:var(--ink);border-color:var(--ink-2)}
+
+  .frame{flex:1;min-height:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--card);position:relative}
+  .frame iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+  .frame .fallback{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;text-align:center;padding:24px;color:var(--ink-3);font-family:var(--mono);font-size:.8rem;
+  }
+  .frame .fallback input{
+    width:min(520px,84%);background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    color:var(--ink);font-family:var(--mono);font-size:.78rem;padding:9px 12px;
+  }
+  .frame .fallback input:focus{outline:2px solid var(--oc);outline-offset:1px}
+  .frame .fallback button{
+    font-family:var(--sans);font-weight:600;font-size:.78rem;background:var(--oc);color:#fff;
+    border:0;border-radius:999px;padding:8px 16px;cursor:pointer;
+  }
+
+  .nav{position:fixed;z-index:20;display:flex;gap:6px;padding:6px;border-radius:999px;
+    background:rgba(23,27,34,.86);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .nav button{
+    all:unset;box-sizing:border-box;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:.78rem;
+    color:var(--ink-2);padding:8px 14px;border-radius:999px;transition:background .15s,color .15s;
+  }
+  .nav button:hover{color:var(--ink)}
+  .nav button[aria-current="true"]{background:var(--ink);color:var(--paper)}
+  #stageNav{top:16px;left:50%;transform:translateX(-50%);max-width:min(92vw,900px);overflow:auto;scrollbar-width:none}
+  #stageNav::-webkit-scrollbar{display:none}
+  #addBtn{position:fixed;top:16px;right:16px;z-index:20}
+
+  .brand{position:fixed;top:16px;left:16px;z-index:20;display:flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:700;font-size:.9rem;text-decoration:none}
+  .brand svg{width:22px;height:22px}
+
+  .hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20;
+    font-family:var(--mono);font-size:.7rem;color:var(--ink-3);background:rgba(23,27,34,.7);
+    padding:6px 14px;border-radius:999px;border:1px solid var(--line);pointer-events:none;transition:opacity .4s}
+  .hint.gone{opacity:0}
+
+  @media (max-width:760px){ .cell{padding-top:64px} .brand span{display:none} }
+</style>
+</head>
+<body>
+
+<a class="brand" href="index.html">
+  <svg viewBox="0 0 179 54" fill="currentColor" aria-hidden="true"><path d="M27.1927 1.81771C27.7177 3.67516 27.5415 6.76482 26.5247 7.04371C25.5097 7.32078 23.8377 4.87274 23.2357 3.04264C22.6135 1.14327 23.5367 0.386805 24.5553 0.111561C25.5721 -0.165506 26.6678 -0.0397325 27.1909 1.81771"/><path d="M12.5574 6.18152C13.8054 7.66165 14.925 10.5453 14.1156 11.2161C13.3007 11.8887 10.7661 10.3412 9.46112 8.91574C8.10663 7.44109 8.64072 6.37474 9.44644 5.70759C10.2595 5.04044 11.3075 4.70869 12.5592 6.18152"/><path d="M3.19317 18.9067C4.99181 19.6449 7.32088 21.6919 6.91343 22.658C6.50231 23.6241 3.53454 23.4127 1.7102 22.7528C-0.169204 22.0638 -0.196734 20.8717 0.21255 19.9074C0.623669 18.9395 1.40186 18.1703 3.19317 18.9067Z"/><path d="M43.6562 23.7716C43.6562 27.7855 40.114 31.0428 35.7403 31.0428C31.3667 31.0428 27.8245 27.7873 27.8245 23.7716C27.8245 19.756 31.3704 16.5004 35.7403 16.5004C40.1103 16.5004 43.6562 19.7578 43.6562 23.7716Z"/><path d="M19.9485 30.6364C19.9485 30.6364 19.754 30.2445 20.0843 30.0932C20.3798 29.9601 20.6019 30.3447 20.6019 30.3447C20.6019 30.3447 26.141 39.7559 40.7963 36.3017C40.7963 36.3017 52.7903 33.2193 53.128 20.7677C53.128 20.7677 53.128 20.3247 53.4235 20.2937C53.4235 20.2937 53.7961 20.1662 53.9191 20.7185C54.1063 21.5606 56.1454 36.8048 42.0333 40.5835C42.0333 40.5835 25.2729 44.5736 19.9503 30.6346"/><path d="M56.011 33.3177C55.5778 33.2429 55.4787 33.5619 55.2365 34.3403C52.7789 42.1747 44.9126 47.9074 35.5908 47.9074C24.3034 47.9074 15.1541 39.5006 15.1541 29.138C15.1541 20.62 21.5981 13.8318 29.848 11.4567C35.1008 10.1935 38.8082 10.9755 39.9314 11.1669C40.5518 11.2781 40.7445 11.2434 40.7445 11.2434C41.0602 11.1814 41.0932 10.8716 41.0492 10.7403C40.9335 10.3794 40.4123 10.2099 40.4123 10.2099C37.4298 9.1162 34.0638 8.95579 32.3936 8.95215H32.3533C31.7219 8.95215 31.3346 8.97584 31.3346 8.97584V8.98496C31.1694 8.9886 31.0043 8.98496 30.8464 8.99954C18.1623 9.73049 8.07886 19.4734 8.07886 31.3016C8.07886 43.1299 18.9368 53.58 32.3331 53.58C44.6318 53.58 54.9171 45.7985 56.3762 34.2856C56.4441 33.7661 56.2881 33.3669 56.0128 33.3195"/></svg>
+  <span>EdCity · Brand foundation</span>
+</a>
+
+<div class="nav" id="stageNav" role="group" aria-label="Frame"></div>
+<div class="nav" id="addBtn"><button type="button" id="addFrame">+ Add frame</button></div>
+<div class="hint" id="hint">Scroll or use ↑ ↓ · paste a Figma link into any empty frame</div>
+
+<div id="board"></div>
+
+<script>
+(function(){
+  var STORE_ID = 'edcity-foundation-v1';
+  /* the frames this board starts with; a saved link overrides the default */
+  var DEFAULTS = [
+    { id:'personality', title:'Brand personality', url:'https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=172-3399&viewport=422%2C97%2C0.2&scaling=scale-down-width&content-scaling=fixed&page-id=172%3A3264' },
+    { id:'attributes',  title:'Brand attributes',  url:'https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=172-3265&viewport=422%2C97%2C0.2&scaling=scale-down-width&content-scaling=fixed&page-id=172%3A3264' }
+  ];
+
+  function load(){
+    var saved = [];
+    try{ saved = JSON.parse(localStorage.getItem(STORE_ID) || '[]'); }catch(e){}
+    var byId = {};
+    saved.forEach(function(s){ byId[s.id] = s; });
+    var out = DEFAULTS.map(function(d){
+      var s = byId[d.id] || {};
+      return { id:d.id, title:s.title || d.title, url:('url' in s) ? s.url : d.url };
+    });
+    saved.forEach(function(s){ if(!DEFAULTS.some(function(d){ return d.id === s.id; })) out.push(s); });
+    return out;
+  }
+  function save(list){ try{ localStorage.setItem(STORE_ID, JSON.stringify(list)); }catch(e){} }
+
+  var frames = load();
+  var board = document.getElementById('board');
+  var stageNav = document.getElementById('stageNav');
+
+  function embedUrl(link){ return 'https://www.figma.com/embed?embed_host=share&url=' + encodeURIComponent(link); }
+
+  function render(){
+    board.innerHTML = '';
+    stageNav.innerHTML = '';
+    frames.forEach(function(f, i){
+      var cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.dataset.index = i;
+
+      var head = document.createElement('div');
+      head.className = 'cell-head';
+      head.innerHTML =
+        '<h2 class="lbl"><span class="dot"></span>' + escapeHtml(f.title) + '</h2>' +
+        '<span class="stage">' + pad(i + 1) + ' · Foundation</span>' +
+        '<span class="tools"></span>';
+      var tools = head.querySelector('.tools');
+
+      if(f.url){
+        var open = document.createElement('a');
+        open.href = f.url; open.target = '_blank'; open.rel = 'noopener';
+        open.textContent = 'Open in new tab ↗';
+        tools.appendChild(open);
+        var replace = document.createElement('button');
+        replace.type = 'button'; replace.textContent = 'Replace link';
+        replace.addEventListener('click', function(){ f.url = ''; save(frames); render(); scrollTo(i); });
+        tools.appendChild(replace);
+      }
+      var rename = document.createElement('button');
+      rename.type = 'button'; rename.textContent = 'Rename';
+      rename.addEventListener('click', function(){
+        var v = prompt('Frame title', f.title);
+        if(v !== null && v.trim()){ f.title = v.trim(); save(frames); render(); scrollTo(i); }
+      });
+      tools.appendChild(rename);
+
+      var frame = document.createElement('div');
+      frame.className = 'frame';
+      if(f.url){
+        var ifr = document.createElement('iframe');
+        ifr.loading = 'lazy'; ifr.allowFullscreen = true;
+        ifr.src = embedUrl(f.url);
+        ifr.title = f.title;
+        frame.appendChild(ifr);
+      } else {
+        var wrap = document.createElement('div');
+        wrap.className = 'fallback';
+        wrap.innerHTML =
+          '<span>Paste the Figma frame or prototype link</span>' +
+          '<input type="url" placeholder="https://www.figma.com/proto/..." />' +
+          '<button type="button">Save</button>';
+        var input = wrap.querySelector('input');
+        var btn = wrap.querySelector('button');
+        btn.addEventListener('click', function(){
+          var v = input.value.trim();
+          if(!v) return;
+          f.url = v; save(frames); render(); scrollTo(i);
+        });
+        input.addEventListener('keydown', function(e){ if(e.key === 'Enter') btn.click(); });
+        frame.appendChild(wrap);
+      }
+
+      cell.appendChild(head);
+      cell.appendChild(frame);
+      board.appendChild(cell);
+
+      var nb = document.createElement('button');
+      nb.type = 'button';
+      nb.textContent = pad(i + 1) + ' · ' + f.title;
+      nb.addEventListener('click', function(){ scrollTo(i); });
+      stageNav.appendChild(nb);
+    });
+    mark();
+  }
+
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function escapeHtml(s){ return String(s).replace(/[&<>"]/g, function(c){ return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' })[c]; }); }
+  function scrollTo(i){ board.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' }); }
+  function current(){ return Math.round(board.scrollTop / window.innerHeight); }
+  function mark(){
+    var c = current();
+    [].forEach.call(stageNav.children, function(b, i){ b.setAttribute('aria-current', String(i === c)); });
+  }
+
+  document.getElementById('addFrame').addEventListener('click', function(){
+    frames.push({ id:'f' + Date.now(), title:'New frame', url:'' });
+    save(frames); render(); scrollTo(frames.length - 1);
+  });
+
+  board.addEventListener('scroll', mark, { passive:true });
+  addEventListener('keydown', function(e){
+    if(e.key === 'ArrowDown' || e.key === 'PageDown'){ e.preventDefault(); scrollTo(Math.min(current() + 1, frames.length - 1)); }
+    if(e.key === 'ArrowUp' || e.key === 'PageUp'){ e.preventDefault(); scrollTo(Math.max(current() - 1, 0)); }
+  });
+
+  var hint = document.getElementById('hint');
+  setTimeout(function(){ hint.classList.add('gone'); }, 5000);
+
+  render();
+})();
+</script>
+</body>
+</html>
