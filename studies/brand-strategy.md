@@ -109,9 +109,9 @@ A bridge gives the "super-connector" idea a human, physical form. It should be a
 
 ## Cross-reference: strategy → existing device
 
-What each study does today (2026-09-15) that answers this strategy, and where it falls short. The option names above are the client's originals; Option B has since been renamed **Connected Path** (was *Human Craft*).
+What each study does today (2026-09-15) that answers this strategy, and where it falls short. The option names above are the client's originals; Option B has since been renamed **Attentive Orientation** (board originally *Human Craft*).
 
-| Brand-strategy point | Option A · Calm Momentum (`layout_optionA.html`) | Option B · Connected Path (`layout_optionB.html`) | Option C · Curious Intelligence (`layout_optionC.html`) |
+| Brand-strategy point | Option A · Calm Momentum (`layout_optionA.html`) | Option B · Attentive Orientation (`layout_optionB.html`) | Option C · Curious Intelligence (`layout_optionC.html`) |
 | --- | --- | --- | --- |
 | **Wayfinding, primary anchor** | ✓ Strongest answer: one route of six named steps shown in the hero, a left progress rail, a four-step sequence and a closing line. | ✓ The line network is itself a map: nodes where paths cross, node markers on section labels, a sea-green wayfinding colour. | Partial: numbered figures and a need → signal → resource → action flow read as a route, without a page-level wayfinding device. |
 | **AI as guide, not mascot** (採用 / 調整 / 略過, never a chat avatar) | ✓ Shared suggestion pattern with 為何推薦？ reasoning. | ✓ Same pattern; the mock's spine runs AI suggestion → 教師決定 → next step. | ✓ Same pattern; the perspective demo shows the same situation for student, teacher and parent. |
