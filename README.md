@@ -43,6 +43,12 @@ Option letters match the client moodboard exactly and mean the same thing everyw
 
 The full-page layouts have taken the direction as far as they usefully can: the long, condensed placeholder copy drags every page down. The next deliverable is an **inspiration board built from video captures** of reference animation and of the motion studies in these layouts, to demonstrate possibilities rather than executions. The HTML studies stay as the source for those captures.
 
+## templates/
+
+| File | What it is |
+| --- | --- |
+| `frame-board.html` | The presentation board from `studies/foundation.html`, generic and driven by one CONFIG block (title, storage id, accent, cross-page links, starting frames). Copy it into another project and edit that block. See `templates/README.md`. |
+
 ## Notes
 
 - Content on every page is illustrative placeholder copy and imagery.
