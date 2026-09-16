@@ -56,9 +56,29 @@
   .note{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--ink-3);margin-top:14px}
   .note a{color:var(--blue-ink)}
   footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.76rem;color:var(--ink-3)}
+  :root{--nav-bg:rgba(255,255,255,.9);--nav-bg-strong:var(--paper,#fff);--nav-line:var(--line);--nav-ink:var(--ink-3);--nav-ink-strong:var(--ink)}
+  /* jump between the boards without going back to the index */
+  .pages{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:6px;padding:6px;border-radius:999px;
+    background:var(--nav-bg,rgba(23,27,34,.86));border:1px solid var(--nav-line,var(--hair,#262C36));
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .pages a{
+    font-family:var(--sans);font-weight:600;font-size:.76rem;text-decoration:none;
+    color:var(--nav-ink,var(--muted,#A7AFBD));
+    padding:7px 13px;border-radius:999px;transition:background .15s,color .15s;
+  }
+  .pages a:hover{color:var(--nav-ink-strong,var(--ink,#F2F4F8))}
+  .pages a[aria-current="page"]{background:var(--nav-ink-strong,var(--ink,#F2F4F8));color:var(--nav-bg-strong,var(--paper,#0E1116))}
+  @media (max-width:640px){ .pages{bottom:auto;top:56px} }
 </style>
 </head>
 <body>
+
+<nav class="pages" aria-label="Boards">
+  <a href="index.html" aria-current="page">Index</a>
+  <a href="foundation.html">Foundation</a>
+  <a href="present.html">Compare</a>
+</nav>
+
 <div class="wrap">
 
   <p class="eyebrow">EdCity · Branding</p>
