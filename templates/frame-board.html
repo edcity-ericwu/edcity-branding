@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frame board</title>
+<style>
+  /* FRAME BOARD — a reusable presentation board: one full-screen frame per
+     embedded link, with per-frame controls. Edit the CONFIG block in the
+     script below; everything else can stay as it is. */
+
+  :root{
+    color-scheme:light;
+    --paper:#0E1116; --card:#171B22; --ink:#F2F4F8; --ink-2:#A7AFBD; --ink-3:#6E7686; --line:#262C36;
+    --accent:#2472AD;
+    --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+    
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* one frame per screen, snapped vertically */
+  #board{position:absolute;inset:0;overflow:auto;scroll-snap-type:y mandatory;-ms-overflow-style:none;scrollbar-width:none}
+  #board::-webkit-scrollbar{display:none}
+  .cell{
+    height:100vh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;
+    display:flex;flex-direction:column;padding:clamp(70px,9vh,96px) clamp(18px,3vw,40px) clamp(18px,3vw,32px);
+  }
+  .cell-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;flex-shrink:0}
+  .cell-head .lbl{margin:0;font-family:var(--sans);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:9px}
+  .cell-head .lbl .dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  .cell-head .stage{font-variant-numeric:tabular-nums;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .cell-head .tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .cell-head .tools a,.cell-head .tools button{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    font-family:var(--sans);font-weight:600;font-size:.78rem;color:var(--ink-2);
+    border:1px solid var(--line);border-radius:999px;padding:6px 12px;
+  }
+  .cell-head .tools a:hover,.cell-head .tools button:hover{color:var(--ink);border-color:var(--ink-2)}
+
+  .frame{flex:1;min-height:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--card);position:relative}
+  .frame iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+  .frame .fallback{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;text-align:center;padding:24px;color:var(--ink-3);font-size:.8rem;
+  }
+  .frame .fallback input{
+    width:min(520px,84%);background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    color:var(--ink);font-size:.78rem;padding:9px 12px;
+  }
+  .frame .fallback input:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .frame .fallback button{
+    font-family:var(--sans);font-weight:600;font-size:.78rem;background:var(--accent);color:#fff;
+    border:0;border-radius:999px;padding:8px 16px;cursor:pointer;
+  }
+
+  .nav{position:fixed;z-index:20;display:flex;gap:6px;padding:6px;border-radius:999px;
+    background:rgba(23,27,34,.86);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .nav button{
+    all:unset;box-sizing:border-box;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:.78rem;
+    color:var(--ink-2);padding:8px 14px;border-radius:999px;transition:background .15s,color .15s;
+  }
+  .nav button:hover{color:var(--ink)}
+  .nav button[aria-current="true"]{background:var(--ink);color:var(--paper)}
+  #stageNav{top:16px;left:50%;transform:translateX(-50%);max-width:min(92vw,900px);overflow:auto;scrollbar-width:none}
+  #stageNav::-webkit-scrollbar{display:none}
+  #tools{position:fixed;top:16px;right:16px;z-index:20}
+
+  .brand{position:fixed;top:16px;left:16px;z-index:20;display:flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:700;font-size:.9rem;text-decoration:none}
+  
+  .hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20;
+    font-size:.7rem;color:var(--ink-3);background:rgba(23,27,34,.7);
+    padding:6px 14px;border-radius:999px;border:1px solid var(--line);pointer-events:none;transition:opacity .4s}
+  .hint.gone{opacity:0}
+
+  @media (max-width:760px){ .cell{padding-top:64px} .brand span{display:none} }
+  /* jump between the boards without going back to the index */
+  .pages{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:6px;padding:6px;border-radius:999px;
+    background:var(--nav-bg,rgba(23,27,34,.86));border:1px solid var(--nav-line,var(--hair,#262C36));
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .pages a{
+    font-family:var(--sans);font-weight:600;font-size:.76rem;text-decoration:none;
+    color:var(--nav-ink,var(--muted,#A7AFBD));
+    padding:7px 13px;border-radius:999px;transition:background .15s,color .15s;
+  }
+  .pages a:hover{color:var(--nav-ink-strong,var(--ink,#F2F4F8))}
+  .pages a[aria-current="page"]{background:var(--nav-ink-strong,var(--ink,#F2F4F8));color:var(--nav-bg-strong,var(--paper,#0E1116))}
+  @media (max-width:640px){ .pages{bottom:auto;top:56px} }
+</style>
+</head>
+<body>
+
+<div class="nav pages" id="pages" aria-label="Pages"></div>
+<div class="nav" id="stageNav" role="group" aria-label="Frame"></div>
+<div class="nav" id="tools"><button type="button" id="addFrame">+ Add frame</button><button type="button" id="resetBoard" title="Restore the starting frames">Reset</button></div>
+<div class="hint" id="hint">Scroll or use ↑ ↓ · paste a link into any empty frame</div>
+
+<div id="board"></div>
+
+<script>
+(function(){
+/* ============================================================
+   CONFIG — the only part to edit per project.
+   ============================================================ */
+var CONFIG = {
+  title: 'Project · Board',        /* board name, top left and page title */
+  home: 'index.html',              /* where the board name links to */
+  storageId: 'project-board-v1',   /* where this board's state is saved; unique per board */
+  accent: '#2472AD',               /* frame dots, focus rings, save button */
+  stageWord: 'Frame',              /* the word after the number in each frame header */
+
+  /* cross-page links, in order; mark this page with current:true.
+     Leave the array empty to hide the pill entirely. */
+  nav: [
+    { href:'index.html',      label:'Index' },
+    { href:'foundation.html', label:'Foundation', current:true },
+    { href:'present.html',    label:'Compare' }
+  ],
+
+  /* the frames this board starts with; url:'' leaves a paste box */
+  frames: [
+    { id:'one', title:'First frame',  url:'' },
+    { id:'two', title:'Second frame', url:'' }
+  ]
+};
+/* ======================= end of CONFIG ====================== */
+
+  var STORE_ID = CONFIG.storageId, DEFAULTS = CONFIG.frames;
+  document.documentElement.style.setProperty('--accent', CONFIG.accent);
+  document.title = CONFIG.title;
+
+  var brand = document.createElement('a');
+  brand.className = 'brand'; brand.href = CONFIG.home;
+  brand.innerHTML = '<span></span>';
+  brand.firstChild.textContent = CONFIG.title;
+  document.body.insertBefore(brand, document.body.firstChild);
+
+  var pages = document.getElementById('pages');
+  if(CONFIG.nav && CONFIG.nav.length){
+    CONFIG.nav.forEach(function(n){
+      var a = document.createElement('a');
+      a.href = n.href; a.textContent = n.label;
+      if(n.current) a.setAttribute('aria-current','page');
+      pages.appendChild(a);
+    });
+  } else { pages.remove(); }
+
+  function load(){
+    var stored = null;
+    try{ stored = JSON.parse(localStorage.getItem(STORE_ID) || 'null'); }catch(e){}
+    /* an edited board is authoritative, so a removed frame stays removed */
+    if(stored && stored.frames) return stored.frames.slice();
+    return DEFAULTS.map(function(d){ return { id:d.id, title:d.title, url:d.url || '' }; });
+  }
+  function save(list){ try{ localStorage.setItem(STORE_ID, JSON.stringify({ v:1, frames:list })); }catch(e){} }
+  function reset(){ try{ localStorage.removeItem(STORE_ID); }catch(e){} frames = load(); render(); scrollTo(0); }
+
+  var frames = load();
+  var board = document.getElementById('board');
+  var stageNav = document.getElementById('stageNav');
+
+  /* Figma links go through Figma's embed host; any other URL is embedded as-is */
+  function embedUrl(link){
+    return /figma\.com/.test(link)
+      ? 'https://www.figma.com/embed?embed_host=share&url=' + encodeURIComponent(link)
+      : link;
+  }
+
+  function render(){
+    board.innerHTML = '';
+    stageNav.innerHTML = '';
+    if(!frames.length){
+      var empty = document.createElement('section');
+      empty.className = 'cell';
+      empty.innerHTML = '<div class="frame"><div class="fallback">' +
+        '<span>No frames on this board</span>' +
+        '<button type="button" id="restore">Restore the starting frames</button>' +
+        '</div></div>';
+      board.appendChild(empty);
+      empty.querySelector('#restore').addEventListener('click', reset);
+      return;
+    }
+    frames.forEach(function(f, i){
+      var cell = document.createElement('section');
+      cell.className = 'cell';
+
+      var head = document.createElement('div');
+      head.className = 'cell-head';
+      head.innerHTML =
+        '<h2 class="lbl"><span class="dot"></span></h2>' +
+        '<span class="stage"></span>' +
+        '<span class="tools"></span>';
+      head.querySelector('.lbl').appendChild(document.createTextNode(f.title));
+      head.querySelector('.stage').textContent = pad(i + 1) + ' · ' + CONFIG.stageWord;
+      var tools = head.querySelector('.tools');
+
+      if(f.url){
+        var open = document.createElement('a');
+        open.href = f.url; open.target = '_blank'; open.rel = 'noopener';
+        open.textContent = 'Open in new tab ↗';
+        tools.appendChild(open);
+        tools.appendChild(button('Replace link', function(){ f.url = ''; save(frames); render(); scrollTo(i); }));
+      }
+      tools.appendChild(button('Rename', function(){
+        var v = prompt('Frame title', f.title);
+        if(v !== null && v.trim()){ f.title = v.trim(); save(frames); render(); scrollTo(i); }
+      }));
+      tools.appendChild(button('Remove', function(){
+        if(!confirm('Remove “' + f.title + '” from this board?')) return;
+        frames.splice(i, 1); save(frames); render();
+        scrollTo(Math.max(0, Math.min(i, frames.length - 1)));
+      }));
+
+      var frame = document.createElement('div');
+      frame.className = 'frame';
+      if(f.url){
+        var ifr = document.createElement('iframe');
+        ifr.loading = 'lazy'; ifr.allowFullscreen = true;
+        ifr.src = embedUrl(f.url);
+        ifr.title = f.title;
+        frame.appendChild(ifr);
+      } else {
+        var wrap = document.createElement('div');
+        wrap.className = 'fallback';
+        wrap.innerHTML =
+          '<span>Paste the link for this frame</span>' +
+          '<input type="url" placeholder="https://..." />' +
+          '<button type="button">Save</button>';
+        var input = wrap.querySelector('input');
+        var btn = wrap.querySelector('button');
+        btn.addEventListener('click', function(){
+          var v = input.value.trim();
+          if(!v) return;
+          f.url = v; save(frames); render(); scrollTo(i);
+        });
+        input.addEventListener('keydown', function(e){ if(e.key === 'Enter') btn.click(); });
+        frame.appendChild(wrap);
+      }
+
+      cell.appendChild(head);
+      cell.appendChild(frame);
+      board.appendChild(cell);
+
+      var nb = document.createElement('button');
+      nb.type = 'button';
+      nb.textContent = pad(i + 1) + ' · ' + f.title;
+      nb.addEventListener('click', function(){ scrollTo(i); });
+      stageNav.appendChild(nb);
+    });
+    mark();
+  }
+
+  function button(label, onClick){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = label;
+    b.addEventListener('click', onClick);
+    return b;
+  }
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function scrollTo(i){ board.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' }); }
+  function current(){ return Math.round(board.scrollTop / window.innerHeight); }
+  function mark(){
+    var c = current();
+    [].forEach.call(stageNav.children, function(b, i){ b.setAttribute('aria-current', String(i === c)); });
+  }
+
+  document.getElementById('addFrame').addEventListener('click', function(){
+    frames.push({ id:'f' + Date.now(), title:'New frame', url:'' });
+    save(frames); render(); scrollTo(frames.length - 1);
+  });
+  document.getElementById('resetBoard').addEventListener('click', function(){
+    if(confirm('Restore the starting frames? Added frames and pasted links on this board are lost.')) reset();
+  });
+
+  board.addEventListener('scroll', mark, { passive:true });
+  addEventListener('keydown', function(e){
+    if(e.key === 'ArrowDown' || e.key === 'PageDown'){ e.preventDefault(); scrollTo(Math.min(current() + 1, frames.length - 1)); }
+    if(e.key === 'ArrowUp' || e.key === 'PageUp'){ e.preventDefault(); scrollTo(Math.max(current() - 1, 0)); }
+  });
+
+  var hint = document.getElementById('hint');
+  setTimeout(function(){ hint.classList.add('gone'); }, 5000);
+
+  render();
+})();
+</script>
+</body>
+</html>
