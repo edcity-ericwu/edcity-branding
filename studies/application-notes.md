@@ -37,12 +37,12 @@ Palettes are not fixed. Expect them to shift as the visual languages pull apart.
 | --- | --- | --- | --- | --- | --- |
 | A | Calm Momentum | `layout_optionA.html` | Slate, Sky & First Light | **Momentum** — the page advances as six numbered steps (01 認識平台 → 06 下一步), shown as a route in the hero, a left progress rail, a four-step sequence (備課 → 教學 → 評估 → 下一步) and a closing line with every stop lit. Lines run green → blue → apricot; the morning sky brightens towards the closing step. Disciplined type, left-aligned grid, restrained motion. | bright "innovation" gradients, neon data networks, urgency-led dashboards, bureaucratic, rigid, performative |
 | B | Attentive Orientation *(was Human Craft, then Connected Path)* | `layout_optionB.html` | Clear Field, Bright Signal | **Supportive threads** — straight blue-to-green gradient bands that form ring-and-dot nodes where they cross: the intro network, the hero composition, eyebrow markers, the mock spine, and a dot cursor with a trailing line. Single typeface; editorial photography. | decorative line texture, childish, sentimental, messy, over-familiar |
-| C | Curious Intelligence | `layout_optionC.html` (grid; earlier card version `layout_optionC_v1.html`) | Bright Field, Two Points | **Refracted knowledge** — an optical system of transparency, overlap, and refraction: every source can be seen from more than one angle and stays inspectable. Ties C to the foundation's Knowledge anchor, as A ties to wayfinding and B to paths and connection. Colour is never the only carrier of meaning; motion optional, purposeful, low-stimulation. | neon gradients, cosmic data fields, black-box "magic", opaque, automated, gimmicky |
+| C | Expansive Intelligence *(board formerly Curious Intelligence)* | `layout_optionC.html` (grid; earlier card version `layout_optionC_v1.html`) | Bright Field, Two Points | **Refracted knowledge** — an optical system of transparency, overlap, and refraction: every source can be seen from more than one angle and stays inspectable. Ties C to the foundation's Knowledge anchor, as A ties to wayfinding and B to paths and connection. Colour is never the only carrier of meaning; motion optional, purposeful, low-stimulation. | neon gradients, cosmic data fields, black-box "magic", opaque, automated, gimmicky |
 
 Imagery cues from the WIP moodboards (inspiration only — do not lift):
 - **Calm Momentum:** architectural thresholds and vaulted naves (a doorway of light), a calm sea horizon, disciplined Chinese editorial poster typography, warm real collaboration.
 - **Attentive Orientation** *(board formerly Human Craft, then Connected Path)*: a single blue ribbon winding through a portrait, a transit-map of crossing coloured lines, a soft domed opening to the sky, an editorial faculty portrait, hands-on collaboration.
-- **Curious Intelligence:** dichroic glass casting refractions, a fluted translucent partition with light passing through, a modernist pavilion of large openings, marbled-ink illustration.
+- **Expansive Intelligence:** dichroic glass casting refractions, a fluted translucent partition with light passing through, a modernist pavilion of large openings, marbled-ink illustration.
 
 ---
 
@@ -50,7 +50,7 @@ Imagery cues from the WIP moodboards (inspiration only — do not lift):
 
 - **A · Calm Momentum:** WebGL dawn opening that over-exposes into the hero; momentum rail and step sequence; one primary action (booking), text links elsewhere; two-column product sections with flat ruled mocks; large centred quote; full-width FAQ; closing section as the step-06 payoff with every node lit. Retoned from dusk to dawn (cool grounds, lit blue primary button); spruce green on finished steps; a soft light follows the pointer. Palette switch, comparison table, updates carousel, KPI tiles and icon-only partner boxes removed. Two faces only: Aspekta + Chiron Hei HK.
 - **B · Attentive Orientation:** sharp and high-contrast with a little play; cool palette by decision; blue-to-green line network; one typeface (Aspekta + Chiron GoRound TC); line network in the intro and beside the hero headline; flat ruled mocks; calm paper menu with node markers; loud quote, quiet sober class-view; partners folded into a line under the hero; dot cursor with a trailing line.
-- **C · Curious Intelligence:** invisible 12-column grid; opening resolves into the hero on one grid module; refraction planes, perspective demo, comparison toggle; peach reserved for family/home moments; figures numbered [圖 01]–[圖 05].
+- **C · Expansive Intelligence:** invisible 12-column grid; opening resolves into the hero on one grid module; refraction planes, perspective demo, comparison toggle; peach reserved for family/home moments; figures numbered [圖 01]–[圖 05].
 - **Parked for all three:** mobile layouts, imagery direction, section-heading voice.
 
 ---
@@ -75,7 +75,7 @@ Best current alignment of visual system and concept. "Teacher retains final judg
 
 ---
 
-## Option C — Curious Intelligence (`layout_optionC.html`; feedback below was given on `layout_optionC_v1.html`)
+## Option C — Expansive Intelligence (`layout_optionC.html`; feedback below was given on `layout_optionC_v1.html`)
 
 **Board comment:** An open field of intelligible possibilities: AI reveals relevant relationships and next steps, while people can inspect, adapt, and decide.
 

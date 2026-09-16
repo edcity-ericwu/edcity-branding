@@ -7,7 +7,7 @@ Figma moodboards (one frame per option, in the `EdCity_Branding-Moodboards` file
 Pinterest boards (being updated by the client):
 
 - **Calm Momentum** — https://pin.it/43loawaLQ
-- **Curious Intelligence** — https://pin.it/UdxWndGFO
+- **Expansive Intelligence** (board created as *Curious Intelligence*) — https://pin.it/UdxWndGFO
 - **Attentive Orientation** (board created as *Human Craft*) — https://pin.it/1Kyw7XbP5
 
 The client notes there is deliberate overlap in mood, tone, and feel across the
