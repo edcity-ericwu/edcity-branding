@@ -104,7 +104,7 @@
 
 
 <div class="nav" id="stageNav" role="group" aria-label="Frame"></div>
-<div class="nav" id="addBtn"><button type="button" id="addFrame">+ Add frame</button></div>
+<div class="nav" id="addBtn"><button type="button" id="addFrame">+ Add frame</button><button type="button" id="resetBoard" title="Restore the starting frames">Reset</button></div>
 <div class="hint" id="hint">Scroll or use ↑ ↓ · paste a Figma link into any empty frame</div>
 
 <div id="board"></div>
@@ -119,18 +119,25 @@
   ];
 
   function load(){
-    var saved = [];
-    try{ saved = JSON.parse(localStorage.getItem(STORE_ID) || '[]'); }catch(e){}
-    var byId = {};
-    saved.forEach(function(s){ byId[s.id] = s; });
-    var out = DEFAULTS.map(function(d){
-      var s = byId[d.id] || {};
-      return { id:d.id, title:s.title || d.title, url:('url' in s) ? s.url : d.url };
-    });
-    saved.forEach(function(s){ if(!DEFAULTS.some(function(d){ return d.id === s.id; })) out.push(s); });
-    return out;
+    var stored = null;
+    try{ stored = JSON.parse(localStorage.getItem(STORE_ID) || 'null'); }catch(e){}
+    /* an edited board is authoritative, so a removed frame stays removed;
+       the older array-only format is merged onto the defaults once */
+    if(stored && stored.frames) return stored.frames.slice();
+    if(Array.isArray(stored) && stored.length){
+      var byId = {};
+      stored.forEach(function(x){ byId[x.id] = x; });
+      var out = DEFAULTS.map(function(d){
+        var x = byId[d.id] || {};
+        return { id:d.id, title:x.title || d.title, url:('url' in x) ? x.url : d.url };
+      });
+      stored.forEach(function(x){ if(!DEFAULTS.some(function(d){ return d.id === x.id; })) out.push(x); });
+      return out;
+    }
+    return DEFAULTS.map(function(d){ return { id:d.id, title:d.title, url:d.url }; });
   }
-  function save(list){ try{ localStorage.setItem(STORE_ID, JSON.stringify(list)); }catch(e){} }
+  function save(list){ try{ localStorage.setItem(STORE_ID, JSON.stringify({ v:2, frames:list })); }catch(e){} }
+  function reset(){ try{ localStorage.removeItem(STORE_ID); }catch(e){} frames = load(); render(); scrollTo(0); }
 
   var frames = load();
   var board = document.getElementById('board');
@@ -141,6 +148,17 @@
   function render(){
     board.innerHTML = '';
     stageNav.innerHTML = '';
+    if(!frames.length){
+      var empty = document.createElement('section');
+      empty.className = 'cell';
+      empty.innerHTML = '<div class="frame"><div class="fallback">' +
+        '<span>No frames on this board</span>' +
+        '<button type="button" id="restore">Restore the starting frames</button>' +
+        '</div></div>';
+      board.appendChild(empty);
+      empty.querySelector('#restore').addEventListener('click', reset);
+      return;
+    }
     frames.forEach(function(f, i){
       var cell = document.createElement('section');
       cell.className = 'cell';
@@ -171,6 +189,15 @@
         if(v !== null && v.trim()){ f.title = v.trim(); save(frames); render(); scrollTo(i); }
       });
       tools.appendChild(rename);
+
+      var remove = document.createElement('button');
+      remove.type = 'button'; remove.textContent = 'Remove';
+      remove.addEventListener('click', function(){
+        if(!confirm('Remove “' + f.title + '” from this board?')) return;
+        frames.splice(i, 1); save(frames); render();
+        scrollTo(Math.max(0, Math.min(i, frames.length - 1)));
+      });
+      tools.appendChild(remove);
 
       var frame = document.createElement('div');
       frame.className = 'frame';
@@ -223,6 +250,10 @@
   document.getElementById('addFrame').addEventListener('click', function(){
     frames.push({ id:'f' + Date.now(), title:'New frame', url:'' });
     save(frames); render(); scrollTo(frames.length - 1);
+  });
+
+  document.getElementById('resetBoard').addEventListener('click', function(){
+    if(confirm('Restore the starting frames? Added frames and pasted links on this board are lost.')) reset();
   });
 
   board.addEventListener('scroll', mark, { passive:true });
