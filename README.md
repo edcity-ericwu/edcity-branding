@@ -6,7 +6,7 @@ The direction combines three propositions, each explored as its own option:
 
 - **A · Calm Momentum** — structure and behaviour (a calm, stepwise path to the next action)
 - **B · Attentive Orientation** — guidance you can see (visible paths, nodes, next steps), sharp and high-contrast with a little play.
-- **C · Curious Intelligence** — possibility (refraction, pixel grids, fuzz turning into clear ideas)
+- **C · Expansive Intelligence** — possibility opening up (refraction, pixel grids, fuzz turning into clear ideas)
 
 Two brand constants run through all three: **blue** is always present and leads, and **green** is always present, as a highlight or an accent.
 
@@ -18,7 +18,7 @@ Option letters match the client moodboard exactly and mean the same thing everyw
 | --- | --- | --- | --- | --- |
 | A | Calm Momentum | `palette_optionA.html` | `layout_optionA.html` | sanalabs.com, giftee-group.com |
 | B | Attentive Orientation | `palette_optionB.html` | `layout_optionB.html` | quarterre.com, pellmell.fr |
-| C | Curious Intelligence | `palette_optionC.html` | `layout_optionC.html` | pellizcoceramica.com, runrobrun.com |
+| C | Expansive Intelligence | `palette_optionC.html` | `layout_optionC.html` | pellizcoceramica.com, runrobrun.com |
 
 ## studies/
 
