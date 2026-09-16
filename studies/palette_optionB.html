@@ -196,7 +196,6 @@
   }
 
   /* -------- signal & light -------- */
-  .spark{margin:66px auto 0;max-width:920px}
   .sec-title{
     font-family:var(--sans);font-weight:700;
     font-size:clamp(1.4rem,3.4vw,2rem);letter-spacing:-.015em;
@@ -253,6 +252,20 @@
   .pages a:hover{color:var(--nav-ink-strong,var(--ink,#F2F4F8))}
   .pages a[aria-current="page"]{background:var(--nav-ink-strong,var(--ink,#F2F4F8));color:var(--nav-bg-strong,var(--paper,#0E1116))}
   @media (max-width:640px){ .pages{bottom:auto;top:56px} }
+  /* the gradient rules sit behind a fold: reference material, not the palette story */
+  .spark{margin:56px auto 0;border-top:1px solid var(--hair);padding-top:8px}
+  .spark > summary{
+    list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;padding:18px 0;
+    font-family:var(--sans);font-weight:700;font-size:clamp(1.1rem,2.2vw,1.35rem);letter-spacing:-.01em;color:var(--ink);
+  }
+  .spark > summary::-webkit-details-marker{display:none}
+  .spark > summary::after{
+    content:"Show";margin-left:auto;font-family:var(--sans);font-weight:600;font-size:.78rem;letter-spacing:.02em;
+    color:var(--muted);border:1px solid var(--hair);border-radius:999px;padding:6px 12px;
+  }
+  .spark[open] > summary::after{content:"Hide"}
+  .spark > summary:hover::after{color:var(--ink)}
+  .spark .sec-lede{margin-top:6px}
 </style>
 </head>
 <body>
@@ -404,8 +417,8 @@
     <p>Product screens that need to feel modern and effortless. Data-rich views where a cool field keeps things readable. Marketing and launch moments where the gradients can open up.</p>
   </div>
 
-  <section class="spark">
-    <h2 class="sec-title">Signal &amp; Light</h2>
+  <details class="spark">
+    <summary>Signal &amp; Light &mdash; gradient rules</summary>
     <p class="sec-lede">The field stays flat and white. Expression comes from the <b>signal</b> &mdash; coral &mdash; and from light gradients mixed from the palette scale. One gradient surface per screen, on a real moment.</p>
 
     <div class="grad-grid">
@@ -477,7 +490,7 @@
     </div>
 
     <p class="sec-lede" style="margin-top:28px"><b>Motion:</b> the line-transition gradient shifts gradually &mdash; on the side nav rail, each colour eases into the next. Movement stays gentle, and it honours reduced-motion.</p>
-  </section>
+  </details>
 </div>
 </body>
 </html>
