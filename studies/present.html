@@ -24,7 +24,7 @@
   /* ---------- the board: 3 columns (options) x 3 rows (stages), 2D scroll-snap ---------- */
   #board{
     position:absolute;inset:0;
-    display:grid;grid-template-columns:repeat(3,100vw);grid-template-rows:repeat(3,100vh);
+    display:grid;grid-template-columns:repeat(3,100vw);grid-template-rows:repeat(4,100vh);
     overflow:auto;scroll-snap-type:both mandatory;
     -ms-overflow-style:none;scrollbar-width:none;
   }
@@ -128,8 +128,9 @@
 
 <div class="nav" id="rowNav" role="group" aria-label="Stage">
   <button data-row="0"><span class="lbl-text">01 · Moodboard</span></button>
-  <button data-row="1"><span class="lbl-text">02 · Palette</span></button>
-  <button data-row="2"><span class="lbl-text">03 · Layout</span></button>
+  <button data-row="1"><span class="lbl-text">02 · References</span></button>
+  <button data-row="2"><span class="lbl-text">03 · Palette</span></button>
+  <button data-row="3"><span class="lbl-text">04 · Layout</span></button>
 </div>
 
 <div class="nav" id="colNav" role="group" aria-label="Option">
@@ -164,8 +165,32 @@
     <div class="frame" data-fig="c"></div>
   </section>
 
-  <!-- Row 2: Palette -->
+
+  <!-- Row 2: References -->
   <section class="cell" data-row="1" data-col="a">
+    <div class="cell-head">
+      <h2 class="lbl"><span class="dot"></span>Option A · Calm Momentum</h2>
+      <span class="stage">References</span>
+    </div>
+    <div class="frame" data-fig="ref-a"></div>
+  </section>
+  <section class="cell" data-row="1" data-col="b">
+    <div class="cell-head">
+      <h2 class="lbl"><span class="dot"></span>Option B · Attentive Orientation</h2>
+      <span class="stage">References</span>
+    </div>
+    <div class="frame" data-fig="ref-b"></div>
+  </section>
+  <section class="cell" data-row="1" data-col="c">
+    <div class="cell-head">
+      <h2 class="lbl"><span class="dot"></span>Option C · Expansive Intelligence</h2>
+      <span class="stage">References</span>
+    </div>
+    <div class="frame" data-fig="ref-c"></div>
+  </section>
+
+  <!-- Row 3: Palette -->
+  <section class="cell" data-row="2" data-col="a">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option A · Slate, Sky &amp; First Light</h2>
       <span class="stage">Palette</span>
@@ -173,7 +198,7 @@
     </div>
     <div class="frame" data-src="palette_optionA.html" data-badge="palette_optionA.html"></div>
   </section>
-  <section class="cell" data-row="1" data-col="b">
+  <section class="cell" data-row="2" data-col="b">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option B · Clear Field, Bright Signal</h2>
       <span class="stage">Palette</span>
@@ -181,7 +206,7 @@
     </div>
     <div class="frame" data-src="palette_optionB.html" data-badge="palette_optionB.html"></div>
   </section>
-  <section class="cell" data-row="1" data-col="c">
+  <section class="cell" data-row="2" data-col="c">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option C · Bright Field, Two Points</h2>
       <span class="stage">Palette</span>
@@ -190,8 +215,8 @@
     <div class="frame" data-src="palette_optionC.html" data-badge="palette_optionC.html"></div>
   </section>
 
-  <!-- Row 3: Study -->
-  <section class="cell" data-row="2" data-col="a">
+  <!-- Row 4: Layout -->
+  <section class="cell" data-row="3" data-col="a">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option A · layout_optionA</h2>
       <span class="stage">Layout</span>
@@ -199,7 +224,7 @@
     </div>
     <div class="frame" data-src="layout_optionA.html" data-badge="layout_optionA.html"></div>
   </section>
-  <section class="cell" data-row="2" data-col="b">
+  <section class="cell" data-row="3" data-col="b">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option B · layout_optionB</h2>
       <span class="stage">Layout</span>
@@ -207,7 +232,7 @@
     </div>
     <div class="frame" data-src="layout_optionB.html" data-badge="layout_optionB.html"></div>
   </section>
-  <section class="cell" data-row="2" data-col="c">
+  <section class="cell" data-row="3" data-col="c">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option C · layout_optionC</h2>
       <span class="stage">Layout</span>
@@ -226,7 +251,7 @@
   var row = 0, col = 0;
 
   function go(r, c){
-    r = Math.max(0, Math.min(2, r));
+    r = Math.max(0, Math.min(rowBtns.length - 1, r));
     c = Math.max(0, Math.min(2, c));
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var left = c * board.clientWidth, top = r * board.clientHeight;
@@ -305,7 +330,7 @@
       ifr.loading = 'lazy';
       ifr.allowFullscreen = true;
       ifr.src = figEmbedUrl(saved);
-      ifr.title = 'Figma moodboard ' + key;
+      ifr.title = (/^ref-/.test(key) ? 'Figma references ' : 'Figma moodboard ') + key;
       frame.innerHTML = '';
       frame.appendChild(ifr);
       var badge = document.createElement('span');
@@ -321,7 +346,7 @@
     var wrap = document.createElement('div');
     wrap.className = 'fallback';
     wrap.innerHTML =
-      '<span>Paste the Figma prototype share link</span>' +
+      '<span>Paste the Figma ' + (/^ref-/.test(key) ? 'references' : 'moodboard') + ' link</span>' +
       '<input type="url" placeholder="https://www.figma.com/proto/..." />' +
       '<button type="button">Save</button>';
     var input = wrap.querySelector('input');
