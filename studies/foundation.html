@@ -78,14 +78,16 @@
 
   @media (max-width:760px){ .cell{padding-top:64px} .brand span{display:none} }
   /* jump between the boards without going back to the index */
-  .pages{position:fixed;left:16px;bottom:16px;z-index:20;display:flex;gap:6px;padding:6px;border-radius:999px;
-    background:rgba(23,27,34,.86);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .pages{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:6px;padding:6px;border-radius:999px;
+    background:var(--nav-bg,rgba(23,27,34,.86));border:1px solid var(--nav-line,var(--hair,#262C36));
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
   .pages a{
-    font-family:var(--sans);font-weight:600;font-size:.76rem;text-decoration:none;color:var(--ink-2);
+    font-family:var(--sans);font-weight:600;font-size:.76rem;text-decoration:none;
+    color:var(--nav-ink,var(--muted,#A7AFBD));
     padding:7px 13px;border-radius:999px;transition:background .15s,color .15s;
   }
-  .pages a:hover{color:var(--ink)}
-  .pages a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+  .pages a:hover{color:var(--nav-ink-strong,var(--ink,#F2F4F8))}
+  .pages a[aria-current="page"]{background:var(--nav-ink-strong,var(--ink,#F2F4F8));color:var(--nav-bg-strong,var(--paper,#0E1116))}
   @media (max-width:640px){ .pages{bottom:auto;top:56px} }
 </style>
 </head>
@@ -98,8 +100,8 @@
 
 <nav class="pages" aria-label="Boards">
   <a href="index.html">Index</a>
-  <a href="present.html">Compare</a>
   <a href="foundation.html" aria-current="page">Foundation</a>
+  <a href="present.html">Compare</a>
 </nav>
 
 
