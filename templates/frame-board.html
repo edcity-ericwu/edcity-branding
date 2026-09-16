@@ -42,6 +42,9 @@
 
   .frame{flex:1;min-height:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--card);position:relative}
   .frame iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+  .frame video,.frame img{width:100%;height:100%;display:block;object-fit:contain;background:#000}
+  .frame .media-note{position:absolute;left:12px;bottom:12px;z-index:2;font-size:.66rem;color:var(--ink-2);
+    background:rgba(0,0,0,.55);padding:4px 9px;border-radius:999px;pointer-events:none}
   .frame .fallback{
     position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
     gap:14px;text-align:center;padding:24px;color:var(--ink-3);font-size:.8rem;
@@ -111,6 +114,10 @@ var CONFIG = {
   accent: '#2472AD',               /* frame dots, focus rings, save button */
   stageWord: 'Frame',              /* the word after the number in each frame header */
 
+  /* how plain video files play; per frame you can override with
+     { autoplay:false } or { controls:false } on the frame itself */
+  video: { autoplay:true, loop:true, muted:true, controls:true },
+
   /* cross-page links, in order; mark this page with current:true.
      Leave the array empty to hide the pill entirely. */
   nav: [
@@ -121,6 +128,9 @@ var CONFIG = {
 
   /* the frames this board starts with; url:'' leaves a paste box */
   frames: [
+    /* a URL is embedded as a page; a .mp4 / .webm / .mov plays as video;
+       an image file shows as an image. `kind` forces it: 'page' | 'video' | 'image'.
+       Local files work too: 'clips/opening.mp4'. Add `note` for a caption. */
     { id:'one', title:'First frame',  url:'' },
     { id:'two', title:'Second frame', url:'' }
   ]
@@ -166,6 +176,39 @@ var CONFIG = {
     return /figma\.com/.test(link)
       ? 'https://www.figma.com/embed?embed_host=share&url=' + encodeURIComponent(link)
       : link;
+  }
+  /* a plain media file plays in place; anything else is embedded as a page */
+  function kindOf(f){
+    if(f.kind) return f.kind;
+    var path = String(f.url).split(/[?#]/)[0];
+    if(/\.(mp4|webm|ogv|mov|m4v)$/i.test(path)) return 'video';
+    if(/\.(png|jpe?g|gif|webp|avif|svg)$/i.test(path)) return 'image';
+    return 'page';
+  }
+  function mediaEl(f){
+    var kind = kindOf(f), el;
+    if(kind === 'video'){
+      var v = CONFIG.video || {};
+      el = document.createElement('video');
+      el.src = f.url;
+      el.controls   = f.controls !== undefined ? !!f.controls : v.controls !== false;
+      el.loop       = f.loop     !== undefined ? !!f.loop     : v.loop     !== false;
+      el.muted      = f.muted    !== undefined ? !!f.muted    : v.muted    !== false;
+      el.autoplay   = f.autoplay !== undefined ? !!f.autoplay : v.autoplay !== false;
+      el.playsInline = true; el.preload = 'metadata';
+      if(f.poster) el.poster = f.poster;
+      /* autoplay only works muted, and only once the frame is on screen */
+      if(el.autoplay){ el.muted = true; }
+    } else if(kind === 'image'){
+      el = document.createElement('img');
+      el.src = f.url; el.alt = f.title; el.loading = 'lazy';
+    } else {
+      el = document.createElement('iframe');
+      el.loading = 'lazy'; el.allowFullscreen = true;
+      el.src = embedUrl(f.url);
+      el.title = f.title;
+    }
+    return el;
   }
 
   function render(){
@@ -216,11 +259,12 @@ var CONFIG = {
       var frame = document.createElement('div');
       frame.className = 'frame';
       if(f.url){
-        var ifr = document.createElement('iframe');
-        ifr.loading = 'lazy'; ifr.allowFullscreen = true;
-        ifr.src = embedUrl(f.url);
-        ifr.title = f.title;
-        frame.appendChild(ifr);
+        frame.appendChild(mediaEl(f));
+        if(f.note){
+          var note = document.createElement('span');
+          note.className = 'media-note'; note.textContent = f.note;
+          frame.appendChild(note);
+        }
       } else {
         var wrap = document.createElement('div');
         wrap.className = 'fallback';
@@ -250,6 +294,7 @@ var CONFIG = {
       stageNav.appendChild(nb);
     });
     mark();
+    playVisible();
   }
 
   function button(label, onClick){
@@ -274,7 +319,18 @@ var CONFIG = {
     if(confirm('Restore the starting frames? Added frames and pasted links on this board are lost.')) reset();
   });
 
-  board.addEventListener('scroll', mark, { passive:true });
+  /* only the frame you are on plays, so a board of clips stays quiet */
+  function playVisible(){
+    var c = current();
+    [].forEach.call(board.querySelectorAll('video'), function(v){
+      var cell = v.closest('.cell');
+      var i = [].indexOf.call(board.children, cell);
+      if(i === c){ if(v.autoplay && v.paused) v.play().catch(function(){}); }
+      else if(!v.paused){ v.pause(); }
+    });
+  }
+
+  board.addEventListener('scroll', function(){ mark(); playVisible(); }, { passive:true });
   addEventListener('keydown', function(e){
     if(e.key === 'ArrowDown' || e.key === 'PageDown'){ e.preventDefault(); scrollTo(Math.min(current() + 1, frames.length - 1)); }
     if(e.key === 'ArrowUp' || e.key === 'PageUp'){ e.preventDefault(); scrollTo(Math.max(current() - 1, 0)); }
