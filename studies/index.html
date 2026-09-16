@@ -6,8 +6,8 @@
 <title>EdCity — Design Studies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500&display=swap"></noscript>
 <style>
   :root{
     color-scheme:light dark;
@@ -15,7 +15,7 @@
     --line:#E1E7F7; --blue-ink:#2C63D6;
     --a:#C97462; --b:#2C63D6; --c:#B32BA8;
     --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --han:"Noto Sans TC", var(--sans); --mono:"IBM Plex Mono", ui-monospace, monospace;
+    --han:"Noto Sans TC", var(--sans); --mono:var(--sans);
   }
   @media (prefers-color-scheme:dark){
     :root{--paper:#0A0E1A;--card:#141A2C;--ink:#E9ECF7;--ink-2:#A9B0C9;--ink-3:#79839F;--line:#252D42;--blue-ink:#8FB0FA;
@@ -28,14 +28,14 @@
   .eyebrow{font-family:var(--sans);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--blue-ink);margin:0 0 12px}
   h1{font-family:var(--sans);font-weight:700;font-size:clamp(1.9rem,5vw,2.9rem);letter-spacing:-.02em;margin:0 0 14px}
   .lede{color:var(--ink-2);margin:0 0 6px;max-width:62ch}
-  .repo{font-family:var(--mono);font-size:.82rem;color:var(--ink-3);margin:0 0 8px}
+  .repo{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.82rem;color:var(--ink-3);margin:0 0 8px}
   .repo a{color:var(--blue-ink)}
 
   .opt{margin-top:52px}
   .opt-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-bottom:12px;border-bottom:2px solid var(--oc,var(--line))}
-  .opt-head .k{font-family:var(--mono);font-size:.78rem;font-weight:500;color:var(--oc);letter-spacing:.06em}
+  .opt-head .k{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.78rem;font-weight:500;color:var(--oc);letter-spacing:.06em}
   .opt-head .nm{font-family:var(--sans);font-weight:700;font-size:1.15rem;letter-spacing:-.01em}
-  .opt-head .mood{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-left:auto}
+  .opt-head .mood{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.72rem;color:var(--ink-3);margin-left:auto}
   .opt.a{--oc:var(--a)} .opt.b{--oc:var(--b)} .opt.c{--oc:var(--c)}
 
   .list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
@@ -47,15 +47,15 @@
   a.item:hover{border-color:var(--oc,var(--blue-ink));transform:translateX(2px)}
   a.item .nm{font-family:var(--sans);font-weight:600;font-size:.98rem;flex-shrink:0}
   a.item .ds{color:var(--ink-2);font-size:.9rem;flex:1;min-width:0}
-  a.item .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--ink-3);
+  a.item .tag{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.66rem;letter-spacing:.04em;color:var(--ink-3);
     border:1px solid var(--line);border-radius:999px;padding:2px 8px;flex-shrink:0;align-self:center}
 
   h2{font-family:var(--sans);font-size:.78rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;
      color:var(--ink-3);margin:56px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}
 
-  .note{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin-top:14px}
+  .note{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--ink-3);margin-top:14px}
   .note a{color:var(--blue-ink)}
-  footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.76rem;color:var(--ink-3)}
+  footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.76rem;color:var(--ink-3)}
 </style>
 </head>
 <body>

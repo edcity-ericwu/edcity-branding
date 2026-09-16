@@ -6,8 +6,8 @@
 <title>Bright Field, Two Points</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"></noscript>
 <style>
   :root{
     color-scheme:light;
@@ -19,7 +19,7 @@
     --accent:#3B78F0;
     --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
     --serif:"Source Serif 4", Georgia, serif;
-    --mono:"IBM Plex Mono", ui-monospace, monospace;
+    --mono:var(--sans);
     --han:"Noto Sans TC", var(--sans);
   }
   @media (prefers-color-scheme:dark){
@@ -45,9 +45,9 @@
   .block .nm{font-family:var(--sans);font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:clamp(10px,2.5cqw,21px);line-height:1.04}
   .block .tc{font-family:var(--han);font-weight:500;font-size:clamp(9px,1.7cqw,14px);opacity:.72;margin-top:.25em}
   .block .role{font-family:var(--sans);font-weight:600;text-transform:uppercase;letter-spacing:.07em;font-size:clamp(7.5px,1.35cqw,11px);opacity:.64;margin-top:.7em}
-  .block .data{margin-top:auto;font-family:var(--mono);font-weight:500;font-size:clamp(8px,1.5cqw,13px);line-height:1.45;letter-spacing:.01em}
+  .block .data{margin-top:auto;font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:500;font-size:clamp(8px,1.5cqw,13px);line-height:1.45;letter-spacing:.01em}
   .block .data .sub{display:block;opacity:.64;font-size:.86em;margin-top:.15em}
-  .block .idx{position:absolute;top:clamp(8px,2.5cqw,24px);right:clamp(8px,2.5cqw,24px);font-family:var(--mono);font-size:clamp(8px,1.5cqw,13px);opacity:.72}
+  .block .idx{position:absolute;top:clamp(8px,2.5cqw,24px);right:clamp(8px,2.5cqw,24px);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(8px,1.5cqw,13px);opacity:.72}
   .block.dark{color:#F7F9FF}
   .block.light{color:#0A0E1A}
   .vert{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
@@ -56,7 +56,7 @@
   .prop{margin:30px auto 0;max-width:920px}
   .prop-bar{display:flex;height:26px;border:1px solid var(--hair);overflow:hidden}
   .prop-bar span{display:block}
-  .prop-key{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:12px;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+  .prop-key{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:12px;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.78rem;color:var(--muted)}
   .prop-key b{color:var(--ink);font-weight:500}
 
   .notes{margin:44px auto 0;max-width:62ch;display:flex;flex-direction:column;gap:16px}
@@ -72,14 +72,14 @@
   .grad-grid{display:flex;flex-direction:column;gap:22px}
   .grad{margin:0;border:1px solid var(--hair);background:var(--surface)}
   .grad-swatch{height:170px;position:relative}
-  .grad-swatch .tag{position:absolute;left:0;top:0;font-family:var(--mono);font-size:.68rem;letter-spacing:.03em;color:#0A0E1A;padding:8px 11px}
+  .grad-swatch .tag{position:absolute;left:0;top:0;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.68rem;letter-spacing:.03em;color:#0A0E1A;padding:8px 11px}
   .grad figcaption{display:flex;flex-direction:column;gap:3px;padding:14px 16px}
   .grad .gname{font-family:var(--sans);font-weight:600;font-size:.95rem;color:var(--ink)}
   .grad .gdesc{color:var(--muted);font-size:.9rem;line-height:1.5}
-  .grad .gcss{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-top:5px}
+  .grad .gcss{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.74rem;color:var(--muted);margin-top:5px}
   .bridge{margin:34px 0 0;padding:20px;border:1px solid var(--hair);background:var(--surface)}
   .bridge h3,.rules h3{font-family:var(--sans);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;font-weight:600;color:var(--muted);margin:0 0 12px}
-  .bridge-row{display:flex;flex-wrap:wrap;gap:20px;font-family:var(--mono);font-size:.82rem;color:var(--ink)}
+  .bridge-row{display:flex;flex-wrap:wrap;gap:20px;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.82rem;color:var(--ink)}
   .bridge-row .bs{display:inline-block;width:1.1em;height:1.1em;border:1px solid var(--hair);vertical-align:-.2em;margin-right:.4em}
   .bridge p{margin:14px 0 0;font-size:.9rem;color:var(--muted);max-width:56ch}
   .rules{margin:24px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:18px}
