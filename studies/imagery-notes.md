@@ -8,7 +8,7 @@ Pinterest boards (being updated by the client):
 
 - **Calm Momentum** — https://pin.it/43loawaLQ
 - **Curious Intelligence** — https://pin.it/UdxWndGFO
-- **Connected Path** (board created as *Human Craft*) — https://pin.it/1Kyw7XbP5
+- **Attentive Orientation** (board created as *Human Craft*) — https://pin.it/1Kyw7XbP5
 
 The client notes there is deliberate overlap in mood, tone, and feel across the
 three — the boards share references. That is consistent with the decision to run
