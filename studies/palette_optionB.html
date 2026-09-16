@@ -71,10 +71,11 @@
     margin:0 0 16px;
   }
   .lede{
-    max-width:80%;
+    max-width:64ch;
     color:var(--muted);
-    margin:0 0 38px;
-    font-size:1.05rem;
+    margin:0 0 34px;
+    font-size:.92rem;
+    line-height:1.6;
   }
   .lede b{color:var(--ink);font-weight:600}
 
@@ -266,6 +267,22 @@
   .spark[open] > summary::after{content:"Hide"}
   .spark > summary:hover::after{color:var(--ink)}
   .spark .sec-lede{margin-top:6px}
+  /* the colour notes read as reference: open them when you want the detail */
+  details.notes{
+    margin:44px auto 0;max-width:62ch;display:block;border-top:1px solid var(--hair);padding-top:8px;
+  }
+  details.notes > summary{
+    list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:12px;padding:16px 0;
+    font-family:var(--sans);font-weight:700;font-size:1rem;letter-spacing:-.005em;color:var(--ink);
+  }
+  details.notes > summary::-webkit-details-marker{display:none}
+  details.notes > summary::after{
+    content:"Show";margin-left:auto;font-family:var(--sans);font-weight:600;font-size:.78rem;
+    color:var(--muted);border:1px solid var(--hair);border-radius:999px;padding:6px 12px;
+  }
+  details.notes[open] > summary::after{content:"Hide"}
+  details.notes > summary:hover::after{color:var(--ink)}
+  details.notes .notes-body{display:flex;flex-direction:column;gap:16px;padding-bottom:8px}
 </style>
 </head>
 <body>
@@ -391,8 +408,9 @@
     </div>
   </div>
 
-  <div class="notes">
-    <h2>How to read it</h2>
+  <details class="notes">
+    <summary>How to read it — what each colour does</summary>
+    <div class="notes-body">
     <p>An open white field carried by a grounded neutral, with bright blue held back for the moment you actually decide something. Contrast stays high so the marks read sharply, and the coral point is where the system allows itself to play. The layout mirrors how the colours divide a screen &mdash; it isn&rsquo;t the identity itself.</p>
 
     <h2>Structure</h2>
@@ -415,7 +433,8 @@
 
     <h2>What it&rsquo;s for</h2>
     <p>Product screens that need to feel modern and effortless. Data-rich views where a cool field keeps things readable. Marketing and launch moments where the gradients can open up.</p>
-  </div>
+    </div>
+  </details>
 
   <details class="spark">
     <summary>Signal &amp; Light &mdash; gradient rules</summary>
