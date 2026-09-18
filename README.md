@@ -26,7 +26,7 @@ Option letters match the client moodboard exactly and mean the same thing everyw
 | --- | --- |
 | `index.html` | Start page linking every study. |
 | `foundation.html` | Brand foundation board: the client's brand personality and brand attributes frames embedded one per screen, with slots for more. Links are pasted per frame and saved in the browser. |
-| `present.html` | Compare board: a 3×4 grid (moodboard → references → palette → layout, for each option) with 2D scroll-snap. Moodboard and reference cells take a pasted Figma link. |
+| `present.html` | Compare board: moodboard → references for each option, with 2D scroll-snap. Moodboard and reference cells take a pasted Figma link. Palette and layout rows exist but are held back; `SHOW_ROWS` at the top of the script brings them back. |
 | `palette_optionA.html` | **Slate, Sky & First Light.** Built from the moodboard's sunrise photo at dawn: structural slate blue on a cool morning-paper and mist ground, a clear-sky blue for the primary button and links, apricot and dusty coral as small first-light accents, spruce green as the highlight for progress and what's done. Includes the Spark & Light gradient rules. |
 | `palette_optionB.html` | **Clear Field, Bright Signal.** Bright blue held to decisions on a cool near-white field; stone for structure, sea green for wayfinding and progress, one coral signal. Blue and green travel together as the line network. |
 | `palette_optionC.html` | **Bright Field, Two Points.** A refraction field: main blue as the brand anchor and largest plane, refracted through cyan, lavender, peach and pink, with two small signal points (pink = opportunity, green = done). |
