@@ -37,7 +37,7 @@ Palettes are not fixed. Expect them to shift as the visual languages pull apart.
 | --- | --- | --- | --- | --- | --- |
 | A | Calm Momentum | `layout_optionA.html` | Slate, Sky & First Light | **Momentum** — the page advances as six numbered steps (01 認識平台 → 06 下一步), shown as a route in the hero, a left progress rail, a four-step sequence (備課 → 教學 → 評估 → 下一步) and a closing line with every stop lit. Lines run green → blue → apricot; the morning sky brightens towards the closing step. Disciplined type, left-aligned grid, restrained motion. | bright "innovation" gradients, neon data networks, urgency-led dashboards, bureaucratic, rigid, performative |
 | B | Attentive Orientation *(was Human Craft, then Connected Path)* | `layout_optionB.html` | Clear Field, Bright Signal | **Supportive threads** — straight blue-to-green gradient bands that form ring-and-dot nodes where they cross: the intro network, the hero composition, eyebrow markers, the mock spine, and a dot cursor with a trailing line. Single typeface; editorial photography. | decorative line texture, childish, sentimental, messy, over-familiar |
-| C | Expansive Intelligence *(board formerly Curious Intelligence)* | `layout_optionC.html` (grid; earlier card version `layout_optionC_v1.html`) | Bright Field, Two Points | **Refracted knowledge** — an optical system of transparency, overlap, and refraction: every source can be seen from more than one angle and stays inspectable. Ties C to the foundation's Knowledge anchor, as A ties to wayfinding and B to paths and connection. Colour is never the only carrier of meaning; motion optional, purposeful, low-stimulation. | neon gradients, cosmic data fields, black-box "magic", opaque, automated, gimmicky |
+| C | Expansive Intelligence *(board formerly Curious Intelligence)* | `layout_optionC.html` (grid) | Bright Field, Two Points | **Refracted knowledge** — an optical system of transparency, overlap, and refraction: every source can be seen from more than one angle and stays inspectable. Ties C to the foundation's Knowledge anchor, as A ties to wayfinding and B to paths and connection. Colour is never the only carrier of meaning; motion optional, purposeful, low-stimulation. | neon gradients, cosmic data fields, black-box "magic", opaque, automated, gimmicky |
 
 Imagery cues from the WIP moodboards (inspiration only — do not lift):
 - **Calm Momentum:** architectural thresholds and vaulted naves (a doorway of light), a calm sea horizon, disciplined Chinese editorial poster typography, warm real collaboration.
@@ -75,7 +75,7 @@ Best current alignment of visual system and concept. "Teacher retains final judg
 
 ---
 
-## Option C — Expansive Intelligence (`layout_optionC.html`; feedback below was given on `layout_optionC_v1.html`)
+## Option C — Expansive Intelligence (`layout_optionC.html`; feedback below was given on an earlier card layout, since removed)
 
 **Board comment:** An open field of intelligible possibilities: AI reveals relevant relationships and next steps, while people can inspect, adapt, and decide.
 
@@ -92,7 +92,7 @@ The clearest AI-native expression, but currently risks reading as a modern SaaS 
 - "Why this recommendation?" becomes a **visible, repeatable component pattern** — not a buried trust statement.
 - Add one or two visualisations of how a **learner need → approved resource → tool → next action** connect. Articulate, explainable intelligence made concrete.
 
-**Done:** `layout_optionC_v1.html`'s hero was rebuilt against amita-oshiete.jp's actual measured DOM geometry (live `getBoundingClientRect`/`getComputedStyle`, not a screenshot guess) — panel is a pure-graphic near-square (670:702), the trend box is flush to its top-right edge, the wordmark card is enlarged to real signature scale, trending chips are plain pills (matching the reference's actual hero styling — the faceted-polygon treatment belongs to a different section further down amita's page and was corrected back out). No further amita-matching work queued unless raised again.
+**History:** the earlier card layout's hero was rebuilt against amita-oshiete.jp's actual measured DOM geometry (live `getBoundingClientRect`/`getComputedStyle`, not a screenshot guess) — panel is a pure-graphic near-square (670:702), the trend box is flush to its top-right edge, the wordmark card is enlarged to real signature scale, trending chips are plain pills (matching the reference's actual hero styling — the faceted-polygon treatment belongs to a different section further down amita's page and was corrected back out). No further amita-matching work queued unless raised again.
 
 ---
 
