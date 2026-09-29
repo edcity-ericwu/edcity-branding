@@ -69,6 +69,18 @@
   }
   .frame[data-fig] .badge{pointer-events:auto}
 
+  /* a cell can hold several Figma links; the tabs switch between them */
+  .cell-head .figtabs{display:flex;align-items:center;gap:4px;margin-left:auto}
+  .cell-head .figtabs button{
+    all:unset;box-sizing:border-box;cursor:pointer;font-family:var(--mono);font-variant-numeric:tabular-nums;
+    font-size:.68rem;color:var(--ink-3);border:1px solid var(--line);border-radius:999px;
+    padding:3px 9px;line-height:1.4;transition:color .15s,border-color .15s,background .15s;
+  }
+  .cell-head .figtabs button:hover{color:var(--ink);border-color:var(--ink-2)}
+  .cell-head .figtabs button[aria-current="true"]{color:#fff;background:var(--oc);border-color:var(--oc)}
+  .cell-head .figtabs button:focus-visible{outline:2px solid var(--oc);outline-offset:2px}
+  .cell-head .figtabs .sep{width:1px;height:14px;background:var(--line);margin:0 3px}
+
   /* ---------- nav overlay ---------- */
   .nav{position:fixed;z-index:20;display:flex;gap:6px;padding:6px;border-radius:999px;
     background:rgba(23,27,34,.86);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
@@ -179,7 +191,10 @@
       <h2 class="lbl"><span class="dot"></span>Option B · Attentive Orientation</h2>
       <span class="stage">References</span>
     </div>
-    <div class="frame" data-fig="ref-b"></div>
+    <!-- data-fig-links: space-separated Figma links that travel with the page,
+         so a viewer sees the boards without pasting anything. A link pasted
+         in the browser overrides these for that browser only. -->
+    <div class="frame" data-fig="ref-b" data-fig-links=""></div>
   </section>
   <section class="cell" data-row="1" data-col="c">
     <div class="cell-head">
@@ -322,44 +337,105 @@
   function figEmbedUrl(link){
     return 'https://www.figma.com/embed?embed_host=share&url=' + encodeURIComponent(link);
   }
+  /* A cell may hold more than one link — Option B has two reference boards.
+     Stored as a JSON array; the older single-string value still reads fine. */
+  function readLinks(frame, key){
+    var raw;
+    try{ raw = localStorage.getItem(FIG_KEY + key); }catch(e){}
+    if(raw){
+      if(raw.charAt(0) === '['){
+        try{ var a = JSON.parse(raw); if(Array.isArray(a) && a.length) return a.filter(Boolean); }catch(e){}
+      }
+      else return [raw];
+    }
+    /* Nothing saved in this browser: fall back to the links committed in the
+       markup, so anyone opening the published board sees the boards too. */
+    return (frame.dataset.figLinks || '').split(/\s+/).filter(Boolean);
+  }
+  function writeLinks(key, links){
+    try{
+      if(links.length){ localStorage.setItem(FIG_KEY + key, JSON.stringify(links)); }
+      else{ localStorage.removeItem(FIG_KEY + key); }
+    }catch(e){}
+  }
   function figOpenLink(cellHead, url){
     if(!cellHead) return;
     var a = cellHead.querySelector('a.open');
     if(!a){
       a = document.createElement('a');
       a.className = 'open'; a.target = '_blank'; a.rel = 'noopener';
-      a.textContent = 'Open in new tab ↗';
+      a.textContent = 'Open in new tab \u2197';
       cellHead.appendChild(a);
     }
     a.href = url;
   }
-  function renderFigCell(frame, key){
-    var saved;
-    try{ saved = localStorage.getItem(FIG_KEY + key); }catch(e){}
+  function figTabs(cellHead, frame, key, links, idx){
+    if(!cellHead) return;
+    var old = cellHead.querySelector('.figtabs');
+    if(old) old.remove();
+    var wrap = document.createElement('div');
+    wrap.className = 'figtabs';
+    links.forEach(function(link, i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = String(i + 1);
+      b.title = link;
+      b.setAttribute('aria-current', i === idx ? 'true' : 'false');
+      b.addEventListener('click', function(){ renderFigCell(frame, key, i); });
+      wrap.appendChild(b);
+    });
+    var sep = document.createElement('span');
+    sep.className = 'sep';
+    wrap.appendChild(sep);
+    var add = document.createElement('button');
+    add.type = 'button'; add.textContent = '+'; add.title = 'Add another Figma link';
+    add.addEventListener('click', function(){ renderFigCell(frame, key, links.length, true); });
+    wrap.appendChild(add);
+    var drop = document.createElement('button');
+    drop.type = 'button'; drop.textContent = '\u2212'; drop.title = 'Remove the link on screen';
+    drop.addEventListener('click', function(){
+      var next = links.slice();
+      next.splice(idx, 1);
+      writeLinks(key, next);
+      renderFigCell(frame, key, Math.max(0, idx - 1));
+    });
+    wrap.appendChild(drop);
+    cellHead.insertBefore(wrap, cellHead.querySelector('a.open'));
+  }
+  /* idx picks which of the cell's links to show; addMode asks for a new one
+     even when links are already saved. */
+  function renderFigCell(frame, key, idx, addMode){
+    var links = readLinks(frame, key);
+    idx = Math.min(Math.max(idx || 0, 0), Math.max(links.length - 1, 0));
     var cellHead = frame.parentElement && frame.parentElement.querySelector('.cell-head');
-    if(saved){
-      figOpenLink(cellHead, saved);
+    if(links.length && !addMode){
+      var link = links[idx];
+      figOpenLink(cellHead, link);
+      figTabs(cellHead, frame, key, links, idx);
       var ifr = document.createElement('iframe');
       ifr.loading = 'lazy';
       ifr.allowFullscreen = true;
-      ifr.src = figEmbedUrl(saved);
-      ifr.title = (/^ref-/.test(key) ? 'Figma references ' : 'Figma moodboard ') + key;
+      ifr.src = figEmbedUrl(link);
+      ifr.title = (/^ref-/.test(key) ? 'Figma references ' : 'Figma moodboard ') + key + ' ' + (idx + 1);
       frame.innerHTML = '';
       frame.appendChild(ifr);
       var badge = document.createElement('span');
-      badge.className = 'badge'; badge.title = 'Click to replace the link'; badge.style.cursor = 'pointer';
-      badge.textContent = 'Figma ✎';
+      badge.className = 'badge'; badge.title = 'Click to replace this link'; badge.style.cursor = 'pointer';
+      badge.textContent = links.length > 1 ? 'Figma ' + (idx + 1) + '/' + links.length + ' \u270e' : 'Figma \u270e';
       badge.addEventListener('click', function(){
-        try{ localStorage.removeItem(FIG_KEY + key); }catch(e){}
-        renderFigCell(frame, key);
+        var next = links.slice();
+        next.splice(idx, 1);
+        writeLinks(key, next);
+        renderFigCell(frame, key, idx, true);
       });
       frame.appendChild(badge);
       return;
     }
+    var noun = /^ref-/.test(key) ? 'references' : 'moodboard';
     var wrap = document.createElement('div');
     wrap.className = 'fallback';
     wrap.innerHTML =
-      '<span>Paste the Figma ' + (/^ref-/.test(key) ? 'references' : 'moodboard') + ' link</span>' +
+      '<span>Paste ' + (links.length ? 'another Figma ' + noun + ' link' : 'the Figma ' + noun + ' link') + '</span>' +
       '<input type="url" placeholder="https://www.figma.com/proto/..." />' +
       '<button type="button">Save</button>';
     var input = wrap.querySelector('input');
@@ -367,10 +443,14 @@
     btn.addEventListener('click', function(){
       var v = input.value.trim();
       if(!v) return;
-      try{ localStorage.setItem(FIG_KEY + key, v); }catch(e){}
-      renderFigCell(frame, key);
+      var next = links.concat([v]);
+      writeLinks(key, next);
+      renderFigCell(frame, key, next.length - 1);
     });
     input.addEventListener('keydown', function(e){ if(e.key === 'Enter') btn.click(); });
+    if(links.length){
+      figTabs(cellHead, frame, key, links, -1);
+    }
     frame.innerHTML = '';
     frame.appendChild(wrap);
   }
