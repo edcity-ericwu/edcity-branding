@@ -1,3 +1,5 @@
+<!-- This board is the compare-board tool: https://github.com/ericwkw/compare-board
+     The board it shows is described in present.config.js — edit that, not this. -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,22 +12,21 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"></noscript>
 <style>
   :root{
-    color-scheme:light;
+    color-scheme:dark;
     --paper:#0E1116; --card:#171B22; --ink:#F2F4F8; --ink-2:#A7AFBD; --ink-3:#6E7686; --line:#262C36;
-    --a:#C97462; --b:#2450E6; --c:#F35BEC;
-    --sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
-    --han:"Noto Sans TC",var(--sans); --mono:var(--sans);
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    --oc:var(--ink-2);
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;overflow:hidden}
-  body{background:var(--paper);color:var(--ink);font-family:var(--han);-webkit-font-smoothing:antialiased}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
   a{color:inherit}
 
-  /* ---------- the board: 3 columns (options) x 3 rows (stages), 2D scroll-snap ---------- */
+  /* ---------- the board: one screen per cell, snapping in both directions ---------- */
   #board{
     position:absolute;inset:0;
-    display:grid;grid-template-columns:repeat(3,100vw);grid-template-rows:repeat(4,100vh);
-    overflow:auto;scroll-snap-type:both mandatory;
+    display:grid;overflow:auto;scroll-snap-type:both mandatory;
     -ms-overflow-style:none;scrollbar-width:none;
   }
   #board::-webkit-scrollbar{display:none}
@@ -33,46 +34,21 @@
     scroll-snap-align:start;scroll-snap-stop:always;position:relative;
     display:flex;flex-direction:column;padding:clamp(70px,9vh,96px) clamp(18px,3vw,40px) clamp(18px,3vw,32px);
   }
-  .cell[data-col="a"]{--oc:var(--a)} .cell[data-col="b"]{--oc:var(--b)} .cell[data-col="c"]{--oc:var(--c)}
 
-  .cell-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;flex-shrink:0}
-  .cell-head .lbl{margin:0;font-family:var(--sans);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:9px}
-  .cell-head .lbl .dot{width:9px;height:9px;border-radius:50%;background:var(--oc)}
-  .cell-head .stage{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .cell-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-shrink:0}
+  .cell-head .lbl{margin:0;font-weight:700;font-size:1rem;display:flex;align-items:center;gap:9px}
+  .cell-head .lbl .dot{width:9px;height:9px;border-radius:50%;background:var(--oc);flex-shrink:0}
+  .cell-head .stage{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
   .cell-head a.open{
-    font-family:var(--sans);font-weight:600;font-size:.78rem;color:var(--ink-2);text-decoration:none;
+    font-weight:600;font-size:.78rem;color:var(--ink-2);text-decoration:none;
     border:1px solid var(--line);border-radius:999px;padding:6px 12px;flex-shrink:0;
   }
   .cell-head a.open:hover{color:var(--ink);border-color:var(--ink-2)}
 
-  .frame{
-    flex:1;min-height:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--card);
-    position:relative;
-  }
-  .frame iframe{width:100%;height:100%;border:0;display:block;background:#fff}
-  .frame .fallback{
-    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:14px;text-align:center;padding:24px;color:var(--ink-3);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.8rem;
-  }
-  .frame .fallback input{
-    width:min(420px,80%);background:var(--paper);border:1px solid var(--line);border-radius:8px;
-    color:var(--ink);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.78rem;padding:9px 12px;
-  }
-  .frame .fallback input:focus{outline:2px solid var(--oc);outline-offset:1px}
-  .frame .fallback button{
-    font-family:var(--sans);font-weight:600;font-size:.78rem;background:var(--oc);color:#fff;
-    border:0;border-radius:999px;padding:8px 16px;cursor:pointer;
-  }
-  .frame .badge{
-    position:absolute;left:12px;top:12px;z-index:2;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.66rem;
-    background:rgba(0,0,0,.55);color:#fff;padding:4px 9px;border-radius:999px;pointer-events:none;
-  }
-  .frame[data-fig] .badge{pointer-events:auto}
-
-  /* a cell can hold several Figma links; the tabs switch between them */
+  /* a cell can hold several links; the tabs switch between them */
   .cell-head .figtabs{display:flex;align-items:center;gap:4px;margin-left:auto}
   .cell-head .figtabs button{
-    all:unset;box-sizing:border-box;cursor:pointer;font-family:var(--mono);font-variant-numeric:tabular-nums;
+    all:unset;box-sizing:border-box;cursor:pointer;font-family:var(--mono);
     font-size:.68rem;color:var(--ink-3);border:1px solid var(--line);border-radius:999px;
     padding:3px 9px;line-height:1.4;transition:color .15s,border-color .15s,background .15s;
   }
@@ -81,218 +57,266 @@
   .cell-head .figtabs button:focus-visible{outline:2px solid var(--oc);outline-offset:2px}
   .cell-head .figtabs .sep{width:1px;height:14px;background:var(--line);margin:0 3px}
 
-  /* ---------- nav overlay ---------- */
+  .frame{
+    flex:1;min-height:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+    background:var(--card);position:relative;
+  }
+  .frame iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+  .frame .fallback{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;text-align:center;padding:24px;color:var(--ink-3);font-family:var(--mono);font-size:.8rem;
+  }
+  .frame .fallback input{
+    width:min(420px,80%);background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    color:var(--ink);font-family:var(--mono);font-size:.78rem;padding:9px 12px;
+  }
+  .frame .fallback input:focus{outline:2px solid var(--oc);outline-offset:1px}
+  .frame .fallback button{
+    font-weight:600;font-size:.78rem;background:var(--oc);color:#fff;
+    border:0;border-radius:999px;padding:8px 16px;cursor:pointer;
+  }
+  .frame .badge{
+    position:absolute;left:12px;top:12px;z-index:2;font-family:var(--mono);font-size:.66rem;
+    background:rgba(0,0,0,.55);color:#fff;padding:4px 9px;border-radius:999px;cursor:pointer;
+  }
+
+  /* ---------- the overlays that tell you where you are ---------- */
   .nav{position:fixed;z-index:20;display:flex;gap:6px;padding:6px;border-radius:999px;
-    background:rgba(23,27,34,.86);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    background:rgba(23,27,34,.86);border:1px solid var(--line);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
   .nav button{
-    all:unset;box-sizing:border-box;cursor:pointer;font-family:var(--sans);font-weight:600;font-size:.78rem;
+    all:unset;box-sizing:border-box;cursor:pointer;font-weight:600;font-size:.78rem;
     color:var(--ink-2);padding:8px 14px;border-radius:999px;transition:background .15s,color .15s;
     display:flex;align-items:center;gap:7px;
   }
   .nav button:hover{color:var(--ink)}
   .nav button[aria-current="true"]{background:var(--ink);color:var(--paper)}
-
+  .nav button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
   #rowNav{top:16px;left:50%;transform:translateX(-50%)}
   #colNav{top:16px;right:16px}
-  #colNav button .dot{width:8px;height:8px;border-radius:50%}
-  #colNav button[data-col="a"] .dot{background:var(--a)} #colNav button[data-col="b"] .dot{background:var(--b)} #colNav button[data-col="c"] .dot{background:var(--c)}
+  /* Long option names make the column nav reach across the middle, where the row
+     nav is, and a click meant for a row lands on a column. Shorten the column
+     labels rather than move the bar: a second line would cover the cell head,
+     where the link tabs are. */
+  #colNav .short{display:none}
+  #colNav.tight .full{display:none}
+  #colNav.tight .short{display:inline}
+  #rowNav.tight .lbl-text{display:none}
+  #rowNav.tight button::after{content:attr(data-n);font-variant-numeric:tabular-nums}
+  #colNav button .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 
-  .brand{position:fixed;top:16px;left:16px;z-index:20;display:flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:700;font-size:.9rem}
-  .brand svg{width:22px;height:22px}
+  .brand{position:fixed;top:16px;left:16px;z-index:20;display:flex;align-items:center;gap:9px;
+    font-weight:700;font-size:.9rem;text-decoration:none}
+
+  /* jump between sibling boards without going back to an index */
+  .pages{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:6px;padding:6px;border-radius:999px;
+    background:rgba(23,27,34,.86);border:1px solid var(--line);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .pages a{
+    font-weight:600;font-size:.76rem;text-decoration:none;color:var(--ink-2);
+    padding:7px 13px;border-radius:999px;transition:background .15s,color .15s;
+  }
+  .pages a:hover{color:var(--ink)}
+  .pages a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+  .pages a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  @media (max-width:640px){ .pages{bottom:auto;top:56px} }
 
   .hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20;
-    font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.7rem;color:var(--ink-3);background:rgba(23,27,34,.7);
+    font-family:var(--mono);font-size:.7rem;color:var(--ink-3);background:rgba(23,27,34,.7);
     padding:6px 14px;border-radius:999px;border:1px solid var(--line);pointer-events:none;
-    display:flex;align-items:center;gap:8px;transition:opacity .4s}
+    transition:opacity .4s}
   .hint.gone{opacity:0}
 
   @media (max-width:760px){
     #rowNav .lbl-text{display:none}
     .cell{padding-top:64px}
+    .cell-head{flex-wrap:wrap}
   }
-  /* jump between the boards without going back to the index */
-  .pages{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:6px;padding:6px;border-radius:999px;
-    background:var(--nav-bg,rgba(23,27,34,.86));border:1px solid var(--nav-line,var(--hair,#262C36));
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-  .pages a{
-    font-family:var(--sans);font-weight:600;font-size:.76rem;text-decoration:none;
-    color:var(--nav-ink,var(--muted,#A7AFBD));
-    padding:7px 13px;border-radius:999px;transition:background .15s,color .15s;
-  }
-  .pages a:hover{color:var(--nav-ink-strong,var(--ink,#F2F4F8))}
-  .pages a[aria-current="page"]{background:var(--nav-ink-strong,var(--ink,#F2F4F8));color:var(--nav-bg-strong,var(--paper,#0E1116))}
-  @media (max-width:640px){ .pages{bottom:auto;top:56px} }
 </style>
 </head>
 <body>
 
-<a class="brand" href="index.html">
-  <svg viewBox="0 0 179 54" fill="currentColor" aria-hidden="true"><path d="M27.1927 1.81771C27.7177 3.67516 27.5415 6.76482 26.5247 7.04371C25.5097 7.32078 23.8377 4.87274 23.2357 3.04264C22.6135 1.14327 23.5367 0.386805 24.5553 0.111561C25.5721 -0.165506 26.6678 -0.0397325 27.1909 1.81771"/><path d="M12.5574 6.18152C13.8054 7.66165 14.925 10.5453 14.1156 11.2161C13.3007 11.8887 10.7661 10.3412 9.46112 8.91574C8.10663 7.44109 8.64072 6.37474 9.44644 5.70759C10.2595 5.04044 11.3075 4.70869 12.5592 6.18152"/><path d="M3.19317 18.9067C4.99181 19.6449 7.32088 21.6919 6.91343 22.658C6.50231 23.6241 3.53454 23.4127 1.7102 22.7528C-0.169204 22.0638 -0.196734 20.8717 0.21255 19.9074C0.623669 18.9395 1.40186 18.1703 3.19317 18.9067Z"/><path d="M43.6562 23.7716C43.6562 27.7855 40.114 31.0428 35.7403 31.0428C31.3667 31.0428 27.8245 27.7873 27.8245 23.7716C27.8245 19.756 31.3704 16.5004 35.7403 16.5004C40.1103 16.5004 43.6562 19.7578 43.6562 23.7716Z"/><path d="M19.9485 30.6364C19.9485 30.6364 19.754 30.2445 20.0843 30.0932C20.3798 29.9601 20.6019 30.3447 20.6019 30.3447C20.6019 30.3447 26.141 39.7559 40.7963 36.3017C40.7963 36.3017 52.7903 33.2193 53.128 20.7677C53.128 20.7677 53.128 20.3247 53.4235 20.2937C53.4235 20.2937 53.7961 20.1662 53.9191 20.7185C54.1063 21.5606 56.1454 36.8048 42.0333 40.5835C42.0333 40.5835 25.2729 44.5736 19.9503 30.6346"/><path d="M56.011 33.3177C55.5778 33.2429 55.4787 33.5619 55.2365 34.3403C52.7789 42.1747 44.9126 47.9074 35.5908 47.9074C24.3034 47.9074 15.1541 39.5006 15.1541 29.138C15.1541 20.62 21.5981 13.8318 29.848 11.4567C35.1008 10.1935 38.8082 10.9755 39.9314 11.1669C40.5518 11.2781 40.7445 11.2434 40.7445 11.2434C41.0602 11.1814 41.0932 10.8716 41.0492 10.7403C40.9335 10.3794 40.4123 10.2099 40.4123 10.2099C37.4298 9.1162 34.0638 8.95579 32.3936 8.95215H32.3533C31.7219 8.95215 31.3346 8.97584 31.3346 8.97584V8.98496C31.1694 8.9886 31.0043 8.98496 30.8464 8.99954C18.1623 9.73049 8.07886 19.4734 8.07886 31.3016C8.07886 43.1299 18.9368 53.58 32.3331 53.58C44.6318 53.58 54.9171 45.7985 56.3762 34.2856C56.4441 33.7661 56.2881 33.3669 56.0128 33.3195"/></svg>
-  EdCity · Compare
-</a>
+<a class="brand" id="brand" href="#"></a>
+<nav class="pages" id="pages" aria-label="Boards"></nav>
+<div class="nav" id="rowNav" role="group" aria-label="Stage"></div>
+<div class="nav" id="colNav" role="group" aria-label="Option"></div>
+<p class="hint" id="hint"></p>
+<div id="board"></div>
 
-<nav class="pages" aria-label="Boards">
-  <a href="index.html">Index</a>
-  <a href="foundation.html">Foundation</a>
-  <a href="present.html" aria-current="page">Compare</a>
-</nav>
-
-
-<div class="nav" id="rowNav" role="group" aria-label="Stage">
-  <button data-row="0"><span class="lbl-text">01 · Moodboard</span></button>
-  <button data-row="1"><span class="lbl-text">02 · References</span></button>
-  <button data-row="2"><span class="lbl-text">03 · Palette</span></button>
-  <button data-row="3"><span class="lbl-text">04 · Layout</span></button>
-</div>
-
-<div class="nav" id="colNav" role="group" aria-label="Option">
-  <button data-col="a"><span class="dot"></span>A</button>
-  <button data-col="b"><span class="dot"></span>B</button>
-  <button data-col="c"><span class="dot"></span>C</button>
-</div>
-
-<p class="hint" id="hint">Scroll in any direction, or use the arrow keys</p>
-
-<div id="board">
-  <!-- Row 1: Moodboard -->
-  <section class="cell" data-row="0" data-col="a">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option A · Calm Momentum</h2>
-      <span class="stage">Moodboard</span>
-    </div>
-    <div class="frame" data-fig="a" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=106-2656&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
-  </section>
-  <section class="cell" data-row="0" data-col="b">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option B · Attentive Orientation</h2>
-      <span class="stage">Moodboard</span>
-    </div>
-    <div class="frame" data-fig="b" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=112-2858&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
-  </section>
-  <section class="cell" data-row="0" data-col="c">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option C · Expansive Intelligence</h2>
-      <span class="stage">Moodboard</span>
-    </div>
-    <div class="frame" data-fig="c" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=112-2908&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
-  </section>
-
-
-  <!-- Row 2: References -->
-  <section class="cell" data-row="1" data-col="a">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option A · Calm Momentum</h2>
-      <span class="stage">References</span>
-    </div>
-    <div class="frame" data-fig="ref-a" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=718-611&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
-  </section>
-  <section class="cell" data-row="1" data-col="b">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option B · Attentive Orientation</h2>
-      <span class="stage">References</span>
-    </div>
-    <!-- data-fig-links: space-separated Figma links that travel with the page,
-         so a viewer sees the boards without pasting anything. A link pasted
-         in the browser overrides these for that browser only. -->
-    <div class="frame" data-fig="ref-b" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=1220-998&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966 https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=1220-999&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
-  </section>
-  <section class="cell" data-row="1" data-col="c">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option C · Expansive Intelligence</h2>
-      <span class="stage">References</span>
-    </div>
-    <div class="frame" data-fig="ref-c" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=1131-808&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
-  </section>
-
-  <!-- Row 3: Palette -->
-  <section class="cell" data-row="2" data-col="a">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option A · Slate, Sky &amp; First Light</h2>
-      <span class="stage">Palette</span>
-      <a class="open" href="palette_optionA.html" target="_blank" rel="noopener">Open in new tab ↗</a>
-    </div>
-    <div class="frame" data-src="palette_optionA.html" data-badge="palette_optionA.html"></div>
-  </section>
-  <section class="cell" data-row="2" data-col="b">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option B · Clear Field, Bright Signal</h2>
-      <span class="stage">Palette</span>
-      <a class="open" href="palette_optionB.html" target="_blank" rel="noopener">Open in new tab ↗</a>
-    </div>
-    <div class="frame" data-src="palette_optionB.html" data-badge="palette_optionB.html"></div>
-  </section>
-  <section class="cell" data-row="2" data-col="c">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option C · Bright Field, Two Points</h2>
-      <span class="stage">Palette</span>
-      <a class="open" href="palette_optionC.html" target="_blank" rel="noopener">Open in new tab ↗</a>
-    </div>
-    <div class="frame" data-src="palette_optionC.html" data-badge="palette_optionC.html"></div>
-  </section>
-
-  <!-- Row 4: Layout -->
-  <section class="cell" data-row="3" data-col="a">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option A · layout_optionA</h2>
-      <span class="stage">Layout</span>
-      <a class="open" href="layout_optionA.html" target="_blank" rel="noopener">Open in new tab ↗</a>
-    </div>
-    <div class="frame" data-src="layout_optionA.html" data-badge="layout_optionA.html"></div>
-  </section>
-  <section class="cell" data-row="3" data-col="b">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option B · layout_optionB</h2>
-      <span class="stage">Layout</span>
-      <a class="open" href="layout_optionB.html" target="_blank" rel="noopener">Open in new tab ↗</a>
-    </div>
-    <div class="frame" data-src="layout_optionB.html" data-badge="layout_optionB.html"></div>
-  </section>
-  <section class="cell" data-row="3" data-col="c">
-    <div class="cell-head">
-      <h2 class="lbl"><span class="dot"></span>Option C · layout_optionC</h2>
-      <span class="stage">Layout</span>
-      <a class="open" href="layout_optionC.html" target="_blank" rel="noopener">Open in new tab ↗</a>
-    </div>
-    <div class="frame" data-src="layout_optionC.html" data-badge="layout_optionC.html"></div>
-  </section>
-</div>
-
+<script src="present.config.js"></script>
 <script>
 (function(){
-  /* Stages shown on the board, by row: 0 Moodboard · 1 References · 2 Palette · 3 Layout.
-     Palette and layout are held back for now; add 2 and 3 here to bring them back. */
-  var SHOW_ROWS = [0, 1];
+  var CFG = window.BOARD;
+  if(!CFG){ document.body.textContent = 'board.config.js did not load.'; return; }
+
+  var FIG_KEY = CFG.storageKey || 'compare-board-';
+  var rows = CFG.rows || [], cols = CFG.columns || [];
+
+  /* ---------- build the page out of the config ---------- */
+  if(CFG.title) document.title = CFG.title;
+
+  /* A theme is custom properties, set before anything is drawn, so a board can
+     look like the project it belongs to without a second copy of this file. */
+  if(CFG.theme) Object.keys(CFG.theme).forEach(function(k){
+    document.documentElement.style.setProperty('--' + k, CFG.theme[k]);
+  });
+
+  var brand = document.getElementById('brand');
+  if(CFG.brand && CFG.brand.label){
+    /* the logo is the project's own markup, so it is written as given rather
+       than escaped; a config file is code, and this one is yours */
+    if(CFG.brand.logo) brand.innerHTML = CFG.brand.logo;
+    brand.appendChild(document.createTextNode(CFG.brand.label));
+    brand.href = CFG.brand.href || '#';
+  }
+  else brand.remove();
+
+  /* the boards either side of this one, if it belongs to a set */
+  var pages = document.getElementById('pages');
+  if(CFG.pages && CFG.pages.length){
+    CFG.pages.forEach(function(p){
+      var a = document.createElement('a');
+      a.textContent = p.label;
+      a.href = p.href || '#';
+      if(p.here) a.setAttribute('aria-current', 'page');
+      pages.appendChild(a);
+    });
+  }
+  else pages.remove();
+  var hint = document.getElementById('hint');
+  hint.textContent = CFG.hint || 'Scroll in any direction, or use the arrow keys';
 
   var board = document.getElementById('board');
-  [].forEach.call(document.querySelectorAll('#board .cell, #rowNav button'), function(el){
-    if(SHOW_ROWS.indexOf(+el.dataset.row) === -1) el.remove();
+  /* 100% of the scroll container, not 100vw/100vh: a viewport unit counts the
+     scrollbar gutter that the container's own width leaves out, so the cells
+     drift a scrollbar's width per column and the snap points stop matching. */
+  board.style.gridTemplateColumns = 'repeat(' + cols.length + ',100%)';
+  board.style.gridTemplateRows = 'repeat(' + rows.length + ',100%)';
+
+  var rowNav = document.getElementById('rowNav'), colNav = document.getElementById('colNav');
+  rows.forEach(function(r, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.innerHTML = '<span class="lbl-text"></span>';
+    b.dataset.n = ('0' + (i + 1));
+    b.querySelector('.lbl-text').textContent = ('0' + (i + 1)) + ' · ' + r.label;
+    rowNav.appendChild(b);
   });
-  /* renumber what is left so the nav and scroll maths stay in step */
-  [].forEach.call(document.querySelectorAll('#rowNav button'), function(b, i){
-    var t = b.querySelector('.lbl-text');
-    t.textContent = ('0' + (i + 1)) + ' · ' + t.textContent.replace(/^\d+\s·\s/, '');
+  cols.forEach(function(c){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.title = c.label;
+    var dot = document.createElement('span');
+    dot.className = 'dot';
+    if(c.colour) dot.style.background = c.colour;
+    var full = document.createElement('span');
+    full.className = 'full';
+    full.textContent = c.label;
+    /* What to show when there is no room for the whole name: the config's own
+       short form, or the part of the label before its separator — "Option B ·
+       Attentive Orientation" shortens to "Option B", not to "Option". */
+    var short = document.createElement('span');
+    short.className = 'short';
+    short.textContent = c.short || c.label.split(/\s*[\u00b7\u2013\u2014:|]\s*/)[0].trim() || c.label;
+    b.appendChild(dot); b.appendChild(full); b.appendChild(short);
+    colNav.appendChild(b);
   });
-  board.style.gridTemplateRows = 'repeat(' + SHOW_ROWS.length + ',100vh)';
-  var rowBtns = [].slice.call(document.querySelectorAll('#rowNav button'));
-  var colBtns = [].slice.call(document.querySelectorAll('#colNav button'));
-  var hint = document.getElementById('hint');
+
+  rows.forEach(function(r, ri){
+    cols.forEach(function(c, ci){
+      var spec = (CFG.cells || {})[r.id + '/' + c.id] || {};
+      var cell = document.createElement('section');
+      cell.className = 'cell';
+      cell.dataset.row = String(ri);
+      cell.dataset.colIndex = String(ci);
+      cell.dataset.col = c.id;
+      if(c.colour) cell.style.setProperty('--oc', c.colour);
+
+      var head = document.createElement('div');
+      head.className = 'cell-head';
+      var h = document.createElement('h2');
+      h.className = 'lbl';
+      h.innerHTML = '<span class="dot"></span>';
+      h.appendChild(document.createTextNode(c.label));
+      var stage = document.createElement('span');
+      stage.className = 'stage';
+      stage.textContent = r.label;
+      head.appendChild(h); head.appendChild(stage);
+
+      var frame = document.createElement('div');
+      frame.className = 'frame';
+      if(spec.src){ frame.dataset.src = spec.src; frame.dataset.badge = spec.badge || spec.src; }
+      else frame.dataset.fig = r.id + '/' + c.id;
+      if(spec.figma && spec.figma.length) frame.dataset.figLinks = spec.figma.join(' ');
+
+      cell.appendChild(head); cell.appendChild(frame);
+      board.appendChild(cell);
+    });
+  });
+
+  /* Keep the two nav bars off each other. Measured rather than guessed at a
+     breakpoint, because how wide they are depends on how long the labels are. */
+  function overlapping(){
+    var rn = rowNav.getBoundingClientRect(), cn = colNav.getBoundingClientRect();
+    return rn.right > cn.left && cn.right > rn.left && rn.bottom > cn.top && cn.bottom > rn.top;
+  }
+  function fitNav(){
+    colNav.classList.remove('tight');
+    rowNav.classList.remove('tight');
+    if(!rowNav.querySelector('button') || !colNav.querySelector('button')) return;
+    if(!overlapping()) return;
+    colNav.classList.add('tight');       /* first give up the column names */
+    if(!overlapping()) return;
+    rowNav.classList.add('tight');       /* then the row names, leaving their numbers */
+  }
+  /* Measure again whenever the bars change size for any reason. A web font
+     arriving is the one that matters: it lands after the first measurement and
+     makes every label wider, so a board that fitted at load stops fitting. */
+  var fitting = false, queued = 0;
+  function refit(){
+    if(fitting) return;
+    cancelAnimationFrame(queued);
+    queued = requestAnimationFrame(function(){ fitting = true; fitNav(); fitting = false; });
+  }
+  addEventListener('resize', refit);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+  if(window.ResizeObserver){
+    var ro = new ResizeObserver(refit);
+    ro.observe(rowNav); ro.observe(colNav);
+  }
+
+  var rowBtns = [].slice.call(rowNav.querySelectorAll('button'));
+  var colBtns = [].slice.call(colNav.querySelectorAll('button'));
   var row = 0, col = 0;
 
+  /* ---------- moving about ---------- */
   function go(r, c){
-    r = Math.max(0, Math.min(rowBtns.length - 1, r));
-    c = Math.max(0, Math.min(2, c));
+    r = Math.max(0, Math.min(rows.length - 1, r));
+    c = Math.max(0, Math.min(cols.length - 1, c));
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var left = c * board.clientWidth, top = r * board.clientHeight;
     try{ board.scrollTo({ left: left, top: top, behavior: reduce ? 'auto' : 'smooth' }); }
     catch(e){ board.scrollLeft = left; board.scrollTop = top; }
-    /* belt-and-braces: some browsers/contexts never progress a smooth
-       programmatic scroll (e.g. a backgrounded tab pauses rAF) — if we
-       haven't arrived after a beat, just land there instantly */
-    setTimeout(function(){
-      if(Math.abs(board.scrollLeft - left) > 4 || Math.abs(board.scrollTop - top) > 4){
+    /* Belt and braces. A smooth scroll can stall (a backgrounded tab pauses the
+       frames it needs) or stop a few pixels short, and one check at a fixed
+       delay lands mid-animation and proves nothing. So watch until the position
+       stops changing, then put it exactly where it should be. */
+    var last = -1, tries = 0;
+    clearInterval(go.watch);
+    go.watch = setInterval(function(){
+      var now = board.scrollLeft + board.scrollTop * 1e-3;
+      var arrived = Math.abs(board.scrollLeft - left) <= 1 && Math.abs(board.scrollTop - top) <= 1;
+      /* say where we are as well as go there: a scroll event is the usual way
+         the nav finds out, and some browsers coalesce or drop them */
+      if(arrived || ++tries > 12){ clearInterval(go.watch); sync(); return; }
+      if(now === last){                     /* it has settled, and not where we asked */
         board.scrollLeft = left; board.scrollTop = top;
+        clearInterval(go.watch);
+        sync();
+        return;
       }
-    }, 500);
+      last = now;
+    }, 150);
   }
   rowBtns.forEach(function(b, i){ b.addEventListener('click', function(){ go(i, col); }); });
   colBtns.forEach(function(b, i){ b.addEventListener('click', function(){ go(row, i); }); });
@@ -300,45 +324,33 @@
   function sync(){
     row = Math.round(board.scrollTop / board.clientHeight);
     col = Math.round(board.scrollLeft / board.clientWidth);
-    rowBtns.forEach(function(b,i){ b.setAttribute('aria-current', String(i===row)); });
-    colBtns.forEach(function(b,i){ b.setAttribute('aria-current', String(i===col)); });
+    rowBtns.forEach(function(b, i){ b.setAttribute('aria-current', String(i === row)); });
+    colBtns.forEach(function(b, i){ b.setAttribute('aria-current', String(i === col)); });
   }
   var t = 0;
-  board.addEventListener('scroll', function(){ clearTimeout(t); t = setTimeout(sync, 60); if(!hint.classList.contains('gone')){ hint.classList.add('gone'); } }, { passive:true });
+  board.addEventListener('scroll', function(){
+    clearTimeout(t); t = setTimeout(sync, 60);
+    if(!hint.classList.contains('gone')) hint.classList.add('gone');
+  }, { passive:true });
   sync();
+  fitNav();
 
   window.addEventListener('keydown', function(e){
-    if(e.key === 'ArrowRight'){ go(row, col+1); }
-    else if(e.key === 'ArrowLeft'){ go(row, col-1); }
-    else if(e.key === 'ArrowDown'){ go(row+1, col); }
-    else if(e.key === 'ArrowUp'){ go(row-1, col); }
+    if(e.target.tagName === 'INPUT') return;            /* let someone type a link in peace */
+    if(e.key === 'ArrowRight') go(row, col + 1);
+    else if(e.key === 'ArrowLeft') go(row, col - 1);
+    else if(e.key === 'ArrowDown') go(row + 1, col);
+    else if(e.key === 'ArrowUp') go(row - 1, col);
     else return;
     e.preventDefault();
   });
 
-  var FIG_KEY = 'edcity-figma-';
-  function mount(frame){
-    if(frame.dataset.src){
-      var badge = document.createElement('span');
-      badge.className = 'badge'; badge.textContent = frame.dataset.badge || '';
-      var ifr = document.createElement('iframe');
-      ifr.loading = 'lazy';
-      ifr.src = frame.dataset.src;
-      ifr.title = frame.dataset.badge || 'study';
-      frame.appendChild(ifr);
-      frame.appendChild(badge);
-      return;
-    }
-    if(frame.dataset.fig){
-      renderFigCell(frame, frame.dataset.fig);
-    }
-  }
-
+  /* ---------- what goes in a frame ---------- */
   function figEmbedUrl(link){
     return 'https://www.figma.com/embed?embed_host=share&url=' + encodeURIComponent(link);
   }
-  /* A cell may hold more than one link — Option B has two reference boards.
-     Stored as a JSON array; the older single-string value still reads fine. */
+  /* A cell may hold more than one link. Saved as a JSON array; a single string
+     from an older version still reads fine. */
   function readLinks(frame, key){
     var raw;
     try{ raw = localStorage.getItem(FIG_KEY + key); }catch(e){}
@@ -348,41 +360,50 @@
       }
       else return [raw];
     }
-    /* Nothing saved in this browser: fall back to the links committed in the
-       markup, so anyone opening the published board sees the boards too. */
+    /* nothing saved in this browser: the links the config shipped, so anyone
+       opening the published board sees the boards too */
     return (frame.dataset.figLinks || '').split(/\s+/).filter(Boolean);
+  }
+  function savedLinks(key){
+    var raw;
+    try{ raw = localStorage.getItem(FIG_KEY + key); }catch(e){}
+    if(!raw) return [];
+    if(raw.charAt(0) === '['){
+      try{ var a = JSON.parse(raw); return Array.isArray(a) ? a.filter(Boolean) : []; }catch(e){ return []; }
+    }
+    return [raw];
   }
   function writeLinks(key, links){
     try{
-      if(links.length){ localStorage.setItem(FIG_KEY + key, JSON.stringify(links)); }
-      else{ localStorage.removeItem(FIG_KEY + key); }
+      if(links.length) localStorage.setItem(FIG_KEY + key, JSON.stringify(links));
+      else localStorage.removeItem(FIG_KEY + key);
     }catch(e){}
   }
-  function figOpenLink(cellHead, url){
-    if(!cellHead) return;
-    var a = cellHead.querySelector('a.open');
+  function openLink(head, url){
+    if(!head) return;
+    var a = head.querySelector('a.open');
     if(!a){
       a = document.createElement('a');
       a.className = 'open'; a.target = '_blank'; a.rel = 'noopener';
-      a.textContent = 'Open in new tab \u2197';
-      cellHead.appendChild(a);
+      a.textContent = 'Open in new tab ↗';
+      head.appendChild(a);
     }
     a.href = url;
   }
-  function figTabs(cellHead, frame, key, links, idx){
-    if(!cellHead) return;
-    var old = cellHead.querySelector('.figtabs');
+  function tabs(head, frame, key, links, idx){
+    if(!head) return;
+    var old = head.querySelector('.figtabs');
     if(old) old.remove();
     var wrap = document.createElement('div');
     wrap.className = 'figtabs';
-    /* one link needs no tab to switch to; the + and \u2212 still show */
+    /* one link needs no tab to switch to; + and − still show */
     if(links.length > 1) links.forEach(function(link, i){
       var b = document.createElement('button');
       b.type = 'button';
       b.textContent = String(i + 1);
       b.title = link;
       b.setAttribute('aria-current', i === idx ? 'true' : 'false');
-      b.addEventListener('click', function(){ renderFigCell(frame, key, i); });
+      b.addEventListener('click', function(){ render(frame, key, i); });
       wrap.appendChild(b);
     });
     if(links.length > 1){
@@ -391,54 +412,61 @@
       wrap.appendChild(sep);
     }
     var add = document.createElement('button');
-    add.type = 'button'; add.textContent = '+'; add.title = 'Add another Figma link';
-    add.addEventListener('click', function(){ renderFigCell(frame, key, links.length, true); });
+    add.type = 'button'; add.textContent = '+'; add.title = 'Add another link';
+    add.addEventListener('click', function(){ render(frame, key, links.length, true); });
     wrap.appendChild(add);
     var drop = document.createElement('button');
-    drop.type = 'button'; drop.textContent = '\u2212'; drop.title = 'Remove the link on screen';
+    drop.type = 'button'; drop.textContent = '−'; drop.title = 'Remove the link on screen';
     drop.addEventListener('click', function(){
-      var next = links.slice();
-      next.splice(idx, 1);
-      writeLinks(key, next);
-      renderFigCell(frame, key, Math.max(0, idx - 1));
+      var mine = savedLinks(key);
+      if(mine.length){
+        /* drop what this browser saved; the shipped link comes back underneath */
+        mine.splice(Math.min(idx, mine.length - 1), 1);
+        writeLinks(key, mine);
+        render(frame, key, Math.max(0, idx - 1));
+        return;
+      }
+      /* nothing of mine to drop: shipped links are the config's, so say so
+         rather than pretending to edit the file */
+      drop.title = 'This link comes from board.config.js';
+      drop.textContent = '−';
     });
     wrap.appendChild(drop);
-    cellHead.insertBefore(wrap, cellHead.querySelector('a.open'));
+    head.insertBefore(wrap, head.querySelector('a.open'));
   }
-  /* idx picks which of the cell's links to show; addMode asks for a new one
-     even when links are already saved. */
-  function renderFigCell(frame, key, idx, addMode){
+  /* idx picks which of the cell's links to show; addMode asks for a new one even
+     when links are already there */
+  function render(frame, key, idx, addMode){
     var links = readLinks(frame, key);
     idx = Math.min(Math.max(idx || 0, 0), Math.max(links.length - 1, 0));
-    var cellHead = frame.parentElement && frame.parentElement.querySelector('.cell-head');
+    var head = frame.parentElement && frame.parentElement.querySelector('.cell-head');
     if(links.length && !addMode){
       var link = links[idx];
-      figOpenLink(cellHead, link);
-      figTabs(cellHead, frame, key, links, idx);
+      openLink(head, link);
+      tabs(head, frame, key, links, idx);
       var ifr = document.createElement('iframe');
       ifr.loading = 'lazy';
       ifr.allowFullscreen = true;
       ifr.src = figEmbedUrl(link);
-      ifr.title = (/^ref-/.test(key) ? 'Figma references ' : 'Figma moodboard ') + key + ' ' + (idx + 1);
+      ifr.title = key + ' ' + (idx + 1);
       frame.innerHTML = '';
       frame.appendChild(ifr);
       var badge = document.createElement('span');
-      badge.className = 'badge'; badge.title = 'Click to replace this link'; badge.style.cursor = 'pointer';
-      badge.textContent = links.length > 1 ? 'Figma ' + (idx + 1) + '/' + links.length + ' \u270e' : 'Figma \u270e';
+      badge.className = 'badge';
+      badge.title = 'Click to replace this link, in this browser';
+      badge.textContent = links.length > 1 ? (idx + 1) + '/' + links.length + ' ✎' : 'Figma ✎';
       badge.addEventListener('click', function(){
-        var next = links.slice();
-        next.splice(idx, 1);
-        writeLinks(key, next);
-        renderFigCell(frame, key, idx, true);
+        var mine = savedLinks(key);
+        if(mine.length){ mine.splice(Math.min(idx, mine.length - 1), 1); writeLinks(key, mine); }
+        render(frame, key, idx, true);
       });
       frame.appendChild(badge);
       return;
     }
-    var noun = /^ref-/.test(key) ? 'references' : 'moodboard';
     var wrap = document.createElement('div');
     wrap.className = 'fallback';
     wrap.innerHTML =
-      '<span>Paste ' + (links.length ? 'another Figma ' + noun + ' link' : 'the Figma ' + noun + ' link') + '</span>' +
+      '<span>' + (links.length ? 'Paste another link' : 'Paste a Figma link') + '</span>' +
       '<input type="url" placeholder="https://www.figma.com/proto/..." />' +
       '<button type="button">Save</button>';
     var input = wrap.querySelector('input');
@@ -446,38 +474,50 @@
     btn.addEventListener('click', function(){
       var v = input.value.trim();
       if(!v) return;
-      var next = links.concat([v]);
+      var next = savedLinks(key).concat([v]);
       writeLinks(key, next);
-      renderFigCell(frame, key, next.length - 1);
+      render(frame, key, next.length - 1);
     });
     input.addEventListener('keydown', function(e){ if(e.key === 'Enter') btn.click(); });
-    if(links.length){
-      figTabs(cellHead, frame, key, links, -1);
-    }
+    if(links.length) tabs(head, frame, key, links, -1);
     frame.innerHTML = '';
     frame.appendChild(wrap);
   }
 
-  /* lazy-load iframes only once their cell is near view, so we never run
-     three product studies (one with a WebGL shader) all at once.
-     Percentage rootMargin is unreliable across browsers, so check initial
-     visibility directly (same pattern the studies use for content load-in)
-     and only fall back to the observer for cells that start off-screen.
-     This must run after FIG_KEY/mount/renderFigCell above are defined —
-     mount() used to fire before FIG_KEY was assigned, so the first visible
-     moodboard cell always looked up "undefined-a" and never found its link. */
+  function mount(frame){
+    if(frame.dataset.src){
+      var ifr = document.createElement('iframe');
+      ifr.loading = 'lazy';
+      ifr.src = frame.dataset.src;
+      ifr.title = frame.dataset.badge || 'page';
+      var badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = frame.dataset.badge || '';
+      badge.style.cursor = 'default';
+      var head = frame.parentElement.querySelector('.cell-head');
+      openLink(head, frame.dataset.src);
+      frame.appendChild(ifr);
+      frame.appendChild(badge);
+      return;
+    }
+    if(frame.dataset.fig) render(frame, frame.dataset.fig);
+  }
+
+  /* Load a cell when you reach it, so a board of twelve embeds does not open
+     twelve at once. A percentage rootMargin is unreliable across browsers, so
+     check what is on screen now directly and leave the observer for the rest. */
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(en){
       if(!en.isIntersecting) return;
-      var frame = en.target;
-      mount(frame);
-      io.unobserve(frame);
+      mount(en.target);
+      io.unobserve(en.target);
     });
   }, { rootMargin: '400px' });
-  document.querySelectorAll('.frame').forEach(function(f){
+  [].forEach.call(document.querySelectorAll('.frame'), function(f){
     var r = f.getBoundingClientRect();
-    if(r.width > 0 && r.top < window.innerHeight && r.top > -window.innerHeight && r.left < window.innerWidth && r.left > -window.innerWidth){ mount(f); }
-    else { io.observe(f); }
+    if(r.width > 0 && r.top < window.innerHeight && r.top > -window.innerHeight &&
+       r.left < window.innerWidth && r.left > -window.innerWidth) mount(f);
+    else io.observe(f);
   });
 })();
 </script>
