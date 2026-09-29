@@ -4,9 +4,8 @@
  * everything it shows is here. Columns are the three directions, rows are the
  * stages you compare them across.
  *
- * Palette and layout are held back for now, so the board opens on the story
- * rather than the specifications. To bring them back, uncomment their rows and
- * their cells below — nothing else needs to change.
+ * A row is shown by being in `rows` and having its cells below. To hold one back
+ * for a showing, comment out both — nothing else needs to change.
  *
  * Links written here travel with the page, so anyone this board is sent to sees
  * the boards. A link pasted in the browser wins for that browser only.
@@ -47,8 +46,8 @@ window.BOARD = {
   rows: [
     { id: 'moodboard',  label: 'Moodboard' },
     { id: 'references', label: 'References' },
-    /* { id: 'palette', label: 'Palette' }, */
-    /* { id: 'layout',  label: 'Layout' },  */
+    { id: 'palette',    label: 'Palette' },
+    { id: 'layout',     label: 'Layout' },
   ],
 
   cells: {
@@ -62,13 +61,11 @@ window.BOARD = {
                               'https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=1220-999&viewport=-96%2C16%2C0.17&t=yS2dxmAifPv1iWro-1&scaling=scale-down-width&content-scaling=fixed&page-id=106%3A1966'] },
     'references/c': { figma: ['https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=1131-808&viewport=-96%2C16%2C0.17&t=yS2dxmAifPv1iWro-1&scaling=scale-down-width&content-scaling=fixed&page-id=106%3A1966'] },
 
-    /* held back with their rows; the pages are still in the repo
     'palette/a': { src: 'palette_optionA.html', badge: 'palette_optionA.html' },
     'palette/b': { src: 'palette_optionB.html', badge: 'palette_optionB.html' },
     'palette/c': { src: 'palette_optionC.html', badge: 'palette_optionC.html' },
     'layout/a':  { src: 'layout_optionA.html',  badge: 'layout_optionA.html'  },
     'layout/b':  { src: 'layout_optionB.html',  badge: 'layout_optionB.html'  },
     'layout/c':  { src: 'layout_optionC.html',  badge: 'layout_optionC.html'  },
-    */
   },
 };
