@@ -26,7 +26,8 @@ Option letters match the client moodboard exactly and mean the same thing everyw
 | --- | --- |
 | `index.html` | Start page linking every study. |
 | `foundation.html` | Brand foundation board: the client's brand personality and brand attributes frames embedded one per screen, with slots for more. Links are pasted per frame and saved in the browser. |
-| `present.html` | Compare board: moodboard → references for each option, with 2D scroll-snap. Moodboard and reference cells take a pasted Figma link. Palette and layout rows exist but are held back; `SHOW_ROWS` at the top of the script brings them back. |
+| `present.html` | Compare board: moodboard → references → palette → layout for each option, one screen per cell, with 2D scroll-snap. It is the [compare-board](https://github.com/ericwkw/compare-board) tool; edit `present.config.js`, not this page. |
+| `present.config.js` | What the compare board shows: the three options, the four stages, the Figma links (Option B's references are two), and EdCity's mark, colours and type. A row is held back by commenting out its row and cells. |
 | `palette_optionA.html` | **Slate, Sky & First Light.** Built from the moodboard's sunrise photo at dawn: structural slate blue on a cool morning-paper and mist ground, a clear-sky blue for the primary button and links, apricot and dusty coral as small first-light accents, spruce green as the highlight for progress and what's done. Includes the Spark & Light gradient rules. |
 | `palette_optionB.html` | **Clear Field, Bright Signal.** Bright blue held to decisions on a cool near-white field; stone for structure, sea green for wayfinding and progress, one coral signal. Blue and green travel together as the line network. |
 | `palette_optionC.html` | **Bright Field, Two Points.** A refraction field: main blue as the brand anchor and largest plane, refracted through cyan, lavender, peach and pink, with two small signal points (pink = opportunity, green = done). |
@@ -51,5 +52,5 @@ The full-page layouts have taken the direction as far as they usefully can: the 
 ## Notes
 
 - Content on every page is illustrative placeholder copy and imagery.
-- The Figma links on the compare board are saved in the browser's local storage, so they need re-pasting on a new browser.
+- The Figma links on the compare board are written in `studies/present.config.js`, so they travel with the page. Each Figma file must be shared as "anyone with the link can view", or the embed shows a sign-in wall to everyone but its owner. A link pasted into the board in a browser overrides the config for that browser only.
 - A recoloured build of an existing product prototype lives in the separate `EdCity_initiatives` repo at `prototype_ai_tools/Study_LLM/chat-brand-slate.html` (it depends on that project's shared assets).
