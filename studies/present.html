@@ -160,21 +160,21 @@
       <h2 class="lbl"><span class="dot"></span>Option A · Calm Momentum</h2>
       <span class="stage">Moodboard</span>
     </div>
-    <div class="frame" data-fig="a"></div>
+    <div class="frame" data-fig="a" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=106-2656&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
   </section>
   <section class="cell" data-row="0" data-col="b">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option B · Attentive Orientation</h2>
       <span class="stage">Moodboard</span>
     </div>
-    <div class="frame" data-fig="b"></div>
+    <div class="frame" data-fig="b" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=112-2858&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
   </section>
   <section class="cell" data-row="0" data-col="c">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option C · Expansive Intelligence</h2>
       <span class="stage">Moodboard</span>
     </div>
-    <div class="frame" data-fig="c"></div>
+    <div class="frame" data-fig="c" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=112-2908&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
   </section>
 
 
@@ -184,7 +184,7 @@
       <h2 class="lbl"><span class="dot"></span>Option A · Calm Momentum</h2>
       <span class="stage">References</span>
     </div>
-    <div class="frame" data-fig="ref-a"></div>
+    <div class="frame" data-fig="ref-a" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=718-611&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
   </section>
   <section class="cell" data-row="1" data-col="b">
     <div class="cell-head">
@@ -194,14 +194,14 @@
     <!-- data-fig-links: space-separated Figma links that travel with the page,
          so a viewer sees the boards without pasting anything. A link pasted
          in the browser overrides these for that browser only. -->
-    <div class="frame" data-fig="ref-b" data-fig-links=""></div>
+    <div class="frame" data-fig="ref-b" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=1220-998&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966 https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=1220-999&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
   </section>
   <section class="cell" data-row="1" data-col="c">
     <div class="cell-head">
       <h2 class="lbl"><span class="dot"></span>Option C · Expansive Intelligence</h2>
       <span class="stage">References</span>
     </div>
-    <div class="frame" data-fig="ref-c"></div>
+    <div class="frame" data-fig="ref-c" data-fig-links="https://www.figma.com/proto/5uZFLIKvIOYNHRcvEA7WtC/EdCity_Branding-Moodboards?node-id=1131-808&amp;viewport=-96%2C16%2C0.17&amp;t=yS2dxmAifPv1iWro-1&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=106%3A1966"></div>
   </section>
 
   <!-- Row 3: Palette -->
@@ -375,7 +375,8 @@
     if(old) old.remove();
     var wrap = document.createElement('div');
     wrap.className = 'figtabs';
-    links.forEach(function(link, i){
+    /* one link needs no tab to switch to; the + and \u2212 still show */
+    if(links.length > 1) links.forEach(function(link, i){
       var b = document.createElement('button');
       b.type = 'button';
       b.textContent = String(i + 1);
@@ -384,9 +385,11 @@
       b.addEventListener('click', function(){ renderFigCell(frame, key, i); });
       wrap.appendChild(b);
     });
-    var sep = document.createElement('span');
-    sep.className = 'sep';
-    wrap.appendChild(sep);
+    if(links.length > 1){
+      var sep = document.createElement('span');
+      sep.className = 'sep';
+      wrap.appendChild(sep);
+    }
     var add = document.createElement('button');
     add.type = 'button'; add.textContent = '+'; add.title = 'Add another Figma link';
     add.addEventListener('click', function(){ renderFigCell(frame, key, links.length, true); });
